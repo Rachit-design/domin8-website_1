@@ -66,7 +66,7 @@ function isPcInUse(pc) {
   if (!pc || typeof pc !== 'object') return false;
 
   // 1) Numeric/boolean "using" flags
-  const usingFlags = [pc.pc_using, pc.using, pc.is_using, pc.in_use];
+  const usingFlags = [pc.pc_in_using, pc.pc_using, pc.using, pc.is_using, pc.in_use];
   for (const f of usingFlags) {
     if (f === 1 || f === true || f === '1') return true;
   }
@@ -85,7 +85,7 @@ function isPcInUse(pc) {
   }
 
   // 4) An attached member / active session implies the PC is occupied.
-  const memberId = pc.member_id ?? pc.pc_member_id ?? pc.memberId;
+  const memberId = pc.status_member_id ?? pc.member_id ?? pc.pc_member_id ?? pc.memberId;
   if (memberId && memberId !== 0 && memberId !== '0') return true;
   if (pc.session_id || pc.pc_session_id) return true;
 
@@ -103,6 +103,11 @@ function extractPcArray(json) {
   const d = json.data ?? json;
   if (Array.isArray(d)) return d;
   if (Array.isArray(d.pcs)) return d.pcs;
+  // iCafeCloud /pcs endpoint: { data: { data: [...] } }
+  if (d.data && Array.isArray(d.data.data)) return d.data.data;
+  if (d.data && Array.isArray(d.data)) return d.data;
+  // /pcs endpoint nested shape: response.data.data[]
+  if (d.data && d.data.data && Array.isArray(d.data.data)) return d.data.data;
   if (Array.isArray(d.data)) return d.data;
   if (Array.isArray(d.bootPcs)) return d.bootPcs;
   if (Array.isArray(d.list)) return d.list;
@@ -115,7 +120,7 @@ function extractPcArray(json) {
  * Endpoint: GET /api/v2/cafe/{cafeId}/bootPcs  (Get boot PC lists)
  */
 async function fetchLiveStatus() {
-  const url = `${ICAFE_BASE_URL}/api/v2/cafe/${ICAFE_CAFE_ID}/bootPcs?per_page=500`;
+  const url = `${ICAFE_BASE_URL}/api/v2/cafe/${ICAFE_CAFE_ID}/pcs?per_page=500`;
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 8000); // 8s safety timeout
