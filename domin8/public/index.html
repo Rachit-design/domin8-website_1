@@ -8,8 +8,8 @@
 <meta property="og:title" content="Domin8 Esports — Welcome Home, Gamers" />
 <meta property="og:description" content="Indore's home of competitive gaming culture. Built by the community, for the community." />
 <meta property="og:type" content="website" />
-<meta property="og:image" content="/assets/hero-lan.jpg" />
-<link rel="icon" type="image/svg+xml" href="/assets/logo.svg" />
+<meta property="og:image" content="/assets/hero-gamer-new.png" />
+<link rel="icon" type="image/png" href="/assets/logo-face.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton+SC&family=Manrope:wght@400;500;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
@@ -21,7 +21,7 @@
 
 <header class="nav" id="nav">
   <a class="nav__brand" href="#top" aria-label="Domin8 home">
-    <img src="/assets/Domin8Newlogo.png" alt="Domin8" class="nav__logo" />
+    <img src="/assets/logo-face.png" alt="Domin8" class="nav__logo" />
     <img src="/assets/typography.png" alt="DOMIN8" class="nav__wordmark-img" />
   </a>
   <nav class="nav__links" aria-label="Primary">
@@ -46,14 +46,13 @@
 
 <main id="top">
 <section class="hero">
-  <div class="hero__slides" id="heroSlides">
-    <div class="hero__slide active"><img src="/assets/hero-gamer.jpg" alt="Domin8 gamer" /></div>
-    <div class="hero__slide"><img src="/assets/space-current.jpg" alt="Domin8 floor" /></div>
+  <div class="hero__slide-single">
+    <img src="/assets/hero-gamer-new.png" alt="Domin8 gamer" />
   </div>
   <div class="hero__veil"></div>
-  <div class="hero__content">
+  <div class="hero__content hero__content--left">
     <span class="hero__eyebrow">this one's for the community</span>
-    <h1 class="hero__title">Welcome <span class="home">Home</span>, Gamers!</h1>
+    <h1 class="hero__title">Welcome <span class="home">Home</span>,<br>Gamers!</h1>
     <p class="hero__sub">Where the community lives, the culture grows, and the future loads.</p>
     <div class="hero__actions">
       <button class="btn btn--primary" data-open-join>Join the Community</button>
@@ -61,7 +60,6 @@
     </div>
     <div class="hero__live" id="heroLive" data-state="ok"><span class="dot"></span><span id="heroLiveText">Loading floor status…</span></div>
   </div>
-  <div class="hero__dots" id="heroDots"><button class="active" aria-label="Slide 1"></button><button aria-label="Slide 2"></button></div>
   <div class="scroll-cue"><span>scroll</span><span class="line"></span></div>
 </section>
 
@@ -75,12 +73,12 @@
     <div class="flip" id="spaceFlip" tabindex="0" role="button" aria-label="Reveal what's coming">
       <div class="flip__inner">
         <div class="flip__face flip__front">
-          <img src="/assets/space-current.jpg" alt="The current Domin8 floor" />
+          <img src="/assets/space-current.jpg" alt="The current Domin8 floor" class="flip__fill-img" />
           <div class="flip__tag"><span class="dot-sm"></span> Our floor today · 1,200 sq ft</div>
           <div class="flip__hint">hover to see what's coming →</div>
         </div>
         <div class="flip__face flip__back">
-          <img src="/assets/space-soon.svg" alt="The bigger space coming soon" />
+          <img src="/assets/space-futuristic.png" alt="The bigger space coming soon" class="flip__fill-img" />
           <div class="flip__back-content">
             <span class="flip__psst">psst… something bigger is loading</span>
             <h3>5,000+ sq ft. Loading soon.</h3>
@@ -124,7 +122,7 @@
       <span class="floor-map__legend-item"><span class="floor-map__pc floor-map__pc--offline"></span>Offline</span>
     </div>
     <div class="floor-map__grid" id="floorGrid">
-      <!-- PC slots injected by JS from iCafeCloud live data -->
+      <!-- PC slots injected by JS -->
     </div>
     <p class="floor-map__update" id="floorUpdate">Updating…</p>
   </div>
@@ -139,16 +137,17 @@
     <p>We're gamers first. Domin8 started with a simple idea — give Indore's players a real home, not just a place with PCs in the corner. So we built one. We throw the LAN nights, run the tournaments, and open the doors so people can feel what gaming's actually about: the squad next to you, the clutch everyone remembers, the friends you didn't know you'd make.</p>
     <p>Eight years in, we're not just a cafe anymore — we're a community, a culture, and a tech hub that's only getting bigger.</p>
   </div>
-  <!-- Old→New logo brand transition -->
+
+  <!-- Old→New logo brand transition with animation -->
   <div class="brand-journey reveal">
     <div class="brand-journey__logos">
-      <div class="brand-journey__old">
-        <img src="/assets/logo-old.png" alt="Original Domin8 logo" />
+      <div class="brand-journey__old" id="oldLogo">
+        <img src="/assets/logo-old.png" alt="Original Domin8 logo" id="brandOldImg" />
         <span>Where it started</span>
       </div>
       <div class="brand-journey__arrow">→</div>
-      <div class="brand-journey__new">
-        <img src="/assets/Domin8Newlogo.png" alt="New Domin8 logo" />
+      <div class="brand-journey__new" id="newLogo">
+        <img src="/assets/logo-face.png" alt="New Domin8 logo" id="brandNewImg" />
         <span>Where we're going</span>
       </div>
     </div>
@@ -161,14 +160,26 @@
   </div>
 </section>
 
+<!-- Community regulars auto-scroll from iCafeCloud -->
+<section class="section community-regulars" id="community-regulars">
+  <div class="section__head center">
+    <span class="eyebrow">our people</span>
+    <h2 class="section__title">The Community</h2>
+    <p class="section__lede">The faces you see every day. Pulled live from the floor.</p>
+  </div>
+  <div class="regulars__scroller">
+    <div class="regulars__track" id="regularsTrack">
+      <!-- Names injected from iCafeCloud registered members -->
+    </div>
+  </div>
+</section>
+
+<!-- The Legends — separate section, to be updated next push -->
 <section class="section community" id="community">
   <div class="section__head center">
     <span class="eyebrow">the legends</span>
     <h2 class="section__title">The faces of Domin8</h2>
     <p class="section__lede">Real players. Real stories. The people who make this place loud. Hover a card to see their story.</p>
-  </div>
-  <div class="community__live-strip" id="communityLiveStrip">
-    <!-- Live "who's playing now" injected by JS -->
   </div>
   <div class="community__scroller" id="playerScroller">
     <div class="community__column" id="playerColumn"></div>
@@ -239,12 +250,14 @@
 <footer class="footer">
   <div class="footer__top">
     <div class="footer__brand">
-      <img src="/assets/Domin8Newlogo.png" alt="Domin8 Esports" />
-      <span class="footer__wordmark">DOMIN<span class="eight">8</span></span>
+      <div class="footer__brand-logo">
+        <img src="/assets/logo-face.png" alt="Domin8 Esports" class="footer__logo-face" />
+        <img src="/assets/typography.png" alt="DOMIN8" class="footer__logo-type" />
+      </div>
       <p class="footer__tag">Indore's home of competitive gaming culture.</p>
     </div>
     <div class="footer__links"><h4>Explore</h4><a href="#space">The Space</a><a href="#about">Who We Are</a><a href="#happening">What's Happening</a><a href="#glimpse">Get a Glimpse</a></div>
-    <div class="footer__links"><h4>Connect</h4><a href="#" data-discord>Discord</a><a href="https://www.iesports.in/" target="_blank" rel="noopener">iesports</a><a href="mailto:wassup@domin8esports.com">wassup@domin8esports.com</a></div>
+    <div class="footer__links"><h4>Connect</h4><a href="#" data-discord>Discord</a><a href="https://www.instagram.com/domin8.gaming?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">Instagram</a><a href="https://www.iesports.in/" target="_blank" rel="noopener">iesports</a><a href="mailto:wassup@domin8esports.com">wassup@domin8esports.com</a></div>
   </div>
   <div class="footer__bottom"><span>© <span id="year"></span> Domin8 Esports. All rights reserved.</span><span>Made by the community, for the community.</span></div>
 </footer>

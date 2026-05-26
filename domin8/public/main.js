@@ -1,10 +1,10 @@
 /* ============================================================================
-   DOMIN8 ESPORTS — main.js  (front-end behaviour for the whole site)
+   DOMIN8 ESPORTS — main.js
 ============================================================================ */
 (function(){
   'use strict';
 
-  // ---- EDIT ME: your real Discord invite (one place) ----
+  // ---- EDIT ME: your real Discord invite ----
   var DISCORD_INVITE = 'https://discord.gg/your-invite';
   document.querySelectorAll('[data-discord]').forEach(function(el){
     el.setAttribute('href', DISCORD_INVITE); el.setAttribute('target','_blank'); el.setAttribute('rel','noopener');
@@ -14,7 +14,7 @@
   var yearEl = document.getElementById('year'); if(yearEl) yearEl.textContent = new Date().getFullYear();
 
   function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
-  function img(src){ if(!src) return '/assets/logo.svg'; if(/^https?:\/\//.test(src)) return src; return src.charAt(0)==='/'?src:'/'+src; }
+  function img(src){ if(!src) return '/assets/logo-face.png'; if(/^https?:\/\//.test(src)) return src; return src.charAt(0)==='/'?src:'/'+src; }
 
   // ---- Nav scroll + mobile menu ----
   var nav=document.getElementById('nav');
@@ -24,14 +24,6 @@
     burger.addEventListener('click',function(){var open=menu.hidden===false;menu.hidden=open;burger.setAttribute('aria-expanded',String(!open));});
     menu.querySelectorAll('a,button').forEach(function(el){el.addEventListener('click',function(){menu.hidden=true;});});
   }
-
-  // ---- Hero carousel ----
-  var slides=document.querySelectorAll('.hero__slide'), dots=document.querySelectorAll('#heroDots button'), idx=0, timer;
-  function go(n){ if(!slides.length)return; slides[idx].classList.remove('active'); if(dots[idx])dots[idx].classList.remove('active'); idx=(n+slides.length)%slides.length; slides[idx].classList.add('active'); if(dots[idx])dots[idx].classList.add('active'); }
-  function start(){ timer=setInterval(function(){go(idx+1);},5000); }
-  function reset(){ clearInterval(timer); start(); }
-  dots.forEach(function(d,i){ d.addEventListener('click',function(){go(i);reset();}); });
-  if(slides.length>1) start();
 
   // ---- Reveal on scroll ----
   function observeReveals(els){
@@ -45,18 +37,39 @@
   // ---- Stat counters ----
   var statNums=document.querySelectorAll('.stat__num[data-target]');
   function animateCount(el){
-    var target=parseInt(el.getAttribute('data-target'),10)||0, suffix=el.getAttribute('data-suffix')||'', start=performance.now(), dur=1200;
+    var target=parseInt(el.getAttribute('data-target'),10)||0, suffix=el.getAttribute('data-suffix')||'', start=performance.now(), dur=1400;
     function tick(now){var p=Math.min((now-start)/dur,1),eased=1-Math.pow(1-p,3),v=Math.round(target*eased);el.innerHTML=v.toLocaleString()+(suffix?'<span class="accent-magenta">'+suffix+'</span>':'');if(p<1)requestAnimationFrame(tick);}
     requestAnimationFrame(tick);
   }
   if(statNums.length){
     if('IntersectionObserver' in window){
-      var sIO=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){animateCount(e.target);sIO.unobserve(e.target);}});},{threshold:.4});
+      var sIO=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){animateCount(e.target);sIO.unobserve(e.target);}});},{threshold:.3});
       statNums.forEach(function(el){sIO.observe(el);});
     } else { statNums.forEach(function(el){var s=el.getAttribute('data-suffix')||'';el.innerHTML=(parseInt(el.getAttribute('data-target'),10)||0).toLocaleString()+(s?'<span class="accent-magenta">'+s+'</span>':'');}); }
   }
 
-  // ---- Team 4x4 grid (excludes The Regulars — they live in Community) ----
+  // ---- Brand logo animation (old fades/morphs into new on scroll into view) ----
+  var brandJourney = document.querySelector('.brand-journey');
+  if(brandJourney){
+    var oldImg = document.getElementById('brandOldImg');
+    var newImg = document.getElementById('brandNewImg');
+    var brandAnimated = false;
+    if('IntersectionObserver' in window){
+      var brandIO = new IntersectionObserver(function(es){
+        es.forEach(function(e){
+          if(e.isIntersecting && !brandAnimated){
+            brandAnimated = true;
+            if(oldImg){ oldImg.classList.add('brand-anim-old'); }
+            setTimeout(function(){ if(newImg){ newImg.classList.add('brand-anim-new'); } }, 400);
+            brandIO.unobserve(e.target);
+          }
+        });
+      },{threshold:.5});
+      brandIO.observe(brandJourney);
+    }
+  }
+
+  // ---- Team grid ----
   var teamGrid=document.getElementById('teamGrid');
   if(teamGrid && Array.isArray(window.TEAM)){
     var crewMembers = window.TEAM.filter(function(m){ return m.name !== 'The Regulars'; });
@@ -72,15 +85,33 @@
     }).join('');
   }
 
-  // ---- Players vertical auto-scroll with hover cards + mobile overlay ----
+  // ---- Community Regulars auto-scroll (names from iCafeCloud) ----
+  function buildRegularsScroller(names){
+    var track = document.getElementById('regularsTrack');
+    if(!track) return;
+    if(!names || !names.length){
+      // Demo names when no live data
+      names = ['GhostByte','NeonRaider','CryptoKill','FragLord','ZeroRecoil','ShadowSnipe','RedBull99','IceViper','SteelPulse','DarkFrag','VoltStrike','GlitchHunter','PixelWar','CodeBreaker','NightOwl','RushB','FlashPoint','SmokeStack','EchoSix','ThunderFist'];
+    }
+    // Duplicate for seamless loop
+    var all = names.concat(names).concat(names);
+    track.innerHTML = all.map(function(n){
+      return '<div class="regulars__chip"><span class="regulars__dot"></span>'+esc(n)+'</div>';
+    }).join('');
+    // Set animation duration based on count
+    var dur = Math.max(20, names.length * 2);
+    track.style.animationDuration = dur + 's';
+  }
+  buildRegularsScroller([]);
+
+  // ---- Legends (The Faces of Domin8) vertical scroll ----
   var col=document.getElementById('playerColumn');
   var overlayBg=document.createElement('div');
   overlayBg.className='player-overlay-bg';
   document.body.appendChild(overlayBg);
   var isTouchDevice=('ontouchstart' in window)||(navigator.maxTouchPoints>0);
 
-  function playerCard(p,isLive){
-    var liveHTML=isLive?'<div class="player-card__hovercard-live" style="display:flex;align-items:center;gap:.4rem;margin-top:.5rem;font-size:.72rem;color:#22c55e;font-weight:700;"><span style="width:7px;height:7px;border-radius:50%;background:#22c55e;display:inline-block;flex-shrink:0;"></span>Playing right now</div>':'';
+  function playerCard(p){
     return '<div class="player-card" data-name="'+esc(p.name)+'" data-tag="'+esc(p.tag)+'">'+
       '<div class="player-card__imgs"><img class="real" src="'+img(p.real)+'" alt="'+esc(p.name)+'" loading="lazy"/></div>'+
       '<div class="player-card__info">'+
@@ -91,19 +122,14 @@
       '<div class="player-card__hovercard">'+
         '<div class="player-card__hovercard-name">'+esc(p.name)+'</div>'+
         '<div class="player-card__hovercard-tag">"'+esc(p.tag)+'"</div>'+
-        (p.quote?'<div class="player-card__hovercard-quote">'+esc(p.quote)+'</div>':'<div class="player-card__hovercard-quote">One of the legends of the floor.</div>')+
-        liveHTML+
+        '<div class="player-card__hovercard-quote">'+(p.quote||'One of the legends of the floor.')+'</div>'+
       '</div>'+
     '</div>';
   }
 
-  function buildPlayerColumn(liveAccounts){
+  function buildPlayerColumn(){
     if(!col||!Array.isArray(window.PLAYERS))return;
-    var liveSet=new Set((liveAccounts||[]).map(function(n){return n.toLowerCase();}));
-    var cards=window.PLAYERS.map(function(p){
-      var isLive=liveSet.has(p.name.toLowerCase())||liveSet.has((p.tag||'').toLowerCase());
-      return playerCard(p,isLive);
-    }).join('');
+    var cards=window.PLAYERS.map(function(p){ return playerCard(p); }).join('');
     col.innerHTML=cards+cards;
     col.querySelectorAll('.player-card').forEach(function(card){
       card.addEventListener('click',function(e){
@@ -119,7 +145,7 @@
     col.querySelectorAll('.player-card.overlay-open').forEach(function(c){c.classList.remove('overlay-open');});
     overlayBg.classList.remove('active');
   });
-  buildPlayerColumn([]);
+  buildPlayerColumn();
 
   // ---- Blog ----
   var blogGrid=document.getElementById('blogGrid');
@@ -134,7 +160,7 @@
     observeReveals(blogGrid.querySelectorAll('.reveal'));
   }
 
-  // ---- Space flip (tap support for touch) ----
+  // ---- Space flip ----
   var flip=document.getElementById('spaceFlip');
   if(flip){
     flip.addEventListener('click',function(){flip.classList.toggle('flipped');});
@@ -158,23 +184,31 @@
       if(!name||!email){feedback.textContent='Please add your name and email.';return;}
       if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){feedback.textContent='That email looks off — check it?';return;}
       feedback.textContent='Sending…'; feedback.style.color='var(--ink-soft)';
-      try{
-        var res=await fetch('/api/join',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name,tag:tag,email:email})});
-        // Whether or not the endpoint exists yet, show success (emails are stored server-side when wired)
-      }catch(e){}
+      try{ await fetch('/api/join',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name,tag:tag,email:email})}); }catch(e){}
       document.getElementById('joinForm').classList.add('hide');
       document.getElementById('joinSuccess').classList.add('show');
     });
   }
 
-  // ---- Live floor status (iCafeCloud via backend /api/pc-status; demo fallback) ----
+  // ---- Live floor status ----
   var live=document.getElementById('heroLive'), liveText=document.getElementById('heroLiveText');
+  var navLive=document.getElementById('navLive'), navLiveText=document.getElementById('navLiveText');
+
   function demoStatus(){
     var h=new Date().getHours(),base;
     if(h>=17&&h<=23)base=0.8;else if(h>=12&&h<17)base=0.55;else if(h>=7&&h<12)base=0.3;else base=0.15;
     var frac=Math.min(0.95,Math.max(0.05,base+Math.sin(Date.now()/600000)*0.1));
-    var inUse=Math.round(20*frac);return{inUse:inUse,total:20,available:20-inUse};
+    var inUse=Math.round(20*frac);
+    // Generate fake PC list for demo
+    var pcs=[];
+    for(var i=0;i<20;i++){
+      var pcNum=101+i;
+      pcs.push({pc_name:'PC'+pcNum, pc_in_using: i<inUse?1:0, status: i<inUse?'InUse':'Free'});
+    }
+    return{inUse:inUse,total:20,available:20-inUse,pcs:pcs};
   }
+
+  // Floor map: shows PC numbers only, NO player names
   function renderFloorMap(pcs){
     var grid=document.getElementById('floorGrid');
     var upd=document.getElementById('floorUpdate');
@@ -183,18 +217,21 @@
     var half=Math.ceil(sorted.length/2);
     var leftRow=sorted.slice(0,half);
     var rightRow=sorted.slice(half);
+
     function makeSlot(pc){
       var busy=pc.pc_in_using===1;
-      var offline=pc.status==='Offline';
-      var cls=busy?'busy':(offline?'offline':'free');
-      var player=busy&&pc.status_member_account?pc.status_member_account:(cls==='free'?'Available':'Offline');
-      return '<div class="floor-map__slot floor-map__slot--'+cls+'">'+
+      var offline=pc.status==='Offline'||pc.status==='offline';
+      var cls=offline?'offline':(busy?'busy':'free');
+      // Show only the PC number/name — NO player name
+      var label = busy ? 'In Use' : (offline ? 'Offline' : 'Available');
+      return '<div class="floor-map__slot floor-map__slot--'+cls+'" title="'+esc(pc.pc_name)+' — '+label+'">'+
         '<span class="floor-map__slot-dot"></span>'+
         '<div class="floor-map__slot-info">'+
           '<div class="floor-map__slot-name">'+esc(pc.pc_name)+'</div>'+
-          '<div class="floor-map__slot-player">'+esc(player)+'</div>'+
+          '<div class="floor-map__slot-status">'+label+'</div>'+
         '</div></div>';
     }
+
     grid.innerHTML=
       '<div class="floor-map__row">'+leftRow.map(makeSlot).join('')+'</div>'+
       '<div class="floor-map__center-aisle"><span class="floor-map__aisle-label">Centre Aisle</span></div>'+
@@ -202,18 +239,16 @@
     if(upd)upd.textContent='Updated: '+new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
   }
 
-  function renderLiveStrip(pcs){
-    var strip=document.getElementById('communityLiveStrip');
-    if(!strip)return;
-    if(!pcs||!pcs.length){strip.style.display='none';return;}
-    strip.style.display='flex';
-    var playing=pcs.filter(function(pc){return pc.pc_in_using===1&&pc.status_member_account;}).map(function(pc){return pc.status_member_account;});
-    if(!playing.length){
-      strip.innerHTML='<span class="community__live-label"><span class="dot-live"></span>Floor is quiet right now — first one here?</span>';
-      return;
-    }
-    strip.innerHTML='<span class="community__live-label"><span class="dot-live"></span>On the floor right now:</span>'+
-      '<div class="community__live-names">'+playing.map(function(n){return '<span>'+esc(n)+'</span>';}).join('')+'</div>';
+  // Regulars scroller: show registered member names from iCafeCloud (no "who's playing" live strip)
+  function updateRegularsFromLive(pcs){
+    if(!pcs||!pcs.length) return;
+    // Get all registered account names (both in-use and available sessions)
+    var names = pcs
+      .filter(function(pc){ return pc.status_member_account && pc.status_member_account.trim(); })
+      .map(function(pc){ return pc.status_member_account.trim(); });
+    // Dedupe
+    names = names.filter(function(n,i,a){ return a.indexOf(n)===i; });
+    if(names.length > 0) buildRegularsScroller(names);
   }
 
   function renderLive(d){
@@ -228,12 +263,9 @@
     }
     if(d.pcs){
       renderFloorMap(d.pcs);
-      renderLiveStrip(d.pcs);
-      var liveAccounts=d.pcs.filter(function(pc){return pc.pc_in_using===1&&pc.status_member_account;}).map(function(pc){return pc.status_member_account;});
-      buildPlayerColumn(liveAccounts);
+      updateRegularsFromLive(d.pcs);
     }
   }
-
 
   async function pollStatus(){
     try{
@@ -243,4 +275,5 @@
     }catch(e){ renderLive(demoStatus()); }
   }
   if(live){ pollStatus(); setInterval(pollStatus,20000); }
+
 })();

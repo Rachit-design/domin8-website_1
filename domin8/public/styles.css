@@ -359,3 +359,236 @@ img{display:block;max-width:100%;}
   .floor-map__center-aisle{display:none;}
   .floor-map__slot{min-width:0;}
 }
+
+/* ============================================================================
+   DOMIN8 UPDATE — new hero, nav, flip, regulars scroller, brand anim, footer
+============================================================================ */
+
+/* ---- NAV: face logo bigger, tight spacing, no bg clipping ---- */
+.nav__logo {
+  height: 64px;
+  width: auto;
+  filter: drop-shadow(0 0 14px rgba(29,231,130,.5));
+  transition: height .3s;
+  /* No background, pure drop-shadow only */
+  background: none !important;
+}
+.nav.scrolled .nav__logo { height: 52px; }
+.nav__wordmark-img {
+  height: 24px;
+  width: auto;
+  margin-left: -2px; /* pull type close to face logo */
+  opacity: .9;
+}
+.nav__brand {
+  gap: .35rem; /* tighten gap between face logo and typography */
+  align-items: center;
+}
+
+/* ---- HERO: single image, left-aligned content ---- */
+.hero__slide-single {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.hero__slide-single img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+.hero__content--left {
+  text-align: left;
+  margin-left: 0;
+  margin-right: auto;
+  padding-left: clamp(1rem, 6vw, 6rem);
+  max-width: 700px;
+}
+.hero__content--left .hero__actions {
+  justify-content: flex-start;
+}
+.hero__content--left .hero__sub {
+  margin-left: 0;
+  margin-right: auto;
+}
+.hero__content--left .hero__live {
+  justify-content: flex-start;
+}
+
+/* ---- FLIP CARD: images fill the frame fully ---- */
+.flip__fill-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius);
+  display: block;
+}
+.flip__front,
+.flip__back {
+  position: relative;
+  overflow: hidden;
+  min-height: 380px;
+}
+
+/* ---- STATS: ensure counter is visible initially so animation triggers ---- */
+.stat__num {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  letter-spacing: .02em;
+  line-height: 1;
+  min-height: 1em;
+}
+.stats {
+  background: radial-gradient(ellipse 900px 200px at 50% 50%, rgba(29,231,130,.06), transparent 70%);
+  padding: 4rem clamp(1rem,4vw,2rem);
+}
+.stats__grid {
+  max-width: 900px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  text-align: center;
+}
+.stat__label {
+  font-size: .8rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-top: .3rem;
+}
+
+/* ---- COMMUNITY REGULARS: horizontal chip scroll ---- */
+.community-regulars {
+  overflow: hidden;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+.regulars__scroller {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  margin-top: 1.5rem;
+}
+.regulars__track {
+  display: flex;
+  gap: .8rem;
+  animation: scrollRight 30s linear infinite;
+  width: max-content;
+}
+.regulars__scroller:hover .regulars__track {
+  animation-play-state: paused;
+}
+@keyframes scrollRight {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-33.333%); }
+}
+.regulars__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  padding: .5rem 1rem;
+  border-radius: 99px;
+  background: rgba(29,231,130,.07);
+  border: 1px solid rgba(29,231,130,.2);
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: border-color .2s, color .2s;
+}
+.regulars__chip:hover {
+  border-color: var(--emerald);
+  color: var(--ink);
+}
+.regulars__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--emerald);
+  opacity: .7;
+  flex-shrink: 0;
+}
+
+/* ---- BRAND ANIMATION: old logo fades out, new logo pulses in ---- */
+#brandOldImg {
+  transition: opacity .6s ease, filter .6s ease, transform .6s ease;
+}
+#brandNewImg {
+  transition: opacity .6s ease .3s, filter .6s ease .3s, transform .6s ease .3s;
+}
+.brand-anim-old {
+  opacity: 0 !important;
+  filter: blur(8px) grayscale(1) !important;
+  transform: scale(.9) !important;
+}
+.brand-anim-new {
+  animation: brandPulse 1s ease forwards;
+}
+@keyframes brandPulse {
+  0%   { filter: drop-shadow(0 0 0px rgba(29,231,130,0)); transform: scale(.95); opacity: .5; }
+  50%  { filter: drop-shadow(0 0 28px rgba(29,231,130,.8)); transform: scale(1.06); opacity: 1; }
+  100% { filter: drop-shadow(0 0 16px rgba(29,231,130,.4)); transform: scale(1); opacity: 1; }
+}
+
+/* ---- FLOOR MAP: slot-status replaces slot-player (no names) ---- */
+.floor-map__slot-status {
+  font-size: .7rem;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+.floor-map__slot--busy .floor-map__slot-status {
+  color: #f7ca24;
+  font-weight: 600;
+}
+.floor-map__slot--free .floor-map__slot-status {
+  color: #22c55e;
+}
+
+/* ---- FOOTER: new brand logo layout ---- */
+.footer__brand-logo {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin-bottom: .6rem;
+}
+.footer__logo-face {
+  height: 52px;
+  width: auto;
+  filter: drop-shadow(0 0 12px rgba(29,231,130,.4));
+  background: none !important;
+}
+.footer__logo-type {
+  height: 22px;
+  width: auto;
+  opacity: .85;
+}
+/* Remove old single-img footer brand rule interference */
+.footer__brand img {
+  height: auto;
+}
+
+/* ---- Responsive tweaks for new sections ---- */
+@media (max-width: 880px) {
+  .hero__content--left {
+    padding-left: clamp(1rem, 4vw, 2rem);
+  }
+  .stats__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 560px) {
+  .hero__content--left {
+    text-align: center;
+  }
+  .hero__content--left .hero__actions,
+  .hero__content--left .hero__live {
+    justify-content: center;
+  }
+  .hero__content--left .hero__sub {
+    margin: 0 auto 2rem;
+  }
+}
