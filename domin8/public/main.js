@@ -63,19 +63,42 @@
     } else { statNums.forEach(function(el){var s=el.getAttribute('data-suffix')||'';el.innerHTML=(parseInt(el.getAttribute('data-target'),10)||0).toLocaleString()+(s?'<span class="accent-magenta">'+s+'</span>':'');}); }
   }
 
-  // ---- Brand logo animation (old fades/morphs into new on scroll into view) ----
+  // ---- Brand logo animation (old fades/morphs into new, then reveals typography) ----
   var brandJourney = document.querySelector('.brand-journey');
   if(brandJourney){
+    var labelOld = document.getElementById('labelOld');
+    var labelNew = document.getElementById('labelNew');
+    var brandTypeImg = document.getElementById('brandTypeImgClean');
+
+    function resetBrandLabels(){
+      if(labelOld){ labelOld.classList.remove('bj-label--active'); }
+      if(labelNew){ labelNew.classList.remove('bj-label--active'); }
+    }
+
+    function runBrandSequence(){
+      brandJourney.classList.remove('brand-journey--play');
+      void brandJourney.offsetWidth;
+      resetBrandLabels();
+      if(brandTypeImg){ brandTypeImg.classList.remove('brand-journey__mark--type-show'); }
+      // Phase 1: old logo plays, highlight "where it started"
+      if(labelOld){ labelOld.classList.add('bj-label--active'); }
+      brandJourney.classList.add('brand-journey--play');
+      // Phase 2: at ~2s, switch highlight to "where we're going"
+      var t1 = setTimeout(function(){
+        if(labelOld){ labelOld.classList.remove('bj-label--active'); }
+        if(labelNew){ labelNew.classList.add('bj-label--active'); }
+      }, 2000);
+      // Phase 3: at ~3.5s, dissolve new logo into typography
+      var t2 = setTimeout(function(){
+        if(brandTypeImg){ brandTypeImg.classList.add('brand-journey__mark--type-show'); }
+      }, 3500);
+    }
+
     if('IntersectionObserver' in window){
       var brandIO = new IntersectionObserver(function(es){
         es.forEach(function(e){
-          if(e.isIntersecting){
-            brandJourney.classList.remove('brand-journey--play');
-            void brandJourney.offsetWidth;
-            brandJourney.classList.add('brand-journey--play');
-          } else {
-            brandJourney.classList.remove('brand-journey--play');
-          }
+          if(e.isIntersecting){ runBrandSequence(); }
+          else { brandJourney.classList.remove('brand-journey--play'); resetBrandLabels(); }
         });
       },{threshold:.55});
       brandIO.observe(brandJourney);
@@ -84,20 +107,10 @@
     }
   }
 
-  // ---- Team grid ----
+  // ---- Team grid (excludes The Regulars card — that's in the community card below) ----
   var teamGrid=document.getElementById('teamGrid');
   if(teamGrid && Array.isArray(window.TEAM)){
-    teamGrid.innerHTML = window.TEAM.map(function(m){
-      if(m.name === 'The Regulars'){
-        return '<div class="team-card team-card--regulars">'+
-          '<div class="team-card__body">'+
-            '<div class="team-card__name">Our People</div>'+
-            '<div class="team-card__tag">"The faces you see every day"</div>'+
-            '<div class="team-card__role">Community</div>'+
-            '<div class="team-card__note">Live names from the cafe, shuffled every time the site opens.</div>'+
-            '<div class="crew-regulars__scroller"><div class="crew-regulars__track" id="crewRegularsTrack"></div></div>'+
-          '</div></div>';
-      }
+    teamGrid.innerHTML = window.TEAM.filter(function(m){ return m.name !== 'The Regulars'; }).map(function(m){
       return '<div class="team-card">'+
         '<div class="team-card__img"><img src="'+img(m.image)+'" alt="'+esc(m.name)+'" loading="lazy"/></div>'+
         '<div class="team-card__body">'+
@@ -109,27 +122,34 @@
     }).join('');
   }
 
-  // ---- Community Regulars auto-scroll (names from iCafeCloud) ----
-  function buildRegularsScroller(names){
-    var track = document.getElementById('regularsTrack');
-    if(!track) return;
+  // ---- Community live list (vertical scroll in crew section) ----
+  function buildCommunityLiveList(names){
+    var list = document.getElementById('communityLiveList');
+    if(!list) return;
     if(!names || !names.length){
-      // Demo names when no live data
       names = ['GhostByte','NeonRaider','CryptoKill','FragLord','ZeroRecoil','ShadowSnipe','RedBull99','IceViper','SteelPulse','DarkFrag','VoltStrike','GlitchHunter','PixelWar','CodeBreaker','NightOwl','RushB','FlashPoint','SmokeStack','EchoSix','ThunderFist'];
     }
     names = names.slice().sort(function(){ return Math.random() - 0.5; });
-    // Duplicate for seamless loop
+    // Duplicate for seamless infinite scroll
     var all = names.concat(names).concat(names);
-    var html = all.map(function(n){
-      return '<div class="regulars__chip"><span class="regulars__dot"></span>'+esc(n)+'</div>';
+    list.innerHTML = all.map(function(n,i){
+      return '<div class="community-live__item">'+
+        '<span class="community-live__dot"></span>'+
+        '<span class="community-live__name">'+esc(n)+'</span>'+
+        '<span class="community-live__badge">online</span>'+
+      '</div>';
     }).join('');
-    track.innerHTML = html;
-    var crewTrack = document.getElementById('crewRegularsTrack');
-    if(crewTrack) crewTrack.innerHTML = html;
-    // Set animation duration based on count
-    var dur = Math.max(20, names.length * 2);
-    track.style.animationDuration = dur + 's';
-    if(crewTrack) crewTrack.style.animationDuration = Math.max(16, names.length * 1.4) + 's';
+    var dur = Math.max(18, names.length * 1.8);
+    list.style.animationDuration = dur + 's';
+  }
+
+  // ---- Community Regulars auto-scroll (names from iCafeCloud) ----
+  function buildRegularsScroller(names){
+    if(!names || !names.length){
+      names = ['GhostByte','NeonRaider','CryptoKill','FragLord','ZeroRecoil','ShadowSnipe','RedBull99','IceViper','SteelPulse','DarkFrag','VoltStrike','GlitchHunter','PixelWar','CodeBreaker','NightOwl','RushB','FlashPoint','SmokeStack','EchoSix','ThunderFist'];
+    }
+    // Feed the vertical community list
+    buildCommunityLiveList(names);
   }
   buildRegularsScroller([]);
 
@@ -205,15 +225,29 @@
   if(modal){modal.addEventListener('click',function(e){if(e.target===modal)closeModal();});}
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&modal)closeModal();});
 
+  // GOOGLE SHEETS ENDPOINT — replace with your Apps Script Web App URL
+  var SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwZl68EyMcTnGZnEi4u7gXj9kVI-ouFIRrAcmrVtklvmB3UxtnXlaXtl2-wJA23FSpB/exec';
+
   var submit=document.getElementById('joinSubmit'), feedback=document.getElementById('joinFeedback');
   if(submit){
     submit.addEventListener('click',async function(){
-      var name=document.getElementById('jName').value.trim(), tag=document.getElementById('jTag').value.trim(), email=document.getElementById('jEmail').value.trim();
+      var name=document.getElementById('jName').value.trim(), tag=document.getElementById('jTag').value.trim(), email=document.getElementById('jEmail').value.trim(), phone=(document.getElementById('jPhone')||{}).value||'';
+      phone = phone.trim();
       feedback.style.color='var(--magenta)';
       if(!name||!email){feedback.textContent='Please add your name and email.';return;}
       if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){feedback.textContent='That email looks off — check it?';return;}
       feedback.textContent='Sending…'; feedback.style.color='var(--ink-soft)';
-      try{ await fetch('/api/join',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:name,tag:tag,email:email})}); }catch(e){}
+      var payload = {name:name,tag:tag,email:email,phone:phone,timestamp:new Date().toISOString()};
+      try{
+        // Post to backend
+        await fetch('/api/join',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+      }catch(e){}
+      try{
+        // Also post to Google Sheets if URL is configured
+        if(SHEETS_URL && !SHEETS_URL.includes('YOUR_DEPLOYMENT_ID')){
+          await fetch(SHEETS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+        }
+      }catch(e){}
       document.getElementById('joinForm').classList.add('hide');
       document.getElementById('joinSuccess').classList.add('show');
     });
@@ -268,14 +302,12 @@
     if(upd)upd.textContent='Updated: '+new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
   }
 
-  // Regulars scroller: show registered member names from iCafeCloud (no "who's playing" live strip)
+  // Regulars: show registered member names from iCafeCloud
   function updateRegularsFromLive(pcs){
     if(!pcs||!pcs.length) return;
-    // Get all registered account names (both in-use and available sessions)
     var names = pcs
       .filter(function(pc){ return pc.status_member_account && pc.status_member_account.trim(); })
       .map(function(pc){ return pc.status_member_account.trim(); });
-    // Dedupe
     names = names.filter(function(n,i,a){ return a.indexOf(n)===i; });
     if(names.length > 0) buildRegularsScroller(names);
   }

@@ -76,7 +76,7 @@
     <div class="flip" id="spaceFlip" tabindex="0" role="button" aria-label="Reveal what's coming">
       <div class="flip__inner">
         <div class="flip__face flip__front">
-          <img src="/assets/space-current.jpg" alt="The current Domin8 floor" class="flip__fill-img" />
+          <img src="/assets/space-current-new.jpg" alt="The current Domin8 floor" class="flip__fill-img" />
           <div class="flip__tag"><span class="dot-sm"></span> Our floor today · 1,200 sq ft</div>
           <div class="flip__hint">hover to see what's coming →</div>
         </div>
@@ -150,11 +150,15 @@
 
   <!-- Old→New logo brand transition with animation -->
   <div class="brand-journey reveal">
-    <div class="brand-journey__stage" aria-label="Domin8 rebrand: old logo dissolves into new logo">
+    <div class="brand-journey__stage" aria-label="Domin8 rebrand: old logo dissolves into new logo, then reveals typography">
       <img src="/assets/logo-old-cutout.png" alt="Original Domin8 logo" class="brand-journey__mark brand-journey__mark--old" id="brandOldImgClean" />
       <img src="/assets/logo-face-cutout.png" alt="New Domin8 logo" class="brand-journey__mark brand-journey__mark--new" id="brandNewImgClean" />
+      <img src="/assets/typography-cutout.png" alt="DOMIN8" class="brand-journey__mark brand-journey__mark--type" id="brandTypeImgClean" />
     </div>
-    <div class="brand-journey__labels"><span>Where it started</span><span>Where we're going</span></div>
+    <div class="brand-journey__labels">
+      <span id="labelOld" class="bj-label">Where it started</span>
+      <span id="labelNew" class="bj-label">Where we're going</span>
+    </div>
     <div class="brand-journey__logos">
       <div class="brand-journey__old" id="oldLogo">
         <img src="/assets/logo-old.png" alt="Original Domin8 logo" id="brandOldImg" />
@@ -172,19 +176,18 @@
   <div class="team">
     <h3 class="team__title">Meet the crew</h3>
     <div class="team__grid" id="teamGrid"></div>
-  </div>
-</section>
-
-<!-- Community regulars auto-scroll from iCafeCloud -->
-<section class="section community-regulars" id="community-regulars">
-  <div class="section__head center">
-    <span class="eyebrow">our people</span>
-    <h2 class="section__title">The Community</h2>
-    <p class="section__lede">The faces you see every day. Pulled live from the floor.</p>
-  </div>
-  <div class="regulars__scroller">
-    <div class="regulars__track" id="regularsTrack">
-      <!-- Names injected from iCafeCloud registered members -->
+    <!-- Community card - Our People - active 24h members, standalone below grid -->
+    <div class="team__community-card" id="teamCommunityCard">
+      <div class="team-community__header">
+        <span class="eyebrow">our people · live</span>
+        <h3 class="team-community__title">The Community</h3>
+        <p class="team-community__sub">The faces you see every day — pulled live from the floor. These are the people who make this place loud.</p>
+      </div>
+      <div class="team-community__scroll-wrap">
+        <div class="team-community__list" id="communityLiveList">
+          <!-- active member names injected by JS -->
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -241,6 +244,9 @@
     <p class="section__lede">Event recaps, player spotlights, the best clips off the floor, and what's coming next. A look inside life at Domin8.</p>
   </div>
   <div class="glimpse__grid" id="blogGrid"></div>
+  <div class="glimpse__cta center reveal">
+    <a class="btn btn--ghost" href="/blog" id="viewAllPosts">View all posts →</a>
+  </div>
 </section>
 
 <section class="section shop" id="shop">
@@ -288,6 +294,7 @@
       <div class="field"><label for="jName">Name</label><input id="jName" type="text" placeholder="Your name" autocomplete="name" /></div>
       <div class="field"><label for="jTag">Gamer Tag</label><input id="jTag" type="text" placeholder="What name do you use while playing?" /></div>
       <div class="field"><label for="jEmail">Email</label><input id="jEmail" type="email" placeholder="you@email.com" autocomplete="email" /></div>
+      <div class="field"><label for="jPhone">Phone Number</label><input id="jPhone" type="tel" placeholder="+91 XXXXX XXXXX" autocomplete="tel" /></div>
       <button class="btn btn--primary" id="joinSubmit">Count me in</button>
       <p class="modal__feedback" id="joinFeedback" role="status" aria-live="polite"></p>
     </div>
