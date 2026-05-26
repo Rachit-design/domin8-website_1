@@ -277,3 +277,37 @@
   if(live){ pollStatus(); setInterval(pollStatus,20000); }
 
 })();
+
+
+
+/* ===== DOMIN8 STATS PATCH ===== */
+const statObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const nums = entry.target.querySelectorAll('[data-count]');
+
+      nums.forEach(el => {
+        const target = +el.dataset.count;
+        let current = 0;
+
+        const update = () => {
+          current += Math.ceil(target / 40);
+
+          if (current >= target) {
+            el.textContent = target + '+';
+          } else {
+            el.textContent = current + '+';
+            requestAnimationFrame(update);
+          }
+        };
+
+        el.textContent = '0+';
+        update();
+      });
+    }
+  });
+}, { threshold: 0.4 });
+
+document.querySelectorAll('.stats, .stats-grid').forEach(el => {
+  statObserver.observe(el);
+});

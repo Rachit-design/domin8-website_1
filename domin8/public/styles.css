@@ -1,3 +1,13 @@
+
+:root{
+  --primary:#77319F;
+  --primary-deep:#2B0ABD;
+  --magenta:#CE006D;
+  --pink:#EF438B;
+  --electric:#681AFF;
+  --gold:#F7CA24;
+}
+
 /* ============================================================================
    DOMIN8 ESPORTS — styles.css  |  Green theme (emerald + magenta on near-black)
 ============================================================================ */
@@ -590,5 +600,87 @@ img{display:block;max-width:100%;}
   }
   .hero__content--left .hero__sub {
     margin: 0 auto 2rem;
+  }
+}
+
+
+
+/* ===== DOMIN8 REBRAND PATCH ===== */
+
+.hero__content{
+  margin-left:auto !important;
+  text-align:right !important;
+  align-items:flex-end !important;
+}
+
+.hero__title{
+  font-size:clamp(4.5rem,8vw,8rem) !important;
+  line-height:.95 !important;
+}
+
+.hero__logo,
+.hero__logo img,
+.nav__logo img,
+img[src*="logo"],
+img[src*="Domin8"]{
+  background:transparent !important;
+}
+
+.hero__logo{
+  transition:transform .45s ease, filter .45s ease !important;
+}
+
+.hero__logo:hover{
+  transform:rotate(5deg) scale(1.03) !important;
+  filter:drop-shadow(0 0 40px rgba(206,0,109,.45)) !important;
+}
+
+.map-section{
+  padding:6rem 0;
+}
+
+.map-card{
+  overflow:hidden;
+  border-radius:28px;
+  border:1px solid rgba(119,49,159,.25);
+  box-shadow:0 0 60px rgba(104,26,255,.12);
+  background:rgba(15,10,30,.6);
+}
+
+.map-card iframe{
+  display:block;
+  width:100%;
+  min-height:450px;
+  border:0;
+}
+
+#crew .section-head h2{
+  font-size:clamp(3rem,6vw,5.5rem);
+  line-height:.95;
+  text-transform:uppercase;
+}
+
+.rebrand-transition{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:420px;
+}
+
+.rebrand-transition img{
+  position:absolute;
+  width:min(420px,70vw);
+}
+
+@media(max-width:768px){
+  .hero__content{
+    text-align:center !important;
+    align-items:center !important;
+    margin:auto !important;
+  }
+
+  .hero__title{
+    font-size:clamp(3rem,12vw,5rem) !important;
   }
 }
