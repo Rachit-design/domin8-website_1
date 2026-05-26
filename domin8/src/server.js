@@ -62,6 +62,44 @@ app.get('/api/health', (_req, res) => {
   });
 });
 
+// TEMP DEBUG — remove after confirming live counter works
+app.get('/api/debug-icafe', async (_req, res) => {
+  if (!process.env.ICAFE_TOKEN || !process.env.ICAFE_CAFE_ID) {
+    return res.json({ error: 'No credentials set' });
+  }
+  const cafeId = process.env.ICAFE_CAFE_ID;
+  const token  = process.env.ICAFE_TOKEN;
+  const endpoints = [
+    `https://api.icafecloud.com/api/v2/cafe/${cafeId}/bootPcs?per_page=500`,
+    `https://api.icafecloud.com/api/v2/cafe/${cafeId}/boot-pcs-apis`,
+    `https://api.icafecloud.com/api/v2/cafe/${cafeId}/pcs`,
+  ];
+  const results = {};
+  for (const url of endpoints) {
+    const key = url.split(cafeId + '/')[1];
+    try {
+      const r = await fetch(url, {
+        headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' },
+        signal: AbortSignal.timeout(8000),
+      });
+      const text = await r.text();
+      let data;
+      try { data = JSON.parse(text); } catch(e) { data = text.slice(0, 800); }
+      if (data && data.data && Array.isArray(data.data)) {
+        results[key] = { status: r.status, shape: 'data.data[]', sample: data.data.slice(0,2), total: data.data.length };
+      } else if (Array.isArray(data)) {
+        results[key] = { status: r.status, shape: 'array', sample: data.slice(0,2), total: data.length };
+      } else {
+        results[key] = { status: r.status, raw: JSON.stringify(data).slice(0,600) };
+      }
+    } catch(e) {
+      results[key] = { error: e.message };
+    }
+  }
+  res.json(results);
+});
+
+
 // -----------------------------------------------------------------------------
 // API: contact form. For now it validates + logs. To make it actually send,
 // drop in a Discord webhook or email provider where indicated.
