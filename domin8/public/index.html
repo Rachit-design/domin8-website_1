@@ -21,8 +21,8 @@
 
 <header class="nav" id="nav">
   <a class="nav__brand" href="#top" aria-label="Domin8 home">
-    <img src="/assets/Domin8Newlogo.png" alt="Domin8 logo" class="nav__logo" />
-    <img src="/assets/typography.png" alt="Domin8 wordmark" class="nav__wordmark-img" />
+    <img src="/assets/Domin8Newlogo.png" alt="Domin8" class="nav__logo" />
+    <img src="/assets/typography.png" alt="DOMIN8" class="nav__wordmark-img" />
   </a>
   <nav class="nav__links" aria-label="Primary">
     <a href="#space">The Space</a>
@@ -47,8 +47,8 @@
 <main id="top">
 <section class="hero">
   <div class="hero__slides" id="heroSlides">
-    <div class="hero__slide active"><img src="/assets/hero-gamer.png" alt="Domin8 gamer" /></div>
-    <div class="hero__slide"><img src="/assets/hero-xr.jpg" alt="Domin8 next-gen setup" /></div>
+    <div class="hero__slide active"><img src="/assets/hero-gamer.jpg" alt="Domin8 gamer" /></div>
+    <div class="hero__slide"><img src="/assets/space-current.jpg" alt="Domin8 floor" /></div>
   </div>
   <div class="hero__veil"></div>
   <div class="hero__content">
@@ -75,12 +75,12 @@
     <div class="flip" id="spaceFlip" tabindex="0" role="button" aria-label="Reveal what's coming">
       <div class="flip__inner">
         <div class="flip__face flip__front">
-          <img src="/assets/hero-lan.jpg" alt="The current Domin8 floor" />
+          <img src="/assets/space-current.jpg" alt="The current Domin8 floor" />
           <div class="flip__tag"><span class="dot-sm"></span> Our floor today · 1,200 sq ft</div>
           <div class="flip__hint">hover to see what's coming →</div>
         </div>
         <div class="flip__face flip__back">
-          <img src="/assets/space-arena.png" alt="The bigger space coming soon" />
+          <img src="/assets/space-soon.svg" alt="The bigger space coming soon" />
           <div class="flip__back-content">
             <span class="flip__psst">psst… something bigger is loading</span>
             <h3>5,000+ sq ft. Loading soon.</h3>
@@ -91,7 +91,11 @@
     </div>
     <div class="space__map glass">
       <div class="space__map-embed" id="mapEmbed">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3679.9!2d75.8871!3d22.7196!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3962fd0b97e5b3c7%3A0x9e4b2a6c1f3d8e5a!2sDomin8%20Esports!5e0!3m2!1sen!2sin!4v1716739200000" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Domin8 Esports location"></iframe>
+        <div class="space__map-placeholder">
+          <div class="pin">📍</div>
+          <p>Find us in Indore</p>
+          <a class="btn btn--ghost" href="https://share.google/RF6dQZJ612xt07rjG" target="_blank" rel="noopener">Get Directions</a>
+        </div>
       </div>
     </div>
   </div>
@@ -101,8 +105,28 @@
   <div class="stats__grid">
     <div class="stat reveal"><div class="stat__num" data-target="8" data-suffix="+"></div><div class="stat__label">Years running</div></div>
     <div class="stat reveal" style="--d:.08s"><div class="stat__num" data-target="2500" data-suffix="+"></div><div class="stat__label">Community members</div></div>
-    <div class="stat reveal" style="--d:.16s"><div class="stat__num" data-target="600" data-suffix="+"></div><div class="stat__label">Tournaments hosted</div></div>
+    <div class="stat reveal" style="--d:.16s"><div class="stat__num" data-target="100" data-suffix="+"></div><div class="stat__label">Tournaments hosted</div></div>
     <div class="stat reveal" style="--d:.24s"><div class="stat__num" data-target="20" data-suffix=""></div><div class="stat__label">High-end rigs</div></div>
+  </div>
+</section>
+
+<!-- Live PC Floor Map -->
+<section class="section floor-map" id="floor-map">
+  <div class="section__head center">
+    <span class="eyebrow">live floor</span>
+    <h2 class="section__title">The Floor, Right Now</h2>
+    <p class="section__lede">Every rig, live. Green means it's yours.</p>
+  </div>
+  <div class="floor-map__container glass" id="floorMap">
+    <div class="floor-map__legend">
+      <span class="floor-map__legend-item"><span class="floor-map__pc floor-map__pc--free"></span>Available</span>
+      <span class="floor-map__legend-item"><span class="floor-map__pc floor-map__pc--busy"></span>In Use</span>
+      <span class="floor-map__legend-item"><span class="floor-map__pc floor-map__pc--offline"></span>Offline</span>
+    </div>
+    <div class="floor-map__grid" id="floorGrid">
+      <!-- PC slots injected by JS from iCafeCloud live data -->
+    </div>
+    <p class="floor-map__update" id="floorUpdate">Updating…</p>
   </div>
 </section>
 
@@ -115,25 +139,41 @@
     <p>We're gamers first. Domin8 started with a simple idea — give Indore's players a real home, not just a place with PCs in the corner. So we built one. We throw the LAN nights, run the tournaments, and open the doors so people can feel what gaming's actually about: the squad next to you, the clutch everyone remembers, the friends you didn't know you'd make.</p>
     <p>Eight years in, we're not just a cafe anymore — we're a community, a culture, and a tech hub that's only getting bigger.</p>
   </div>
+  <!-- Old→New logo brand transition -->
+  <div class="brand-journey reveal">
+    <div class="brand-journey__logos">
+      <div class="brand-journey__old">
+        <img src="/assets/logo-old.png" alt="Original Domin8 logo" />
+        <span>Where it started</span>
+      </div>
+      <div class="brand-journey__arrow">→</div>
+      <div class="brand-journey__new">
+        <img src="/assets/Domin8Newlogo.png" alt="New Domin8 logo" />
+        <span>Where we're going</span>
+      </div>
+    </div>
+    <p class="brand-journey__caption">8 years. Same passion. Bigger vision.</p>
+  </div>
+
   <div class="team">
     <h3 class="team__title">Meet the crew</h3>
-    <div class="team__track" id="teamTrack"></div>
-    <div class="team__nav"><button id="teamPrev" aria-label="Previous">‹</button><button id="teamNext" aria-label="Next">›</button></div>
+    <div class="team__grid" id="teamGrid"></div>
   </div>
 </section>
 
 <section class="section community" id="community">
-  <div class="community__inner">
-    <div class="community__intro">
-      <span class="eyebrow">the legends</span>
-      <h2 class="section__title">The faces of Domin8</h2>
-      <p class="section__lede">Real players. Real stories. The people who make this place loud. These are the regulars who turned a gaming floor into a second home.</p>
-      <p class="community__note">…and the roster keeps growing. New legends added all the time.</p>
-    </div>
-    <div class="community__scroller" id="playerScroller">
-      <div class="community__column" id="playerColumn"></div>
-    </div>
+  <div class="section__head center">
+    <span class="eyebrow">the legends</span>
+    <h2 class="section__title">The faces of Domin8</h2>
+    <p class="section__lede">Real players. Real stories. The people who make this place loud. Hover a card to see their story.</p>
   </div>
+  <div class="community__live-strip" id="communityLiveStrip">
+    <!-- Live "who's playing now" injected by JS -->
+  </div>
+  <div class="community__scroller" id="playerScroller">
+    <div class="community__column" id="playerColumn"></div>
+  </div>
+  <p class="community__note reveal">…and the roster keeps growing. New legends added all the time.</p>
 </section>
 
 <section class="section happening" id="happening">
@@ -143,8 +183,8 @@
     <p class="section__lede">LAN nights, weekend leagues, and tournaments that actually mean something. Right now we've got a <strong class="accent-green">Valorant league</strong> and a <strong class="accent-green">Dota 2 league</strong> running every weekend — with more games on the way.</p>
   </div>
   <div class="happening__grid">
-    <article class="event-card glass reveal"><span class="event-card__tag">Live League</span><h3>Valorant Weekend League</h3><p>5v5 brackets every weekend. Rank-based, prize pools, and the whole floor watching.</p></article>
-    <article class="event-card glass reveal" style="--d:.1s"><span class="event-card__tag">Live League</span><h3>Dota 2 Weekend League</h3><p>Squad up and grind the bracket. Weekly fixtures, group stage to knockouts.</p></article>
+    <article class="event-card glass reveal"><span class="event-card__tag">Live League</span><div class="event-card__logo"><img src="/assets/logo-valorant.png" alt="Valorant" /></div><h3>Valorant Weekend League</h3><p>5v5 brackets every weekend. Rank-based, prize pools, and the whole floor watching.</p></article>
+    <article class="event-card glass reveal" style="--d:.1s"><span class="event-card__tag">Live League</span><div class="event-card__logo"><img src="/assets/logo-dota2.png" alt="Dota 2" /></div><h3>Dota 2 Weekend League</h3><p>Squad up and grind the bracket. Weekly fixtures, group stage to knockouts.</p></article>
     <article class="event-card glass reveal" style="--d:.2s"><span class="event-card__tag">Coming Soon</span><h3>More Games Incoming</h3><p>We're expanding the lineup. Tell us what you want to compete in next.</p></article>
   </div>
   <div class="iesports glass reveal">
@@ -155,7 +195,7 @@
       <a class="btn btn--primary" href="https://www.iesports.in/" target="_blank" rel="noopener">Explore iesports →</a>
     </div>
     <div class="iesports__visual">
-      <div class="iesports__badges"><span>🏆 Skill-based brackets</span><span>💸 Instant UPI payouts</span><span>📱 100% free entry</span><span>🇮🇳 Made for India</span></div>
+      <div class="iesports__badges"><span>🏆 Skill-based brackets</span><span>💸 Instant UPI payouts</span><span>📱 100% free entry</span></div>
     </div>
   </div>
 </section>
@@ -199,7 +239,7 @@
 <footer class="footer">
   <div class="footer__top">
     <div class="footer__brand">
-      <img src="/assets/logo.svg" alt="Domin8 Esports" />
+      <img src="/assets/Domin8Newlogo.png" alt="Domin8 Esports" />
       <span class="footer__wordmark">DOMIN<span class="eight">8</span></span>
       <p class="footer__tag">Indore's home of competitive gaming culture.</p>
     </div>

@@ -156,7 +156,7 @@ async function fetchLiveStatus() {
   const total = pcs.length;
   const inUse = pcs.filter(isPcInUse).length;
 
-  return buildStatus({ inUse, total, source: 'live' });
+  return buildStatus({ inUse, total, source: 'live', pcs });
 }
 
 /**
@@ -187,7 +187,7 @@ function fetchDemoStatus() {
  * Shape the final object the rest of the app (and the frontend) consumes.
  * One consistent shape regardless of demo/live so the UI never needs to care.
  */
-function buildStatus({ inUse, total, source }) {
+function buildStatus({ inUse, total, source, pcs }) {
   const safeTotal = total > 0 ? total : TOTAL_PCS;
   const safeInUse = Math.min(Math.max(inUse, 0), safeTotal);
   const available = safeTotal - safeInUse;
@@ -197,7 +197,8 @@ function buildStatus({ inUse, total, source }) {
     available,
     total: safeTotal,
     occupancyPct: safeTotal ? Math.round((safeInUse / safeTotal) * 100) : 0,
-    source,                      // "live" | "demo" | "cache"
+    source,
+    pcs: pcs || null,            // full PC array for floor map (null in demo mode)
     updatedAt: new Date().toISOString(),
   };
 }

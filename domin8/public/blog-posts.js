@@ -5,10 +5,10 @@
    IMAGE: put your file in "assets" and write its name, e.g. "assets/recap.jpg"
 ============================================================================ */
 window.BLOG_POSTS = [
-  { title:"Valorant League — Week 1 Recap", category:"Recap", date:"Coming soon", image:"assets/glimpse-1.svg",
+  { title:"Valorant League — Week 1 Recap", category:"Recap", date:"Coming soon", image:"assets/player-hero.jpg",
     excerpt:"How the opening weekend played out, the clutch of the night, and who's topping the table.", link:"#" },
-  { title:"Player Spotlight — The Legends", category:"Spotlight", date:"Coming soon", image:"assets/glimpse-2.svg",
+  { title:"Player Spotlight — The Legends", category:"Spotlight", date:"Coming soon", image:"assets/space-current.jpg",
     excerpt:"Meet the regulars who turned the floor into a second home. Their setups, mains, and stories.", link:"#" },
-  { title:"Best Clips Off the Floor", category:"Clips", date:"Coming soon", image:"assets/glimpse-3.svg",
+  { title:"Best Clips Off the Floor", category:"Clips", date:"Coming soon", image:"assets/hero-gamer.jpg",
     excerpt:"The plays everyone's still talking about. Straight from the Domin8 floor.", link:"#" }
 ];
