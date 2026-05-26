@@ -11,6 +11,7 @@
 /* ---- THE CREW (Meet the Team carousel) ---- */
 window.TEAM = [
   { name: "Shrey Jain",        tag: "Shrey Bhaiya",  role: "Founder",                      image: "assets/team-shrey.svg",     note: "The friendliest face in the building. Started it all." },
+  { name: "Subhanshu Jain",    tag: "Big Brother",   role: "Founder",                      image: "assets/team-subhanshu.svg", note: "Shrey Bhaiya's big brother and the brains behind the bigger picture." },
   { name: "Shubh Jain",        tag: "",              role: "Admin & Editor",               image: "assets/team-shubh.svg",     note: "The youngest on the desk, keeping things sharp." },
   { name: "Mini Di",           tag: "",              role: "Operations Admin",             image: "assets/team-mini.svg",      note: "Full-time, keeps the whole machine running." },
   { name: "Rachit Bhatnagar",  tag: "Raapchick",     role: "Design, Content & XR",         image: "assets/team-rachit.svg",    note: "Marketing, clients, the website, and the XR future." },

@@ -14,7 +14,7 @@
   var yearEl = document.getElementById('year'); if(yearEl) yearEl.textContent = new Date().getFullYear();
 
   function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
-  function img(src){ if(!src) return '/assets/logo-face.png'; if(/^https?:\/\//.test(src)) return src; return src.charAt(0)==='/'?src:'/'+src; }
+  function img(src){ if(!src) return '/assets/logo-face-cutout.png'; if(/^https?:\/\//.test(src)) return src; return src.charAt(0)==='/'?src:'/'+src; }
 
   // ---- Nav scroll + mobile menu ----
   var nav=document.getElementById('nav');
@@ -43,37 +43,61 @@
   }
   if(statNums.length){
     if('IntersectionObserver' in window){
-      var sIO=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){animateCount(e.target);sIO.unobserve(e.target);}});},{threshold:.3});
-      statNums.forEach(function(el){sIO.observe(el);});
+      var sIO=new IntersectionObserver(function(es){
+        es.forEach(function(e){
+          if(e.isIntersecting){
+            e.target.classList.remove('stats-play');
+            void e.target.offsetWidth;
+            e.target.classList.add('stats-play');
+            e.target.querySelectorAll('.stat__num[data-target]').forEach(function(el){
+              el.innerHTML='0'+((el.getAttribute('data-suffix')||'')?'<span class="accent-magenta">'+el.getAttribute('data-suffix')+'</span>':'');
+              animateCount(el);
+            });
+          } else {
+            e.target.classList.remove('stats-play');
+          }
+        });
+      },{threshold:.45});
+      var statsSection=document.getElementById('stats');
+      if(statsSection) sIO.observe(statsSection);
     } else { statNums.forEach(function(el){var s=el.getAttribute('data-suffix')||'';el.innerHTML=(parseInt(el.getAttribute('data-target'),10)||0).toLocaleString()+(s?'<span class="accent-magenta">'+s+'</span>':'');}); }
   }
 
   // ---- Brand logo animation (old fades/morphs into new on scroll into view) ----
   var brandJourney = document.querySelector('.brand-journey');
   if(brandJourney){
-    var oldImg = document.getElementById('brandOldImg');
-    var newImg = document.getElementById('brandNewImg');
-    var brandAnimated = false;
     if('IntersectionObserver' in window){
       var brandIO = new IntersectionObserver(function(es){
         es.forEach(function(e){
-          if(e.isIntersecting && !brandAnimated){
-            brandAnimated = true;
-            if(oldImg){ oldImg.classList.add('brand-anim-old'); }
-            setTimeout(function(){ if(newImg){ newImg.classList.add('brand-anim-new'); } }, 400);
-            brandIO.unobserve(e.target);
+          if(e.isIntersecting){
+            brandJourney.classList.remove('brand-journey--play');
+            void brandJourney.offsetWidth;
+            brandJourney.classList.add('brand-journey--play');
+          } else {
+            brandJourney.classList.remove('brand-journey--play');
           }
         });
-      },{threshold:.5});
+      },{threshold:.55});
       brandIO.observe(brandJourney);
+    } else {
+      brandJourney.classList.add('brand-journey--play');
     }
   }
 
   // ---- Team grid ----
   var teamGrid=document.getElementById('teamGrid');
   if(teamGrid && Array.isArray(window.TEAM)){
-    var crewMembers = window.TEAM.filter(function(m){ return m.name !== 'The Regulars'; });
-    teamGrid.innerHTML = crewMembers.map(function(m){
+    teamGrid.innerHTML = window.TEAM.map(function(m){
+      if(m.name === 'The Regulars'){
+        return '<div class="team-card team-card--regulars">'+
+          '<div class="team-card__body">'+
+            '<div class="team-card__name">Our People</div>'+
+            '<div class="team-card__tag">"The faces you see every day"</div>'+
+            '<div class="team-card__role">Community</div>'+
+            '<div class="team-card__note">Live names from the cafe, shuffled every time the site opens.</div>'+
+            '<div class="crew-regulars__scroller"><div class="crew-regulars__track" id="crewRegularsTrack"></div></div>'+
+          '</div></div>';
+      }
       return '<div class="team-card">'+
         '<div class="team-card__img"><img src="'+img(m.image)+'" alt="'+esc(m.name)+'" loading="lazy"/></div>'+
         '<div class="team-card__body">'+
@@ -93,14 +117,19 @@
       // Demo names when no live data
       names = ['GhostByte','NeonRaider','CryptoKill','FragLord','ZeroRecoil','ShadowSnipe','RedBull99','IceViper','SteelPulse','DarkFrag','VoltStrike','GlitchHunter','PixelWar','CodeBreaker','NightOwl','RushB','FlashPoint','SmokeStack','EchoSix','ThunderFist'];
     }
+    names = names.slice().sort(function(){ return Math.random() - 0.5; });
     // Duplicate for seamless loop
     var all = names.concat(names).concat(names);
-    track.innerHTML = all.map(function(n){
+    var html = all.map(function(n){
       return '<div class="regulars__chip"><span class="regulars__dot"></span>'+esc(n)+'</div>';
     }).join('');
+    track.innerHTML = html;
+    var crewTrack = document.getElementById('crewRegularsTrack');
+    if(crewTrack) crewTrack.innerHTML = html;
     // Set animation duration based on count
     var dur = Math.max(20, names.length * 2);
     track.style.animationDuration = dur + 's';
+    if(crewTrack) crewTrack.style.animationDuration = Math.max(16, names.length * 1.4) + 's';
   }
   buildRegularsScroller([]);
 
@@ -277,37 +306,3 @@
   if(live){ pollStatus(); setInterval(pollStatus,20000); }
 
 })();
-
-
-
-/* ===== DOMIN8 STATS PATCH ===== */
-const statObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const nums = entry.target.querySelectorAll('[data-count]');
-
-      nums.forEach(el => {
-        const target = +el.dataset.count;
-        let current = 0;
-
-        const update = () => {
-          current += Math.ceil(target / 40);
-
-          if (current >= target) {
-            el.textContent = target + '+';
-          } else {
-            el.textContent = current + '+';
-            requestAnimationFrame(update);
-          }
-        };
-
-        el.textContent = '0+';
-        update();
-      });
-    }
-  });
-}, { threshold: 0.4 });
-
-document.querySelectorAll('.stats, .stats-grid').forEach(el => {
-  statObserver.observe(el);
-});

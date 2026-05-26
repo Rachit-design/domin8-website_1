@@ -9,7 +9,7 @@
 <meta property="og:description" content="Indore's home of competitive gaming culture. Built by the community, for the community." />
 <meta property="og:type" content="website" />
 <meta property="og:image" content="/assets/hero-gamer-new.png" />
-<link rel="icon" type="image/png" href="/assets/logo-face.png" />
+<link rel="icon" type="image/png" href="/assets/logo-face-cutout.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton+SC&family=Manrope:wght@400;500;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
@@ -21,8 +21,11 @@
 
 <header class="nav" id="nav">
   <a class="nav__brand" href="#top" aria-label="Domin8 home">
-    <img src="/assets/logo-face.png" alt="Domin8" class="nav__logo" />
-    <img src="/assets/typography.png" alt="DOMIN8" class="nav__wordmark-img" />
+    <span class="nav__logo-stack" aria-hidden="true">
+      <img src="/assets/logo-face-cutout.png" alt="" class="nav__logo nav__logo--color" />
+      <img src="/assets/logo-white-cutout.png" alt="" class="nav__logo nav__logo--white" />
+    </span>
+    <img src="/assets/typography-cutout.png" alt="DOMIN8" class="nav__wordmark-img" />
   </a>
   <nav class="nav__links" aria-label="Primary">
     <a href="#space">The Space</a>
@@ -89,6 +92,13 @@
     </div>
     <div class="space__map glass">
       <div class="space__map-embed" id="mapEmbed">
+        <iframe
+          title="Domin8 Esports location in Indore"
+          src="https://www.google.com/maps?q=Domin8%20Esports%20Indore&output=embed"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <a class="space__map-link" href="https://maps.app.goo.gl/bnpFpJXAU4fa4Nom7" target="_blank" rel="noopener">Open in Google Maps</a>
         <div class="space__map-placeholder">
           <div class="pin">📍</div>
           <p>Find us in Indore</p>
@@ -113,7 +123,7 @@
   <div class="section__head center">
     <span class="eyebrow">live floor</span>
     <h2 class="section__title">The Floor, Right Now</h2>
-    <p class="section__lede">Every rig, live. Green means it's yours.</p>
+    <p class="section__lede">Every rig, live. Gold means it's yours.</p>
   </div>
   <div class="floor-map__container glass" id="floorMap">
     <div class="floor-map__legend">
@@ -140,6 +150,11 @@
 
   <!-- Old→New logo brand transition with animation -->
   <div class="brand-journey reveal">
+    <div class="brand-journey__stage" aria-label="Domin8 rebrand: old logo dissolves into new logo">
+      <img src="/assets/logo-old-cutout.png" alt="Original Domin8 logo" class="brand-journey__mark brand-journey__mark--old" id="brandOldImgClean" />
+      <img src="/assets/logo-face-cutout.png" alt="New Domin8 logo" class="brand-journey__mark brand-journey__mark--new" id="brandNewImgClean" />
+    </div>
+    <div class="brand-journey__labels"><span>Where it started</span><span>Where we're going</span></div>
     <div class="brand-journey__logos">
       <div class="brand-journey__old" id="oldLogo">
         <img src="/assets/logo-old.png" alt="Original Domin8 logo" id="brandOldImg" />
@@ -147,7 +162,7 @@
       </div>
       <div class="brand-journey__arrow">→</div>
       <div class="brand-journey__new" id="newLogo">
-        <img src="/assets/logo-face.png" alt="New Domin8 logo" id="brandNewImg" />
+        <img src="/assets/logo-face-transparent.png" alt="New Domin8 logo" id="brandNewImg" />
         <span>Where we're going</span>
       </div>
     </div>
@@ -251,8 +266,8 @@
   <div class="footer__top">
     <div class="footer__brand">
       <div class="footer__brand-logo">
-        <img src="/assets/logo-face.png" alt="Domin8 Esports" class="footer__logo-face" />
-        <img src="/assets/typography.png" alt="DOMIN8" class="footer__logo-type" />
+        <img src="/assets/logo-face-cutout.png" alt="Domin8 Esports" class="footer__logo-face" />
+        <img src="/assets/typography-cutout.png" alt="DOMIN8" class="footer__logo-type" />
       </div>
       <p class="footer__tag">Indore's home of competitive gaming culture.</p>
     </div>
@@ -260,22 +275,6 @@
     <div class="footer__links"><h4>Connect</h4><a href="#" data-discord>Discord</a><a href="https://www.instagram.com/domin8.gaming?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">Instagram</a><a href="https://www.iesports.in/" target="_blank" rel="noopener">iesports</a><a href="mailto:wassup@domin8esports.com">wassup@domin8esports.com</a></div>
   </div>
   <div class="footer__bottom"><span>© <span id="year"></span> Domin8 Esports. All rights reserved.</span><span>Made by the community, for the community.</span></div>
-
-<section class="map-section reveal">
-  <div class="section-head">
-    <p class="eyebrow">Find Us</p>
-    <h2>Enter The Arena</h2>
-  </div>
-
-  <div class="map-card">
-    <iframe
-      src="https://www.google.com/maps?q=Domin8%20Esports%20Cafe%20Indore&output=embed"
-      allowfullscreen=""
-      loading="lazy"
-      referrerpolicy="no-referrer-when-downgrade">
-    </iframe>
-  </div>
-</section>
 
 </footer>
 
