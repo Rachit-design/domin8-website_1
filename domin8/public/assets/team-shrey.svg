@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0E1812"/><stop offset="1" stop-color="#070C09"/></linearGradient></defs>
+<rect width="400" height="400" fill="url(#g)"/>
+<circle cx="200" cy="155" r="62" fill="none" stroke="#1DE782" stroke-width="3" opacity="0.5"/>
+<path d="M110 330 Q200 250 290 330" fill="none" stroke="#1DE782" stroke-width="3" opacity="0.5"/>
+<text x="200" y="375" font-family="Arial" font-size="15" fill="#5F7A6E" text-anchor="middle" letter-spacing="2">SHREY — PHOTO</text>
+</svg>

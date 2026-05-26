@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Domin8 Esports — Welcome Home, Gamers</title>
+<meta name="description" content="Indore's home of competitive gaming culture. A community-driven esports hub — LAN nights, tournaments, and what's coming next." />
+<meta property="og:title" content="Domin8 Esports — Welcome Home, Gamers" />
+<meta property="og:description" content="Indore's home of competitive gaming culture. Built by the community, for the community." />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="/assets/hero-lan.jpg" />
+<link rel="icon" type="image/svg+xml" href="/assets/logo.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton+SC&family=Manrope:wght@400;500;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+<div class="atmosphere" aria-hidden="true"><span class="glow glow-1"></span><span class="glow glow-2"></span><span class="glow glow-3"></span></div>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="nav" id="nav">
+  <a class="nav__brand" href="#top" aria-label="Domin8 home">
+    <img src="/assets/logo.svg" alt="Domin8" class="nav__logo" />
+    <span class="nav__wordmark">DOMIN<span class="eight">8</span></span>
+  </a>
+  <nav class="nav__links" aria-label="Primary">
+    <a href="#space">The Space</a>
+    <a href="#about">Who We Are</a>
+    <a href="#happening">What's Happening</a>
+    <a href="#glimpse">Get a Glimpse</a>
+    <a href="#shop">Shop<span class="soon">soon</span></a>
+  </nav>
+  <button class="btn btn--primary nav__cta" data-open-join>Join the Community</button>
+  <button class="nav__burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+</header>
+<div class="mobile-menu" id="mobileMenu" hidden>
+  <a href="#space">The Space</a>
+  <a href="#about">Who We Are</a>
+  <a href="#happening">What's Happening</a>
+  <a href="#glimpse">Get a Glimpse</a>
+  <a href="#shop">Shop · coming soon</a>
+  <button class="btn btn--primary" data-open-join>Join the Community</button>
+</div>
+
+<main id="top">
+<section class="hero">
+  <div class="hero__slides" id="heroSlides">
+    <div class="hero__slide active"><img src="/assets/hero-lan.jpg" alt="The Domin8 LAN floor" /></div>
+    <div class="hero__slide"><img src="/assets/hero-xr.jpg" alt="Domin8 next-gen setup" /></div>
+  </div>
+  <div class="hero__veil"></div>
+  <div class="hero__content">
+    <span class="hero__eyebrow">this one's for the community</span>
+    <h1 class="hero__title">Welcome <span class="home">Home</span>, Gamers!</h1>
+    <p class="hero__sub">Where the community lives, the culture grows, and the future loads.</p>
+    <div class="hero__actions">
+      <button class="btn btn--primary" data-open-join>Join the Community</button>
+      <a class="btn btn--ghost" href="#about">Who We Are</a>
+    </div>
+    <div class="hero__live" id="heroLive" data-state="ok"><span class="dot"></span><span id="heroLiveText">Loading floor status…</span></div>
+  </div>
+  <div class="hero__dots" id="heroDots"><button class="active" aria-label="Slide 1"></button><button aria-label="Slide 2"></button></div>
+  <div class="scroll-cue"><span>scroll</span><span class="line"></span></div>
+</section>
+
+<section class="section space" id="space">
+  <div class="section__head center">
+    <span class="eyebrow">the space</span>
+    <h2 class="section__title">This is where it all happens</h2>
+    <p class="section__lede">Twenty high-end rigs, a vibe you can feel the second you walk in, and a crew that treats this floor like home. Whether you're dropping in solo, rolling with your squad, or here for a LAN night — this is base camp.</p>
+  </div>
+  <div class="space__showcase">
+    <div class="flip" id="spaceFlip" tabindex="0" role="button" aria-label="Reveal what's coming">
+      <div class="flip__inner">
+        <div class="flip__face flip__front">
+          <img src="/assets/space-current.svg" alt="The current Domin8 floor" />
+          <div class="flip__tag"><span class="dot-sm"></span> Our floor today · 1,200 sq ft</div>
+          <div class="flip__hint">hover to see what's coming →</div>
+        </div>
+        <div class="flip__face flip__back">
+          <img src="/assets/space-soon.svg" alt="The bigger space coming soon" />
+          <div class="flip__back-content">
+            <span class="flip__psst">psst… something bigger is loading</span>
+            <h3>5,000+ sq ft. Loading soon.</h3>
+            <p>Consoles. XR. Quest 3 rigs. Trippy setups you have to see to believe. The next chapter of Domin8 is on the way.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="space__map glass">
+      <div class="space__map-embed" id="mapEmbed">
+        <div class="space__map-placeholder">
+          <div class="pin">📍</div>
+          <p>Find us in Indore</p>
+          <a class="btn btn--ghost" href="https://share.google/RF6dQZJ612xt07rjG" target="_blank" rel="noopener">Get Directions</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="stats" id="stats">
+  <div class="stats__grid">
+    <div class="stat reveal"><div class="stat__num" data-target="8" data-suffix="+"></div><div class="stat__label">Years running</div></div>
+    <div class="stat reveal" style="--d:.08s"><div class="stat__num" data-target="2500" data-suffix="+"></div><div class="stat__label">Community members</div></div>
+    <div class="stat reveal" style="--d:.16s"><div class="stat__num" data-target="600" data-suffix="+"></div><div class="stat__label">Tournaments hosted</div></div>
+    <div class="stat reveal" style="--d:.24s"><div class="stat__num" data-target="20" data-suffix=""></div><div class="stat__label">High-end rigs</div></div>
+  </div>
+</section>
+
+<section class="section about" id="about">
+  <div class="section__head center">
+    <span class="eyebrow">who we are</span>
+    <h2 class="section__title">Built by the community.<br><span class="accent-green">For the community.</span></h2>
+  </div>
+  <div class="about__body reveal">
+    <p>We're gamers first. Domin8 started with a simple idea — give Indore's players a real home, not just a place with PCs in the corner. So we built one. We throw the LAN nights, run the tournaments, and open the doors so people can feel what gaming's actually about: the squad next to you, the clutch everyone remembers, the friends you didn't know you'd make.</p>
+    <p>Eight years in, we're not just a cafe anymore — we're a community, a culture, and a tech hub that's only getting bigger.</p>
+  </div>
+  <div class="team">
+    <h3 class="team__title">Meet the crew</h3>
+    <div class="team__track" id="teamTrack"></div>
+    <div class="team__nav"><button id="teamPrev" aria-label="Previous">‹</button><button id="teamNext" aria-label="Next">›</button></div>
+  </div>
+</section>
+
+<section class="section community" id="community">
+  <div class="community__inner">
+    <div class="community__intro">
+      <span class="eyebrow">the legends</span>
+      <h2 class="section__title">The faces of Domin8</h2>
+      <p class="section__lede">Real players. Real stories. The people who make this place loud. These are the regulars who turned a gaming floor into a second home.</p>
+      <p class="community__note">…and the roster keeps growing. New legends added all the time.</p>
+    </div>
+    <div class="community__scroller" id="playerScroller">
+      <div class="community__column" id="playerColumn"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section happening" id="happening">
+  <div class="section__head center">
+    <span class="eyebrow">what's happening</span>
+    <h2 class="section__title">Always something going down</h2>
+    <p class="section__lede">LAN nights, weekend leagues, and tournaments that actually mean something. Right now we've got a <strong class="accent-green">Valorant league</strong> and a <strong class="accent-green">Dota 2 league</strong> running every weekend — with more games on the way.</p>
+  </div>
+  <div class="happening__grid">
+    <article class="event-card glass reveal"><span class="event-card__tag">Live League</span><h3>Valorant Weekend League</h3><p>5v5 brackets every weekend. Rank-based, prize pools, and the whole floor watching.</p></article>
+    <article class="event-card glass reveal" style="--d:.1s"><span class="event-card__tag">Live League</span><h3>Dota 2 Weekend League</h3><p>Squad up and grind the bracket. Weekly fixtures, group stage to knockouts.</p></article>
+    <article class="event-card glass reveal" style="--d:.2s"><span class="event-card__tag">Coming Soon</span><h3>More Games Incoming</h3><p>We're expanding the lineup. Tell us what you want to compete in next.</p></article>
+  </div>
+  <div class="iesports glass reveal">
+    <div class="iesports__text">
+      <span class="eyebrow">powered by iesports</span>
+      <h3>Our tournaments run on <span class="accent-green">iesports</span></h3>
+      <p>A free, skill-based tournament platform built for Indian gamers. Link your Discord or Steam, compete in your rank bracket, and get paid out instantly via UPI. Automated results, verified brackets, live fixtures from group stage to knockouts — and a Wall of Shame for the latecomers. Just play.</p>
+      <a class="btn btn--primary" href="https://www.iesports.in/" target="_blank" rel="noopener">Explore iesports →</a>
+    </div>
+    <div class="iesports__visual">
+      <div class="iesports__badges"><span>🏆 Skill-based brackets</span><span>💸 Instant UPI payouts</span><span>📱 100% free entry</span><span>🇮🇳 Made for India</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta cta--mid">
+  <div class="cta__inner reveal">
+    <h2>Your spot's waiting.</h2>
+    <p>Join the community that's building something bigger. Events, drops, tournaments, and first access to what's next.</p>
+    <button class="btn btn--primary btn--lg" data-open-join>Join the Community</button>
+  </div>
+</section>
+
+<section class="section glimpse" id="glimpse">
+  <div class="section__head center">
+    <span class="eyebrow">get a glimpse</span>
+    <h2 class="section__title">Stories, clips &amp; moments</h2>
+    <p class="section__lede">Event recaps, player spotlights, the best clips off the floor, and what's coming next. A look inside life at Domin8.</p>
+  </div>
+  <div class="glimpse__grid" id="blogGrid"></div>
+</section>
+
+<section class="section shop" id="shop">
+  <div class="shop__card glass reveal">
+    <span class="shop__tag">coming soon</span>
+    <h2 class="shop__title">Something's cooking.</h2>
+    <p>Merch, gear, and a lot more than you'd expect. Not just stuff to wear — a whole drop. Stay tuned.</p>
+    <button class="btn btn--ghost" data-open-join>Get notified</button>
+  </div>
+</section>
+
+<section class="cta cta--closing">
+  <div class="cta__inner reveal">
+    <span class="eyebrow">join the ecosystem</span>
+    <h2>This is more than a cafe.<br>It's <span class="accent-green">home base.</span></h2>
+    <p>Discord, newsletters, streams, content, merch, and a whole ecosystem loading. Get in early.</p>
+    <button class="btn btn--primary btn--lg" data-open-join>Count me in</button>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="footer__top">
+    <div class="footer__brand">
+      <img src="/assets/logo.svg" alt="Domin8 Esports" />
+      <span class="footer__wordmark">DOMIN<span class="eight">8</span></span>
+      <p class="footer__tag">Indore's home of competitive gaming culture.</p>
+    </div>
+    <div class="footer__links"><h4>Explore</h4><a href="#space">The Space</a><a href="#about">Who We Are</a><a href="#happening">What's Happening</a><a href="#glimpse">Get a Glimpse</a></div>
+    <div class="footer__links"><h4>Connect</h4><a href="#" data-discord>Discord</a><a href="https://www.iesports.in/" target="_blank" rel="noopener">iesports</a><a href="mailto:wassup@domin8esports.com">wassup@domin8esports.com</a></div>
+  </div>
+  <div class="footer__bottom"><span>© <span id="year"></span> Domin8 Esports. All rights reserved.</span><span>Made by the community, for the community.</span></div>
+</footer>
+
+<div class="modal" id="joinModal" role="dialog" aria-modal="true" aria-labelledby="joinTitle">
+  <div class="modal__card">
+    <button class="modal__close" data-close-join aria-label="Close">×</button>
+    <div class="modal__form" id="joinForm">
+      <span class="modal__eyebrow">one of us now</span>
+      <h2 class="modal__title" id="joinTitle">Join the Community</h2>
+      <p class="modal__desc">Get event drops, tournament invites, and first dibs on what's coming. No spam — just the good stuff.</p>
+      <div class="field"><label for="jName">Name</label><input id="jName" type="text" placeholder="Your name" autocomplete="name" /></div>
+      <div class="field"><label for="jTag">Gamer Tag</label><input id="jTag" type="text" placeholder="What name do you use while playing?" /></div>
+      <div class="field"><label for="jEmail">Email</label><input id="jEmail" type="email" placeholder="you@email.com" autocomplete="email" /></div>
+      <button class="btn btn--primary" id="joinSubmit">Count me in</button>
+      <p class="modal__feedback" id="joinFeedback" role="status" aria-live="polite"></p>
+    </div>
+    <div class="modal__success" id="joinSuccess">
+      <div class="check">✓</div>
+      <h3>Welcome to the community!</h3>
+      <p>You're in. Now come hang where it all happens.</p>
+      <a class="btn btn--primary" href="#" id="discordBtn" target="_blank" rel="noopener">Join our Discord</a>
+    </div>
+  </div>
+</div>
+
+<script src="/site-data.js"></script>
+<script src="/blog-posts.js"></script>
+<script src="/main.js"></script>
+</body>
+</html>
