@@ -143,7 +143,9 @@
   }
 
   // ---- Live floor status (iCafeCloud via backend /api/pc-status; demo fallback) ----
+  // Updates both the hero pill AND the navbar live indicator
   var live=document.getElementById('heroLive'), liveText=document.getElementById('heroLiveText');
+  var navLive=document.getElementById('navLive'), navLiveText=document.getElementById('navLiveText');
   function demoStatus(){
     var h=new Date().getHours(),base;
     if(h>=17&&h<=23)base=0.8;else if(h>=12&&h<17)base=0.55;else if(h>=7&&h<12)base=0.3;else base=0.15;
@@ -151,9 +153,15 @@
     var inUse=Math.round(20*frac);return{inUse:inUse,total:20,available:20-inUse};
   }
   function renderLive(d){
-    if(!live||!liveText)return;
-    live.dataset.state = d.available<=2 ? 'busy':'ok';
-    liveText.innerHTML='<strong>'+d.inUse+'/'+d.total+'</strong> playing right now · <strong>'+d.available+'</strong> rigs free';
+    var state = d.available<=2 ? 'busy':'ok';
+    if(live&&liveText){
+      live.dataset.state = state;
+      liveText.innerHTML='<strong>'+d.inUse+'/'+d.total+'</strong> playing right now · <strong>'+d.available+'</strong> rigs free';
+    }
+    if(navLive&&navLiveText){
+      navLive.dataset.state = state;
+      navLiveText.innerHTML='<strong>'+d.inUse+'</strong>/<strong>'+d.total+'</strong> rigs live';
+    }
   }
   async function pollStatus(){
     try{
@@ -162,5 +170,5 @@
       var d=await res.json(); renderLive(d);
     }catch(e){ renderLive(demoStatus()); }
   }
-  if(live){ pollStatus(); setInterval(pollStatus,20000); }
+  if(live||navLive){ pollStatus(); setInterval(pollStatus,20000); }
 })();

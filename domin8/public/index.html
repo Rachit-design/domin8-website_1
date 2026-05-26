@@ -21,8 +21,8 @@
 
 <header class="nav" id="nav">
   <a class="nav__brand" href="#top" aria-label="Domin8 home">
-    <img src="/assets/logo.svg" alt="Domin8" class="nav__logo" />
-    <span class="nav__wordmark">DOMIN<span class="eight">8</span></span>
+    <img src="/assets/Domin8Newlogo.png" alt="Domin8 logo" class="nav__logo" />
+    <img src="/assets/typography.png" alt="Domin8 wordmark" class="nav__wordmark-img" />
   </a>
   <nav class="nav__links" aria-label="Primary">
     <a href="#space">The Space</a>
@@ -31,6 +31,7 @@
     <a href="#glimpse">Get a Glimpse</a>
     <a href="#shop">Shop<span class="soon">soon</span></a>
   </nav>
+  <div class="nav__live" id="navLive" data-state="ok"><span class="nav__live-dot"></span><span id="navLiveText">Loading…</span></div>
   <button class="btn btn--primary nav__cta" data-open-join>Join the Community</button>
   <button class="nav__burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
 </header>
@@ -46,7 +47,7 @@
 <main id="top">
 <section class="hero">
   <div class="hero__slides" id="heroSlides">
-    <div class="hero__slide active"><img src="/assets/hero-lan.jpg" alt="The Domin8 LAN floor" /></div>
+    <div class="hero__slide active"><img src="/assets/hero-gamer.png" alt="Domin8 gamer" /></div>
     <div class="hero__slide"><img src="/assets/hero-xr.jpg" alt="Domin8 next-gen setup" /></div>
   </div>
   <div class="hero__veil"></div>
@@ -74,12 +75,12 @@
     <div class="flip" id="spaceFlip" tabindex="0" role="button" aria-label="Reveal what's coming">
       <div class="flip__inner">
         <div class="flip__face flip__front">
-          <img src="/assets/space-current.svg" alt="The current Domin8 floor" />
+          <img src="/assets/hero-lan.jpg" alt="The current Domin8 floor" />
           <div class="flip__tag"><span class="dot-sm"></span> Our floor today · 1,200 sq ft</div>
           <div class="flip__hint">hover to see what's coming →</div>
         </div>
         <div class="flip__face flip__back">
-          <img src="/assets/space-soon.svg" alt="The bigger space coming soon" />
+          <img src="/assets/space-arena.png" alt="The bigger space coming soon" />
           <div class="flip__back-content">
             <span class="flip__psst">psst… something bigger is loading</span>
             <h3>5,000+ sq ft. Loading soon.</h3>
@@ -90,11 +91,7 @@
     </div>
     <div class="space__map glass">
       <div class="space__map-embed" id="mapEmbed">
-        <div class="space__map-placeholder">
-          <div class="pin">📍</div>
-          <p>Find us in Indore</p>
-          <a class="btn btn--ghost" href="https://share.google/RF6dQZJ612xt07rjG" target="_blank" rel="noopener">Get Directions</a>
-        </div>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3679.9!2d75.8871!3d22.7196!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3962fd0b97e5b3c7%3A0x9e4b2a6c1f3d8e5a!2sDomin8%20Esports!5e0!3m2!1sen!2sin!4v1716739200000" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Domin8 Esports location"></iframe>
       </div>
     </div>
   </div>
