@@ -607,33 +607,300 @@ img{display:block;max-width:100%;}
 
 /* ===== DOMIN8 REBRAND PATCH ===== */
 
-.hero__content{
-  margin-left:auto !important;
-  text-align:right !important;
-  align-items:flex-end !important;
+/* ===== FINAL DOMIN8 HERO + REBRAND PATCH ===== */
+
+/* =========================
+   GLOBAL BACKGROUND FIX
+========================= */
+
+html,
+body{
+  background:
+  radial-gradient(circle at top right, rgba(104,26,255,.22), transparent 28%),
+  radial-gradient(circle at left center, rgba(206,0,109,.14), transparent 40%),
+  linear-gradient(180deg,#050214,#090318) !important;
+
+  color:#F6F2FF !important;
 }
 
-.hero__title{
-  font-size:clamp(4.5rem,8vw,8rem) !important;
-  line-height:.95 !important;
+/* =========================
+   NAVBAR FIX
+========================= */
+
+.nav{
+  background:
+  linear-gradient(
+    90deg,
+    rgba(43,10,189,.82),
+    rgba(5,2,20,.88),
+    rgba(206,0,109,.28)
+  ) !important;
+
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(119,49,159,.25) !important;
 }
 
+.nav.scrolled{
+  background:
+  linear-gradient(
+    90deg,
+    rgba(43,10,189,.92),
+    rgba(5,2,20,.95),
+    rgba(206,0,109,.35)
+  ) !important;
+}
+
+.nav__links a{
+  color:#EEE7FF !important;
+}
+
+.nav__links a:hover{
+  color:#F7CA24 !important;
+}
+
+.nav__links a::after{
+  background:#F7CA24 !important;
+  box-shadow:0 0 12px rgba(247,202,36,.45) !important;
+}
+
+/* =========================
+   LOGO FIX
+========================= */
+
+.nav__logo,
+.nav__logo img,
 .hero__logo,
 .hero__logo img,
-.nav__logo img,
+.footer__logo-face,
+.footer__brand img,
 img[src*="logo"],
 img[src*="Domin8"]{
   background:transparent !important;
+  box-shadow:none !important;
 }
 
+/* =========================
+   HERO SECTION
+========================= */
+
+.hero{
+  overflow:hidden;
+  position:relative;
+}
+
+.hero::before{
+  content:'';
+  position:absolute;
+  inset:0;
+
+  background:
+  linear-gradient(
+    90deg,
+    rgba(5,2,20,.10) 0%,
+    rgba(5,2,20,.15) 25%,
+    rgba(5,2,20,.58) 70%
+  );
+
+  z-index:1;
+}
+
+.hero__content{
+  position:relative;
+  z-index:5;
+
+  width:min(760px,92%);
+
+  margin-left:auto !important;
+  margin-right:4vw !important;
+
+  text-align:right !important;
+  align-items:flex-end !important;
+
+  display:flex;
+  flex-direction:column;
+}
+
+.hero__title{
+  font-size:clamp(5rem,8vw,8.5rem) !important;
+
+  line-height:.88 !important;
+
+  letter-spacing:-.04em;
+
+  color:#F7F3FF !important;
+
+  text-shadow:
+  0 0 24px rgba(104,26,255,.24),
+  0 0 80px rgba(206,0,109,.12);
+}
+
+.hero__title .home{
+  color:#CE006D !important;
+
+  text-shadow:
+  0 0 24px rgba(206,0,109,.42);
+}
+
+.hero__sub{
+  color:#D5CCE8 !important;
+
+  font-size:1.08rem !important;
+
+  line-height:1.7 !important;
+
+  max-width:520px;
+
+  margin-left:auto !important;
+  margin-right:0 !important;
+}
+
+.hero__actions{
+  justify-content:flex-end !important;
+}
+
+.hero__live{
+  margin-left:auto !important;
+}
+
+/* =========================
+   HERO IMAGE FIX
+========================= */
+
+.hero__slide img,
+.hero__slide-single img{
+  opacity:1 !important;
+
+  object-position:left center !important;
+
+  filter:
+  brightness(1.18)
+  contrast(1.08)
+  saturate(1.18);
+}
+
+/* =========================
+   LOGO HOVER FIX
+========================= */
+
 .hero__logo{
-  transition:transform .45s ease, filter .45s ease !important;
+  transition:
+  transform .45s ease,
+  filter .45s ease !important;
+
+  transform-origin:center center !important;
 }
 
 .hero__logo:hover{
-  transform:rotate(5deg) scale(1.03) !important;
-  filter:drop-shadow(0 0 40px rgba(206,0,109,.45)) !important;
+  transform:
+  rotate(4deg)
+  scale(1.03) !important;
+
+  filter:
+  drop-shadow(0 0 36px rgba(206,0,109,.45)) !important;
 }
+
+/* =========================
+   BUTTONS
+========================= */
+
+.btn--primary{
+  background:
+  linear-gradient(
+    135deg,
+    #681AFF,
+    #CE006D
+  ) !important;
+
+  color:white !important;
+
+  border:none !important;
+
+  box-shadow:
+  0 0 32px rgba(104,26,255,.25) !important;
+}
+
+.btn--primary:hover{
+  transform:translateY(-2px);
+
+  box-shadow:
+  0 0 42px rgba(206,0,109,.35) !important;
+}
+
+/* =========================
+   REMOVE GREEN THEME
+========================= */
+
+.accent-green,
+.hero__eyebrow,
+.eyebrow,
+.accent-magenta{
+  color:#CE006D !important;
+}
+
+.glow-1{
+  background:#681AFF !important;
+}
+
+.glow-2{
+  background:#CE006D !important;
+}
+
+.glow-3{
+  background:#77319F !important;
+}
+
+/* =========================
+   STATS SECTION
+========================= */
+
+.stats{
+  background:
+  radial-gradient(
+    ellipse 900px 240px at 50% 50%,
+    rgba(104,26,255,.10),
+    transparent 70%
+  ) !important;
+}
+
+.stats__grid{
+  border:1px solid rgba(119,49,159,.22);
+
+  background:
+  linear-gradient(
+    135deg,
+    rgba(43,10,189,.12),
+    rgba(206,0,109,.06)
+  ) !important;
+}
+
+.stat{
+  animation:floaty 4s infinite ease-in-out;
+}
+
+@keyframes floaty{
+  0%{
+    transform:translateY(0px);
+  }
+
+  50%{
+    transform:translateY(-5px);
+  }
+
+  100%{
+    transform:translateY(0px);
+  }
+}
+
+.stat__num{
+  color:#F7CA24 !important;
+
+  text-shadow:
+  0 0 20px rgba(247,202,36,.32);
+}
+
+/* =========================
+   MAP SECTION
+========================= */
 
 .map-section{
   padding:6rem 0;
@@ -641,10 +908,15 @@ img[src*="Domin8"]{
 
 .map-card{
   overflow:hidden;
+
   border-radius:28px;
+
   border:1px solid rgba(119,49,159,.25);
-  box-shadow:0 0 60px rgba(104,26,255,.12);
-  background:rgba(15,10,30,.6);
+
+  background:rgba(14,8,28,.65);
+
+  box-shadow:
+  0 0 60px rgba(104,26,255,.15);
 }
 
 .map-card iframe{
@@ -654,33 +926,132 @@ img[src*="Domin8"]{
   border:0;
 }
 
-#crew .section-head h2{
-  font-size:clamp(3rem,6vw,5.5rem);
-  line-height:.95;
-  text-transform:uppercase;
-}
+/* =========================
+   WHO WE ARE LOGO ANIMATION
+========================= */
 
 .rebrand-transition{
   position:relative;
+
   display:flex;
   align-items:center;
   justify-content:center;
-  min-height:420px;
+
+  min-height:460px;
 }
 
 .rebrand-transition img{
   position:absolute;
-  width:min(420px,70vw);
+
+  width:min(420px,72vw);
+
+  transition:
+  opacity .8s ease,
+  transform .8s ease,
+  filter .8s ease;
 }
 
+.brand-anim-old{
+  opacity:0 !important;
+
+  transform:scale(.88);
+
+  filter:blur(10px);
+}
+
+.brand-anim-new{
+  animation:brandPulse 1s ease forwards;
+}
+
+@keyframes brandPulse{
+
+  0%{
+    opacity:.2;
+    transform:scale(.9);
+    filter:drop-shadow(0 0 0px rgba(206,0,109,0));
+  }
+
+  50%{
+    opacity:1;
+    transform:scale(1.06);
+    filter:drop-shadow(0 0 42px rgba(206,0,109,.45));
+  }
+
+  100%{
+    opacity:1;
+    transform:scale(1);
+    filter:drop-shadow(0 0 24px rgba(104,26,255,.28));
+  }
+}
+
+/* =========================
+   CREW TITLE
+========================= */
+
+#crew .section__title,
+.team__title{
+  font-size:clamp(3rem,6vw,5rem) !important;
+
+  line-height:.95 !important;
+
+  text-transform:uppercase;
+}
+
+/* =========================
+   TEAM CARDS
+========================= */
+
+.team-card{
+  background:
+  linear-gradient(
+    180deg,
+    rgba(18,10,36,.92),
+    rgba(10,5,20,.92)
+  ) !important;
+
+  border:1px solid rgba(119,49,159,.22) !important;
+}
+
+.team-card:hover{
+  border-color:#CE006D !important;
+
+  box-shadow:
+  0 0 40px rgba(206,0,109,.18);
+}
+
+/* =========================
+   MOBILE
+========================= */
+
 @media(max-width:768px){
+
   .hero__content{
     text-align:center !important;
+
     align-items:center !important;
+
+    margin:auto !important;
+  }
+
+  .hero__actions{
+    justify-content:center !important;
+  }
+
+  .hero__sub{
+    margin:auto !important;
+    text-align:center !important;
+  }
+
+  .hero__live{
     margin:auto !important;
   }
 
   .hero__title{
-    font-size:clamp(3rem,12vw,5rem) !important;
+    font-size:clamp(3rem,13vw,5.2rem) !important;
+  }
+
+  .hero__slide img,
+  .hero__slide-single img{
+    object-position:center center !important;
   }
 }
