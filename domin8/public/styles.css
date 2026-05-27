@@ -108,8 +108,8 @@ img{display:block;max-width:100%;}
 
 /* The Space */
 .space__showcase{display:grid;grid-template-columns:1.4fr 1fr;gap:1.5rem;align-items:stretch;}
-.flip{perspective:1600px;cursor:pointer;border-radius:var(--radius);min-height:380px;}
-.flip__inner{position:relative;width:100%;height:100%;min-height:380px;transition:transform .8s cubic-bezier(.4,.2,.2,1);transform-style:preserve-3d;}
+.flip{perspective:1600px;cursor:pointer;border-radius:var(--radius);min-height:360px;height:360px;position:relative;}
+.flip__inner{position:absolute;inset:0;width:100%;height:100%;transition:transform .8s cubic-bezier(.4,.2,.2,1);transform-style:preserve-3d;}
 .flip:hover .flip__inner,.flip:focus-visible .flip__inner,.flip.flipped .flip__inner{transform:rotateY(180deg);}
 .flip__face{position:absolute;inset:0;border-radius:var(--radius);overflow:hidden;backface-visibility:hidden;border:1px solid var(--glass-border);}
 .flip__face img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
@@ -304,8 +304,8 @@ img{display:block;max-width:100%;}
 
 /* Team 4×4 grid (replaces carousel) */
 .team__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;margin-top:.4rem;}
-.team-card{border-radius:14px;overflow:hidden;background:var(--glass-bg);border:1px solid var(--glass-border);transition:transform .2s,border-color .2s;}
-.team-card:hover{transform:translateY(-5px);border-color:var(--brand-gold);}
+.team-card{border-radius:14px;overflow:hidden;background:var(--glass-bg);border:1px solid var(--glass-border);transition:box-shadow .2s,border-color .2s;}
+.team-card:hover{border-color:var(--brand-gold);}
 @media(max-width:980px){.team__grid{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:560px){.team__grid{grid-template-columns:repeat(2,1fr);gap:.8rem;}}
 
@@ -446,9 +446,10 @@ img{display:block;max-width:100%;}
 }
 .flip__front,
 .flip__back {
-  position: relative;
+  position: absolute;
+  inset: 0;
   overflow: hidden;
-  min-height: 380px;
+  min-height: 0;
 }
 
 /* ---- STATS: ensure counter is visible initially so animation triggers ---- */
@@ -1786,18 +1787,7 @@ body{
   justify-content: center;
 }
 
-/* ---- SPACE SECTION: tighter height, NO hover jump ---- */
-.flip,
-.flip__inner,
-.flip__front,
-.flip__back {
-  min-height: 320px !important;
-}
-/* Kill every translateY on flip card hover — was pushing it down */
-.flip:hover,
-.flip:focus-visible {
-  transform: none !important;
-}
+/* flip height handled in base rules */
 
 /* ---- BRAND LABELS: center layout ---- */
 .brand-journey__labels {
@@ -1820,4 +1810,48 @@ body{
   .team-community__scroll-wrap {
     height: 260px;
   }
+}
+
+
+
+/* ============================================================
+   FLIP CARD — definitive fix (no teleport, no jump)
+   The container (.flip) has an explicit height.
+   .flip__inner fills it absolutely and rotates in place.
+   .flip__front/.flip__back are also absolute, so nothing
+   in the DOM flow shifts when the card flips or is hovered.
+============================================================ */
+.flip {
+  position: relative !important;
+  height: 360px !important;
+  min-height: 360px !important;
+  transform: none !important;     /* container never moves */
+}
+.flip:hover,
+.flip:focus-visible {
+  transform: none !important;
+}
+.flip__inner {
+  position: absolute !important;
+  inset: 0 !important;
+  transform-style: preserve-3d !important;
+}
+.flip:hover .flip__inner,
+.flip:focus-visible .flip__inner,
+.flip.flipped .flip__inner {
+  transform: rotateY(180deg) !important;
+}
+.flip__front,
+.flip__back {
+  position: absolute !important;
+  inset: 0 !important;
+  height: 100% !important;
+  min-height: 0 !important;
+}
+
+/* Team cards — no movement on hover ever */
+.team-card,
+.team-card:hover,
+.team-card:focus {
+  transform: none !important;
 }

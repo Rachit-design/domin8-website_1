@@ -63,120 +63,121 @@
     } else { statNums.forEach(function(el){var s=el.getAttribute('data-suffix')||'';el.innerHTML=(parseInt(el.getAttribute('data-target'),10)||0).toLocaleString()+(s?'<span class="accent-magenta">'+s+'</span>':'');}); }
   }
 
-  // ---- Brand logo animation — full looping sequence ----
-  // Phase 1 (0–3s):   OLD logo visible   → "Where it started" yellow
-  // Phase 2 (3–6s):   NEW logo fades in  → "Where we're going" yellow
-  // Phase 3 (6–9s):   TYPOGRAPHY fades in over new logo
-  // Phase 4 (9–12s):  TYPOGRAPHY fades out, new logo stays
-  // then loops Phase 2–4 forever. Resets from Phase 1 when scrolled back in.
+  // ---- Brand logo animation — clean non-overlapping loop ----
+  // Sequence (restarts every time section scrolls into view):
+  //  0s      OLD logo visible            → label: "Where it started" gold
+  //  3s      OLD fades out               → label off
+  //  3.5s    NEW logo fades in           → label: "Where we're going" gold
+  //  7s      NEW fades out               → label off
+  //  7.5s    TYPOGRAPHY fades in         → label: "Where we're going" gold
+  //  11s     TYPOGRAPHY fades out        → label off
+  //  11.5s   NEW logo fades in (loop)    → label: "Where we're going" gold
+  //  ... repeats new ↔ typography forever
 
   var brandJourney = document.querySelector('.brand-journey');
   if(brandJourney){
-    var labelOld  = document.getElementById('labelOld');
-    var labelNew  = document.getElementById('labelNew');
-    var imgOld    = document.getElementById('brandOldImgClean');   // old logo
-    var imgNew    = document.getElementById('brandNewImgClean');   // new face logo
-    var imgType   = document.getElementById('brandTypeImgClean');  // typography
+    var labelOld = document.getElementById('labelOld');
+    var labelNew = document.getElementById('labelNew');
+    var imgOld   = document.getElementById('brandOldImgClean');
+    var imgNew   = document.getElementById('brandNewImgClean');
+    var imgType  = document.getElementById('brandTypeImgClean');
 
-    var brandTimers = [];
-
-    function clearBrandTimers(){
-      brandTimers.forEach(function(t){ clearTimeout(t); });
-      brandTimers = [];
-    }
-
-    function bt(fn, ms){ brandTimers.push(setTimeout(fn, ms)); }
+    var bTimers = [];
+    function bClear(){ bTimers.forEach(clearTimeout); bTimers = []; }
+    function bDelay(fn, ms){ bTimers.push(setTimeout(fn, ms)); }
 
     function setLabel(which){
-      // which: 'old' | 'new' | 'none'
       if(labelOld) labelOld.classList.toggle('bj-label--active', which === 'old');
       if(labelNew) labelNew.classList.toggle('bj-label--active', which === 'new');
     }
 
-    function setVis(el, visible, blurIn){
+    // fade: el → opacity 0 or 1, dur in ms
+    function fade(el, toOpacity, dur){
       if(!el) return;
-      el.style.transition = 'opacity 1s ease, filter 1s ease, transform 1s ease';
-      el.style.opacity    = visible ? '1' : '0';
-      el.style.filter     = visible
-        ? 'blur(0) drop-shadow(0 0 24px rgba(206,0,109,.3))'
-        : (blurIn ? 'blur(8px)' : 'blur(0)');
-      el.style.transform  = visible ? 'scale(1)' : 'scale(0.93)';
+      el.style.transition = 'opacity '+dur+'ms ease, filter '+dur+'ms ease, transform '+dur+'ms ease';
+      el.style.opacity    = toOpacity;
+      el.style.transform  = toOpacity > 0 ? 'scale(1)' : 'scale(0.94)';
+      el.style.filter     = toOpacity > 0
+        ? 'blur(0) drop-shadow(0 0 22px rgba(206,0,109,.28))'
+        : 'blur(6px)';
     }
 
-    function resetBrand(){
-      clearBrandTimers();
-      setLabel('none');
-      // Hard reset all layers instantly
-      [imgOld, imgNew, imgType].forEach(function(el){
-        if(!el) return;
-        el.style.transition = 'none';
-        el.style.opacity    = '0';
-        el.style.filter     = 'blur(0)';
-        el.style.transform  = 'scale(1)';
-      });
-      if(imgOld){ imgOld.style.opacity = '1'; imgOld.style.filter = 'drop-shadow(0 0 28px rgba(104,26,255,.32))'; }
-    }
-
-    function runLoop(){
-      // ---- Phase 1: show OLD logo, label = "where it started" ----
-      setVis(imgOld, true, false);
-      setVis(imgNew, false, true);
-      setVis(imgType, false, true);
-      setLabel('old');
-
-      // ---- Phase 2 (3s): fade old OUT, fade new IN ----
-      bt(function(){
-        setVis(imgOld, false, false);
-        setLabel('none');
-      }, 2800);
-      bt(function(){
-        setVis(imgNew, true, false);
-        setLabel('new');
-      }, 3200);
-
-      // ---- Phase 3 (6.5s): fade TYPOGRAPHY over new logo ----
-      bt(function(){
-        setVis(imgType, true, false);
-      }, 6500);
-
-      // ---- Phase 4 (9.5s): fade TYPOGRAPHY out, keep new logo ----
-      bt(function(){
-        setVis(imgType, false, false);
-      }, 9500);
-
-      // ---- Loop back to phase 2 (type → new → type...) ----
-      bt(function(){
-        loopPhase();
-      }, 11500);
-    }
-
-    function loopPhase(){
-      // just loop new ↔ typography, label stays on "where we're going"
-      setLabel('new');
-      setVis(imgType, true, false);
-
-      bt(function(){
-        setVis(imgType, false, false);
-      }, 3000);
-
-      bt(function(){
-        loopPhase();
-      }, 5000);
+    function hardHide(el){
+      if(!el) return;
+      el.style.transition = 'none';
+      el.style.opacity    = '0';
+      el.style.transform  = 'scale(0.94)';
+      el.style.filter     = 'blur(0)';
     }
 
     function startBrand(){
-      resetBrand();
-      // tiny delay so reset paints first
-      brandTimers.push(setTimeout(runLoop, 80));
+      bClear();
+      // Hard reset everything instantly
+      hardHide(imgNew);
+      hardHide(imgType);
+      setLabel('none');
+      // Show old logo immediately
+      if(imgOld){
+        imgOld.style.transition = 'none';
+        imgOld.style.opacity    = '1';
+        imgOld.style.transform  = 'scale(1)';
+        imgOld.style.filter     = 'drop-shadow(0 0 28px rgba(104,26,255,.32))';
+      }
+      setLabel('old');
+
+      // 3s — old fades out
+      bDelay(function(){
+        fade(imgOld, 0, 800);
+        setLabel('none');
+      }, 3000);
+
+      // 3.5s — new logo fades in
+      bDelay(function(){
+        fade(imgNew, 1, 900);
+        setLabel('new');
+      }, 3600);
+
+      // 7s — new fades out, start loop
+      bDelay(function(){
+        fade(imgNew, 0, 800);
+        setLabel('none');
+        bDelay(loopStep, 600);
+      }, 7000);
+    }
+
+    // loopStep: type in → type out → new in → new out → repeat
+    function loopStep(){
+      // type fades in
+      fade(imgType, 1, 900);
+      setLabel('new');
+
+      // type fades out
+      bDelay(function(){
+        fade(imgType, 0, 800);
+        setLabel('none');
+      }, 3500);
+
+      // new logo fades in
+      bDelay(function(){
+        fade(imgNew, 1, 900);
+        setLabel('new');
+      }, 4200);
+
+      // new logo fades out → loop again
+      bDelay(function(){
+        fade(imgNew, 0, 800);
+        setLabel('none');
+        bDelay(loopStep, 600);
+      }, 7500);
     }
 
     if('IntersectionObserver' in window){
       var brandIO = new IntersectionObserver(function(es){
         es.forEach(function(e){
           if(e.isIntersecting){ startBrand(); }
-          else { resetBrand(); }
+          else { bClear(); hardHide(imgNew); hardHide(imgType); setLabel('none'); if(imgOld){ imgOld.style.transition='none'; imgOld.style.opacity='1'; } }
         });
-      }, { threshold: .45 });
+      }, { threshold: .4 });
       brandIO.observe(brandJourney);
     } else {
       startBrand();

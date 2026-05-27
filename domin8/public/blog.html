@@ -34,6 +34,14 @@
   .admin-notice { font-size: .8rem; color: var(--ink-faint); margin-top: .4rem; line-height: 1.5; }
   .admin-notice a { color: var(--brand-pink); text-decoration: underline; }
   @media (max-width: 760px) { .blog-card--featured { grid-template-columns: 1fr; } .blog-card--featured .blog-card__thumb { min-height: 200px; } }
+  /* Image picker */
+  .img-picker { border: 1px solid var(--glass-border); border-radius: 12px; padding: .9rem; background: rgba(255,255,255,.02); }
+  .img-picker__tabs { display: flex; gap: .4rem; margin-bottom: .8rem; }
+  .img-tab { flex: 1; background: rgba(255,255,255,.04); border: 1px solid var(--glass-border); color: var(--ink-soft); font-size: .72rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: .5rem; border-radius: 8px; cursor: pointer; transition: all .2s; }
+  .img-tab.active { background: linear-gradient(135deg,var(--brand-electric),var(--brand-magenta)); color: #fff; border-color: transparent; }
+  .img-preview { margin-top: .9rem; display: flex; flex-direction: column; gap: .4rem; align-items: center; }
+  .img-preview img { width: 100%; max-height: 180px; object-fit: cover; border-radius: 10px; border: 1px solid var(--glass-border); }
+  .img-preview__name { font-size: .76rem; color: #F7CA24; word-break: break-all; text-align: center; }
 </style>
 </head>
 <body>
@@ -99,7 +107,28 @@
       </select>
     </div>
     <div class="field"><label>Date</label><input id="aDate" type="text" placeholder="e.g. May 19, 2026" /></div>
-    <div class="field"><label>Image path or URL</label><input id="aImage" type="text" placeholder="assets/my-image.jpg  OR  https://..." /></div>
+    <div class="field">
+      <label>Thumbnail image</label>
+      <div class="img-picker">
+        <div class="img-picker__tabs">
+          <button type="button" class="img-tab active" data-imgtab="upload">Upload from computer</button>
+          <button type="button" class="img-tab" data-imgtab="url">Paste a link</button>
+        </div>
+        <div class="img-pane" id="imgPaneUpload">
+          <input id="aImageFile" type="file" accept="image/*" style="display:none" />
+          <button type="button" class="btn btn--ghost" id="chooseImgBtn" style="width:100%">Choose an image…</button>
+          <p class="admin-notice" style="margin-top:.5rem">Pick a JPG or PNG from your computer. We'll show a preview and tell you exactly where to save it.</p>
+        </div>
+        <div class="img-pane" id="imgPaneUrl" style="display:none">
+          <input id="aImage" type="text" placeholder="https://...  OR  assets/my-image.jpg" />
+          <p class="admin-notice" style="margin-top:.5rem">Paste a full image link, or type the filename if it's already in your assets folder.</p>
+        </div>
+        <div class="img-preview" id="imgPreview" style="display:none">
+          <img id="imgPreviewEl" alt="preview" />
+          <span class="img-preview__name" id="imgPreviewName"></span>
+        </div>
+      </div>
+    </div>
     <div class="field"><label>Excerpt (1–2 sentences)</label><textarea id="aExcerpt" placeholder="Short teaser that appears on the card..."></textarea></div>
     <div class="field"><label>Link (optional — leave blank for no link)</label><input id="aLink" type="text" placeholder="https://..." /></div>
     <button class="btn btn--primary" id="generateSnippet" style="width:100%;margin-top:.4rem">Generate Snippet</button>
@@ -107,6 +136,11 @@
       <p style="font-size:.78rem;color:var(--ink-soft);margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.08em;">Copy this block and paste it at the TOP of <code>blog-posts.js</code>:</p>
       <textarea id="snippetText" style="background:rgba(255,255,255,.04);border:1px solid var(--glass-border);border-radius:10px;padding:.75rem .9rem;color:#F7CA24;font-family:monospace;font-size:.82rem;width:100%;min-height:130px;"></textarea>
       <button class="btn btn--ghost" id="copySnippet" style="width:100%;margin-top:.5rem">Copy to clipboard</button>
+    </div>
+    <div id="uploadReminder" style="display:none;margin-top:1rem;padding:.9rem 1rem;border-radius:10px;background:rgba(247,202,36,.08);border:1px solid rgba(247,202,36,.3)">
+      <strong style="color:#F7CA24;font-size:.85rem">⚠ Don't forget the image!</strong>
+      <p style="font-size:.8rem;color:var(--ink-soft);margin-top:.4rem;line-height:1.5">You picked an image from your computer. After pasting the snippet, also upload your image file to GitHub:<br><br>
+      Go to <code style="color:#F7CA24">domin8/public/assets/</code> → click <strong>Add file → Upload files</strong> → drag your image in → rename it to exactly <code style="color:#F7CA24"></code> → Commit.</p>
     </div>
     <div class="admin-notice" style="margin-top:1.4rem">
       <strong style="color:var(--ink)">How to publish:</strong><br>
@@ -215,17 +249,83 @@
   document.getElementById('openAdmin').addEventListener('click',function(){ adminPanel.classList.add('open'); });
   document.getElementById('closeAdmin').addEventListener('click',function(){ adminPanel.classList.remove('open'); });
 
+  // ---- Image picker ----
+  var imgMode = 'upload';        // 'upload' or 'url'
+  var chosenFileName = '';       // filename when uploading
+  var chosenUrl = '';            // url when pasting
+
+  document.querySelectorAll('.img-tab').forEach(function(tab){
+    tab.addEventListener('click',function(){
+      document.querySelectorAll('.img-tab').forEach(function(t){ t.classList.remove('active'); });
+      tab.classList.add('active');
+      imgMode = tab.getAttribute('data-imgtab');
+      document.getElementById('imgPaneUpload').style.display = imgMode==='upload' ? 'block' : 'none';
+      document.getElementById('imgPaneUrl').style.display    = imgMode==='url'    ? 'block' : 'none';
+    });
+  });
+
+  document.getElementById('chooseImgBtn').addEventListener('click',function(){
+    document.getElementById('aImageFile').click();
+  });
+
+  document.getElementById('aImageFile').addEventListener('change',function(e){
+    var file = e.target.files && e.target.files[0];
+    if(!file) return;
+    // sanitise filename: lowercase, replace spaces/odd chars
+    chosenFileName = file.name.toLowerCase().replace(/[^a-z0-9.\-]+/g,'-').replace(/-+/g,'-');
+    var reader = new FileReader();
+    reader.onload = function(ev){
+      var prev = document.getElementById('imgPreview');
+      document.getElementById('imgPreviewEl').src = ev.target.result;
+      document.getElementById('imgPreviewName').textContent = 'assets/' + chosenFileName;
+      prev.style.display = 'flex';
+    };
+    reader.readAsDataURL(file);
+  });
+
+  document.getElementById('aImage').addEventListener('input',function(e){
+    chosenUrl = e.target.value.trim();
+    var prev = document.getElementById('imgPreview');
+    if(chosenUrl){
+      document.getElementById('imgPreviewEl').src = chosenUrl.charAt(0)==='/'||/^https?:/.test(chosenUrl) ? chosenUrl : '/'+chosenUrl;
+      document.getElementById('imgPreviewName').textContent = chosenUrl;
+      prev.style.display = 'flex';
+    } else {
+      prev.style.display = 'none';
+    }
+  });
+
   // Generate snippet
   document.getElementById('generateSnippet').addEventListener('click',function(){
     var t=document.getElementById('aTitle').value.trim()||'Untitled Post';
     var c=document.getElementById('aCat').value||'News';
     var d=document.getElementById('aDate').value.trim()||new Date().toLocaleDateString('en-IN',{year:'numeric',month:'long',day:'numeric'});
-    var im=document.getElementById('aImage').value.trim()||'assets/player-hero.jpg';
     var ex=document.getElementById('aExcerpt').value.trim()||'Read the full story on the site.';
     var lk=document.getElementById('aLink').value.trim()||'#';
+
+    // Resolve image based on chosen mode
+    var im, uploadNote = '';
+    if(imgMode==='upload' && chosenFileName){
+      im = 'assets/' + chosenFileName;
+      uploadNote = 'UPLOAD';
+    } else if(imgMode==='url' && chosenUrl){
+      im = chosenUrl;
+    } else {
+      im = 'assets/player-hero.jpg';
+    }
+
     var snippet='  { title:'+JSON.stringify(t)+', category:'+JSON.stringify(c)+', date:'+JSON.stringify(d)+', image:'+JSON.stringify(im)+',\n    excerpt:'+JSON.stringify(ex)+', link:'+JSON.stringify(lk)+' },';
     document.getElementById('snippetText').value=snippet;
     document.getElementById('snippetOutput').style.display='block';
+
+    // Show upload reminder if a file was chosen
+    var reminder = document.getElementById('uploadReminder');
+    if(uploadNote==='UPLOAD'){
+      reminder.style.display='block';
+      reminder.querySelector('code').textContent = chosenFileName;
+    } else {
+      reminder.style.display='none';
+    }
   });
   document.getElementById('copySnippet').addEventListener('click',function(){
     var txt=document.getElementById('snippetText').value;
