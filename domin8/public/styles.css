@@ -1503,21 +1503,19 @@ body{
 .brand-journey__mark--old{
   opacity:1;
   filter:drop-shadow(0 0 28px rgba(104,26,255,.32));
+  /* JS controls transitions directly */
 }
 
 .brand-journey__mark--new{
   opacity:0;
-  transform:scale(.94);
-  filter:drop-shadow(0 0 0 rgba(206,0,109,0));
+  transform:scale(.93);
+  filter:blur(0);
+  /* JS controls transitions directly */
 }
 
-.brand-journey--play .brand-journey__mark--old{
-  animation:oldLogoDissolve 3.2s cubic-bezier(.22,.72,.22,1) forwards;
-}
-
-.brand-journey--play .brand-journey__mark--new{
-  animation:newLogoReveal 3.2s cubic-bezier(.22,.72,.22,1) forwards;
-}
+/* brand-journey--play no longer drives CSS animations — JS does it */
+.brand-journey--play .brand-journey__mark--old{}
+.brand-journey--play .brand-journey__mark--new{}
 
 .brand-journey__labels{
   display:flex;
@@ -1531,8 +1529,9 @@ body{
   color:var(--ink-faint);
 }
 
+/* label colours are JS-driven via .bj-label--active — no hardcoded gold here */
 .brand-journey__labels span:last-child{
-  color:var(--brand-gold);
+  color:var(--ink-faint);
 }
 
 @keyframes oldLogoDissolve{
@@ -1639,18 +1638,12 @@ body{
    DOMIN8 PATCH — All new feature styles
 ============================================================================ */
 
-/* ---- BRAND JOURNEY: typography logo dissolve after new logo ---- */
+/* ---- BRAND JOURNEY: typography logo — JS controls opacity/filter directly ---- */
 .brand-journey__mark--type {
   opacity: 0;
-  transform: scale(0.88) translateY(8px);
-  filter: blur(12px) drop-shadow(0 0 0 rgba(104,26,255,0));
-  transition: opacity 1s ease, transform 1s ease, filter 1s ease;
+  transform: scale(0.93);
   pointer-events: none;
-}
-.brand-journey__mark--type-show {
-  opacity: 1 !important;
-  transform: scale(1) translateY(0) !important;
-  filter: blur(0) drop-shadow(0 0 28px rgba(104,26,255,.32)) !important;
+  /* no CSS transition here — JS sets transition inline before each change */
 }
 
 /* ---- BRAND JOURNEY: animated label highlights ---- */
@@ -1747,10 +1740,9 @@ body{
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #F7CA24;
-  box-shadow: 0 0 6px rgba(247,202,36,.7);
+  background: rgba(247,202,36,.5);
+  box-shadow: 0 0 4px rgba(247,202,36,.25);
   flex-shrink: 0;
-  animation: pulse 2.5s infinite;
 }
 
 .community-live__name {
@@ -1762,13 +1754,13 @@ body{
 
 .community-live__badge {
   font-size: .62rem;
-  letter-spacing: .1em;
+  letter-spacing: .08em;
   text-transform: uppercase;
-  color: #F7CA24;
-  border: 1px solid rgba(247,202,36,.3);
+  color: var(--ink-faint);
+  border: 1px solid rgba(255,255,255,.1);
   padding: .15rem .5rem;
   border-radius: 99px;
-  opacity: .8;
+  opacity: .75;
 }
 
 /* ---- TEAM GRID: proper grid layout for all crew cards ---- */
@@ -1794,12 +1786,17 @@ body{
   justify-content: center;
 }
 
-/* ---- SPACE SECTION: tighter height ---- */
+/* ---- SPACE SECTION: tighter height, NO hover jump ---- */
 .flip,
 .flip__inner,
 .flip__front,
 .flip__back {
   min-height: 320px !important;
+}
+/* Kill every translateY on flip card hover — was pushing it down */
+.flip:hover,
+.flip:focus-visible {
+  transform: none !important;
 }
 
 /* ---- BRAND LABELS: center layout ---- */

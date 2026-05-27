@@ -63,47 +63,123 @@
     } else { statNums.forEach(function(el){var s=el.getAttribute('data-suffix')||'';el.innerHTML=(parseInt(el.getAttribute('data-target'),10)||0).toLocaleString()+(s?'<span class="accent-magenta">'+s+'</span>':'');}); }
   }
 
-  // ---- Brand logo animation (old fades/morphs into new, then reveals typography) ----
+  // ---- Brand logo animation — full looping sequence ----
+  // Phase 1 (0–3s):   OLD logo visible   → "Where it started" yellow
+  // Phase 2 (3–6s):   NEW logo fades in  → "Where we're going" yellow
+  // Phase 3 (6–9s):   TYPOGRAPHY fades in over new logo
+  // Phase 4 (9–12s):  TYPOGRAPHY fades out, new logo stays
+  // then loops Phase 2–4 forever. Resets from Phase 1 when scrolled back in.
+
   var brandJourney = document.querySelector('.brand-journey');
   if(brandJourney){
-    var labelOld = document.getElementById('labelOld');
-    var labelNew = document.getElementById('labelNew');
-    var brandTypeImg = document.getElementById('brandTypeImgClean');
+    var labelOld  = document.getElementById('labelOld');
+    var labelNew  = document.getElementById('labelNew');
+    var imgOld    = document.getElementById('brandOldImgClean');   // old logo
+    var imgNew    = document.getElementById('brandNewImgClean');   // new face logo
+    var imgType   = document.getElementById('brandTypeImgClean');  // typography
 
-    function resetBrandLabels(){
-      if(labelOld){ labelOld.classList.remove('bj-label--active'); }
-      if(labelNew){ labelNew.classList.remove('bj-label--active'); }
+    var brandTimers = [];
+
+    function clearBrandTimers(){
+      brandTimers.forEach(function(t){ clearTimeout(t); });
+      brandTimers = [];
     }
 
-    function runBrandSequence(){
-      brandJourney.classList.remove('brand-journey--play');
-      void brandJourney.offsetWidth;
-      resetBrandLabels();
-      if(brandTypeImg){ brandTypeImg.classList.remove('brand-journey__mark--type-show'); }
-      // Phase 1: old logo plays, highlight "where it started"
-      if(labelOld){ labelOld.classList.add('bj-label--active'); }
-      brandJourney.classList.add('brand-journey--play');
-      // Phase 2: at ~2s, switch highlight to "where we're going"
-      var t1 = setTimeout(function(){
-        if(labelOld){ labelOld.classList.remove('bj-label--active'); }
-        if(labelNew){ labelNew.classList.add('bj-label--active'); }
-      }, 2000);
-      // Phase 3: at ~3.5s, dissolve new logo into typography
-      var t2 = setTimeout(function(){
-        if(brandTypeImg){ brandTypeImg.classList.add('brand-journey__mark--type-show'); }
-      }, 3500);
+    function bt(fn, ms){ brandTimers.push(setTimeout(fn, ms)); }
+
+    function setLabel(which){
+      // which: 'old' | 'new' | 'none'
+      if(labelOld) labelOld.classList.toggle('bj-label--active', which === 'old');
+      if(labelNew) labelNew.classList.toggle('bj-label--active', which === 'new');
+    }
+
+    function setVis(el, visible, blurIn){
+      if(!el) return;
+      el.style.transition = 'opacity 1s ease, filter 1s ease, transform 1s ease';
+      el.style.opacity    = visible ? '1' : '0';
+      el.style.filter     = visible
+        ? 'blur(0) drop-shadow(0 0 24px rgba(206,0,109,.3))'
+        : (blurIn ? 'blur(8px)' : 'blur(0)');
+      el.style.transform  = visible ? 'scale(1)' : 'scale(0.93)';
+    }
+
+    function resetBrand(){
+      clearBrandTimers();
+      setLabel('none');
+      // Hard reset all layers instantly
+      [imgOld, imgNew, imgType].forEach(function(el){
+        if(!el) return;
+        el.style.transition = 'none';
+        el.style.opacity    = '0';
+        el.style.filter     = 'blur(0)';
+        el.style.transform  = 'scale(1)';
+      });
+      if(imgOld){ imgOld.style.opacity = '1'; imgOld.style.filter = 'drop-shadow(0 0 28px rgba(104,26,255,.32))'; }
+    }
+
+    function runLoop(){
+      // ---- Phase 1: show OLD logo, label = "where it started" ----
+      setVis(imgOld, true, false);
+      setVis(imgNew, false, true);
+      setVis(imgType, false, true);
+      setLabel('old');
+
+      // ---- Phase 2 (3s): fade old OUT, fade new IN ----
+      bt(function(){
+        setVis(imgOld, false, false);
+        setLabel('none');
+      }, 2800);
+      bt(function(){
+        setVis(imgNew, true, false);
+        setLabel('new');
+      }, 3200);
+
+      // ---- Phase 3 (6.5s): fade TYPOGRAPHY over new logo ----
+      bt(function(){
+        setVis(imgType, true, false);
+      }, 6500);
+
+      // ---- Phase 4 (9.5s): fade TYPOGRAPHY out, keep new logo ----
+      bt(function(){
+        setVis(imgType, false, false);
+      }, 9500);
+
+      // ---- Loop back to phase 2 (type → new → type...) ----
+      bt(function(){
+        loopPhase();
+      }, 11500);
+    }
+
+    function loopPhase(){
+      // just loop new ↔ typography, label stays on "where we're going"
+      setLabel('new');
+      setVis(imgType, true, false);
+
+      bt(function(){
+        setVis(imgType, false, false);
+      }, 3000);
+
+      bt(function(){
+        loopPhase();
+      }, 5000);
+    }
+
+    function startBrand(){
+      resetBrand();
+      // tiny delay so reset paints first
+      brandTimers.push(setTimeout(runLoop, 80));
     }
 
     if('IntersectionObserver' in window){
       var brandIO = new IntersectionObserver(function(es){
         es.forEach(function(e){
-          if(e.isIntersecting){ runBrandSequence(); }
-          else { brandJourney.classList.remove('brand-journey--play'); resetBrandLabels(); }
+          if(e.isIntersecting){ startBrand(); }
+          else { resetBrand(); }
         });
-      },{threshold:.55});
+      }, { threshold: .45 });
       brandIO.observe(brandJourney);
     } else {
-      brandJourney.classList.add('brand-journey--play');
+      startBrand();
     }
   }
 
@@ -136,7 +212,7 @@
       return '<div class="community-live__item">'+
         '<span class="community-live__dot"></span>'+
         '<span class="community-live__name">'+esc(n)+'</span>'+
-        '<span class="community-live__badge">online</span>'+
+        '<span class="community-live__badge">recently active</span>'+
       '</div>';
     }).join('');
     var dur = Math.max(18, names.length * 1.8);
