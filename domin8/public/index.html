@@ -16,8 +16,20 @@
 <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
+<div id="scrollProgress" aria-hidden="true"></div>
 <div class="atmosphere" aria-hidden="true"><span class="glow glow-1"></span><span class="glow glow-2"></span><span class="glow glow-3"></span></div>
 <div class="grain" aria-hidden="true"></div>
+
+<!-- Fixed side navigation dots (desktop only) -->
+<nav class="page-dots" aria-label="Jump to section">
+  <a class="page-dot" href="#space"     data-section="space"     data-label="The Space"></a>
+  <a class="page-dot" href="#floor-map" data-section="floor-map" data-label="Live Floor"></a>
+  <a class="page-dot" href="#about"     data-section="about"     data-label="Who We Are"></a>
+  <a class="page-dot" href="#community" data-section="community" data-label="The Legends"></a>
+  <a class="page-dot" href="#happening" data-section="happening" data-label="What's Happening"></a>
+  <a class="page-dot" href="#glimpse"   data-section="glimpse"   data-label="Get a Glimpse"></a>
+  <a class="page-dot" href="#shop"      data-section="shop"      data-label="Shop"></a>
+</nav>
 
 <header class="nav" id="nav">
   <a class="nav__brand" href="#top" aria-label="Domin8 home">
@@ -52,7 +64,7 @@
 <section class="hero">
   <div class="hero__slides" id="heroSlides">
     <div class="hero__slide active"><img src="/assets/hero-floor.png" alt="Domin8 gaming floor" /></div>
-    <div class="hero__slide"><img src="/assets/hero-neon.jpg" alt="Domin8 — neon gaming setup" /></div>
+    <div class="hero__slide"><img src="/assets/hero-neon.png" alt="Domin8 — neon gaming setup" /></div>
     <div class="hero__slide"><img src="/assets/hero-gamer-new.png" alt="Domin8 gamer" /></div>
   </div>
   <div class="hero__dots" id="heroDots"></div>

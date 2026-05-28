@@ -477,4 +477,82 @@
   }
   if(live){ pollStatus(); setInterval(pollStatus,20000); }
 
+  // ── Scroll progress bar ──────────────────────────────────────────────────
+  var progressEl = document.getElementById('scrollProgress');
+  if(progressEl){
+    function updateProgress(){
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      progressEl.style.width = (max>0 ? (window.scrollY/max*100) : 0).toFixed(1)+'%';
+    }
+    window.addEventListener('scroll', updateProgress, {passive:true});
+    updateProgress();
+  }
+
+  // ── Parallax engine (hero bg + content + atmosphere glows) ───────────────
+  (function(){
+    var slides   = document.getElementById('heroSlides');
+    var content  = document.querySelector('.hero__content');
+    var heroVeil = document.querySelector('.hero__veil');
+    var gl1 = document.querySelector('.glow-1');
+    var gl2 = document.querySelector('.glow-2');
+    var gl3 = document.querySelector('.glow-3');
+    if(!slides) return;
+
+    var sy=0, ticking=false;
+    // Only do the work while hero is visible
+    var heroEl = document.querySelector('.hero');
+    var cutoff = (heroEl ? heroEl.offsetHeight : window.innerHeight) * 1.4;
+
+    function frame(){
+      if(sy > cutoff){ ticking=false; return; }
+      var s = sy;
+      // Background drifts up 38% as fast as page — creates depth
+      slides.style.transform  = 'translateY('+(s*0.38).toFixed(1)+'px)';
+      // Content floats slightly slower too (layer in front of bg, behind veil)
+      if(content) content.style.transform = 'translateY('+(s*0.1).toFixed(1)+'px)';
+      // Veil darkens very slightly on scroll (bg image gets less visible)
+      if(heroVeil) heroVeil.style.opacity = String(Math.min(1, 1 + s * 0.0003));
+      // Atmosphere glows each move independently
+      if(gl1) gl1.style.transform = 'translateY('+(s*0.17).toFixed(1)+'px)';
+      if(gl2) gl2.style.transform = 'translateY('+(s*0.08).toFixed(1)+'px) translateX(-160px)';
+      if(gl3) gl3.style.transform = 'translateY('+(-s*0.06).toFixed(1)+'px) translateX(10%)';
+      ticking=false;
+    }
+
+    window.addEventListener('scroll', function(){
+      sy=window.scrollY;
+      if(!ticking){ requestAnimationFrame(frame); ticking=true; }
+    }, {passive:true});
+
+    // Initial call so glows are positioned on load
+    frame();
+  })();
+
+  // ── Page navigation dots (desktop sidebar) ───────────────────────────────
+  (function(){
+    var dots = document.querySelectorAll('.page-dot[data-section]');
+    if(!dots.length) return;
+    var pairs = [];
+    dots.forEach(function(d){
+      var sec = document.getElementById(d.getAttribute('data-section'));
+      if(sec) pairs.push({sec:sec, dot:d});
+    });
+    if(!pairs.length) return;
+
+    // Use IntersectionObserver with a vertical dead-band so only the
+    // section that's mostly centred in the viewport gets highlighted
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        for(var i=0;i<pairs.length;i++){
+          if(pairs[i].sec===e.target){
+            pairs[i].dot.classList.toggle('active', e.isIntersecting);
+            break;
+          }
+        }
+      });
+    }, { threshold: 0.22, rootMargin: '-15% 0px -15% 0px' });
+
+    pairs.forEach(function(p){ io.observe(p.sec); });
+  })();
+
 })();

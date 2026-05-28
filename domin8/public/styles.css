@@ -2580,3 +2580,227 @@ body{
   transition: color .2s, gap .2s;
 }
 .cs-page__back:hover { color: var(--brand-gold); gap: .7rem; }
+
+/* ============================================================================
+   SCROLL PROGRESS BAR
+============================================================================ */
+#scrollProgress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--brand-electric), var(--brand-magenta), var(--brand-gold));
+  z-index: 9999;
+  pointer-events: none;
+  box-shadow: 0 0 12px rgba(206,0,109,.6);
+}
+
+/* ============================================================================
+   PARALLAX PERFORMANCE HINTS
+============================================================================ */
+.hero__slides,
+.hero__content,
+.hero__content--left,
+.glow-1, .glow-2, .glow-3 {
+  will-change: transform;
+}
+
+/* ============================================================================
+   TIGHTER SECTION SPACING — less dead vertical space
+============================================================================ */
+.section {
+  padding-top: 4.2rem !important;
+  padding-bottom: 4.2rem !important;
+}
+.community {
+  padding-top: 4rem !important;
+  padding-bottom: 4rem !important;
+}
+.floor-teaser {
+  padding-top: 4rem !important;
+  padding-bottom: 4rem !important;
+}
+.stats {
+  padding-top: 1.2rem !important;
+  padding-bottom: 1.2rem !important;
+}
+.cta {
+  padding-top: 3rem !important;
+  padding-bottom: 3rem !important;
+}
+.cta--mid .cta__inner {
+  padding: 2.4rem 2rem !important;
+}
+/* Tighten brand animation stage */
+.brand-journey__stage {
+  width: min(380px, 80vw) !important;
+}
+.brand-journey {
+  padding: 1.6rem 0 2.4rem !important;
+}
+/* Legends scroller: shorter */
+.community__scroller {
+  height: 420px !important;
+}
+/* Team community card */
+.team-community__scroll-wrap {
+  height: 280px !important;
+}
+
+/* ============================================================================
+   SECTION VISUAL VARIETY — break the monotony
+============================================================================ */
+/* About: electric purple aura from right */
+.about {
+  position: relative;
+}
+.about::after {
+  content: '';
+  position: absolute;
+  top: 0; right: -40px; bottom: 0;
+  width: 55%;
+  background: radial-gradient(ellipse 80% 70% at 80% 40%, rgba(104,26,255,.13), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+.about > * { position: relative; z-index: 1; }
+
+/* Stats: gold dot-grid texture */
+.stats {
+  background-image: radial-gradient(circle, rgba(247,202,36,.09) 1px, transparent 1px) !important;
+  background-size: 28px 28px !important;
+  background-position: center !important;
+}
+
+/* What's Happening: magenta aura from left */
+.happening {
+  position: relative;
+}
+.happening::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -40px; bottom: 0;
+  width: 45%;
+  background: radial-gradient(ellipse 80% 70% at 20% 50%, rgba(206,0,109,.09), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+.happening > * { position: relative; z-index: 1; }
+
+/* Legends: gold aura from right */
+.community {
+  position: relative;
+}
+.community::after {
+  content: '';
+  position: absolute;
+  top: 0; right: -40px; bottom: 0;
+  width: 35%;
+  background: radial-gradient(ellipse 80% 60% at 90% 50%, rgba(247,202,36,.07), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+.community > * { position: relative; z-index: 1; }
+
+/* Shop / coming-soon teaser: shimmer on hover */
+.shop {
+  position: relative;
+}
+
+/* ============================================================================
+   PAGE NAVIGATION DOTS — fixed right side, desktop only
+============================================================================ */
+.page-dots {
+  position: fixed;
+  right: 1.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  gap: .72rem;
+  padding: .4rem .2rem;
+}
+.page-dot {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.1);
+  transition: background .25s, transform .2s, box-shadow .25s;
+  position: relative;
+  cursor: pointer;
+  text-decoration: none;
+}
+/* Label tooltip */
+.page-dot::after {
+  content: attr(data-label);
+  position: absolute;
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%) translateX(8px);
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  background: rgba(10,5,22,.92);
+  border: 1px solid rgba(247,202,36,.18);
+  padding: .22rem .7rem;
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .18s, transform .18s;
+  backdrop-filter: blur(10px);
+}
+.page-dot:hover::after {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+.page-dot:hover {
+  background: rgba(247,202,36,.5);
+  transform: scale(1.5);
+}
+.page-dot.active {
+  background: var(--brand-gold);
+  box-shadow: 0 0 8px var(--brand-gold-glow), 0 0 18px rgba(247,202,36,.2);
+  transform: scale(1.4);
+}
+.page-dot.active::after {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+  color: var(--brand-gold);
+  border-color: rgba(247,202,36,.35);
+}
+@media (max-width: 900px) {
+  .page-dots { display: none; }
+}
+
+/* ============================================================================
+   PARALLAX — hero slides depth cue: clip overflow
+============================================================================ */
+.hero {
+  overflow: hidden !important;
+}
+/* Reveal: add subtle scale for depth entrance */
+.reveal {
+  transform: translateY(26px) scale(0.985) !important;
+}
+.reveal.in {
+  transform: none !important;
+}
+
+/* ============================================================================
+   MOBILE — tighter spacing on small screens
+============================================================================ */
+@media (max-width: 600px) {
+  .section {
+    padding-top: 2.8rem !important;
+    padding-bottom: 2.8rem !important;
+  }
+  .community__scroller { height: 320px !important; }
+  .brand-journey__stage { width: min(240px, 82vw) !important; }
+}
