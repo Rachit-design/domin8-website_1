@@ -18,8 +18,43 @@
 require('dotenv').config();
 
 const express = require('express');
-const path = require('path');
+const path    = require('path');
+const fs      = require('fs');
+const multer  = require('multer');
 const { getPcStatus, LIVE_MODE } = require('./icafecloud');
+
+// ---- Blog data setup ----
+const BLOG_FILE = path.join(__dirname, 'blog-data.json');
+if (!fs.existsSync(BLOG_FILE)) {
+  fs.writeFileSync(BLOG_FILE, JSON.stringify([
+    { id:1, title:'Valorant League — Week 1 Recap',  category:'Recap',    date:'Coming soon', image:'/assets/player-hero.jpg',   excerpt:'How the opening weekend played out, the clutch of the night, and who\'s topping the table.', link:'#', createdAt:new Date().toISOString() },
+    { id:2, title:'Player Spotlight — The Legends',  category:'Spotlight',date:'Coming soon', image:'/assets/space-current.jpg', excerpt:'Meet the regulars who turned the floor into a second home. Their setups, mains, and stories.', link:'#', createdAt:new Date().toISOString() },
+    { id:3, title:'Best Clips Off the Floor',        category:'Clips',    date:'Coming soon', image:'/assets/hero-gamer.jpg',     excerpt:'The plays everyone\'s still talking about. Straight from the Domin8 floor.',               link:'#', createdAt:new Date().toISOString() }
+  ], null, 2));
+}
+
+// ---- Blog image upload (multer) ----
+const blogImgDir = path.join(__dirname, '..', 'public', 'assets', 'blog');
+if (!fs.existsSync(blogImgDir)) fs.mkdirSync(blogImgDir, { recursive: true });
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: blogImgDir,
+    filename: (_req, file, cb) => cb(null, Date.now() + '-' + file.originalname.replace(/[^a-zA-Z0-9._-]/g,'_'))
+  }),
+  limits: { fileSize: 10 * 1024 * 1024 }
+});
+
+function readBlogPosts() {
+  try { return JSON.parse(fs.readFileSync(BLOG_FILE,'utf8')); } catch { return []; }
+}
+function writeBlogPosts(posts) {
+  fs.writeFileSync(BLOG_FILE, JSON.stringify(posts, null, 2));
+}
+function adminAuth(req, res, next) {
+  const pw = process.env.ADMIN_PASSWORD || 'domin8admin';
+  if (req.headers['x-admin-key'] === pw) return next();
+  res.status(401).json({ error: 'Unauthorized' });
+}
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -174,6 +209,44 @@ app.post('/api/join', async (req, res) => {
   console.log('[join] new signup:', entry);
   res.json({ ok: true, message: 'Welcome to the community!' });
 });
+
+// -----------------------------------------------------------------------------
+// API: Blog posts (public read, admin write/delete)
+// -----------------------------------------------------------------------------
+app.get('/api/blog', (_req, res) => {
+  res.json(readBlogPosts());
+});
+
+app.post('/api/blog', adminAuth, (req, res) => {
+  const { title, category, date, excerpt, image, link } = req.body || {};
+  if (!title || !excerpt) return res.status(400).json({ error: 'Title and excerpt are required.' });
+  const posts = readBlogPosts();
+  const nextId = posts.length ? Math.max(...posts.map(p => p.id || 0)) + 1 : 1;
+  const post = { id: nextId, title, category: category||'News', date: date||'', excerpt, image: image||'/assets/hero-gamer.jpg', link: link||'#', createdAt: new Date().toISOString() };
+  posts.unshift(post);
+  writeBlogPosts(posts);
+  res.json({ ok: true, post });
+});
+
+app.delete('/api/blog/:id', adminAuth, (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  const posts = readBlogPosts().filter(p => p.id !== id);
+  writeBlogPosts(posts);
+  res.json({ ok: true });
+});
+
+app.post('/api/upload', adminAuth, upload.single('image'), (req, res) => {
+  if (!req.file) return res.status(400).json({ error: 'No file uploaded.' });
+  res.json({ ok: true, url: '/assets/blog/' + req.file.filename });
+});
+
+app.get('/api/admin/verify', (req, res) => {
+  const pw = process.env.ADMIN_PASSWORD || 'domin8admin';
+  res.json({ ok: req.query.key === pw });
+});
+
+// Admin panel served as static file at /admin.html
+// (no extra route needed — express.static handles it)
 
 // -----------------------------------------------------------------------------
 // Static website. Served last so API routes take priority.

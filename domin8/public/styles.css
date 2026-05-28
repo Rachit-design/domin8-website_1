@@ -1855,3 +1855,218 @@ body{
 .team-card:focus {
   transform: none !important;
 }
+
+/* ============================================================================
+   NAV LIVE INDICATOR — styles (was missing entirely)
+============================================================================ */
+.nav__live {
+  display: inline-flex;
+  align-items: center;
+  gap: .42rem;
+  padding: .3rem .8rem;
+  border-radius: 99px;
+  background: rgba(14,8,28,.65);
+  border: 1px solid rgba(247,202,36,.22);
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+  color: var(--ink-soft);
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color .2s, background .2s, opacity .2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.nav__live:hover {
+  border-color: rgba(247,202,36,.55);
+  background: rgba(247,202,36,.09);
+  color: var(--ink);
+}
+.nav__live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--brand-gold);
+  box-shadow: 0 0 6px var(--brand-gold-glow);
+  animation: pulse 2s infinite;
+  flex-shrink: 0;
+}
+.nav__live[data-state="busy"] .nav__live-dot {
+  background: var(--brand-magenta);
+  box-shadow: 0 0 6px var(--brand-magenta-glow);
+}
+.nav__live strong { color: var(--ink); font-weight: 700; }
+
+/* Hero live — clickable */
+.hero__live {
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity .2s, border-color .2s;
+}
+.hero__live:hover { opacity: .82; border-color: rgba(247,202,36,.55); }
+
+/* ============================================================================
+   MOBILE UX OVERHAUL
+============================================================================ */
+
+/* --- Section padding tightens on phones --- */
+@media (max-width: 600px) {
+  .section {
+    padding-top: 3.2rem !important;
+    padding-bottom: 3.2rem !important;
+  }
+  .section__title {
+    font-size: clamp(1.5rem, 8vw, 2.3rem) !important;
+  }
+  .section__head { margin-bottom: 1.5rem !important; }
+  .eyebrow { font-size: 1.15rem !important; }
+  .cta { padding: 3rem 1.1rem !important; }
+  .cta h2 { font-size: clamp(1.55rem, 8vw, 2.2rem) !important; }
+  .cta p { font-size: .95rem !important; }
+  .stats { padding: 1rem 1rem 1.5rem !important; }
+  .stats__grid { padding: 1.3rem .9rem !important; gap: .9rem !important; }
+  .stat__num { font-size: clamp(1.9rem, 9vw, 2.6rem) !important; }
+  .community { padding: 3.2rem 1rem !important; }
+  .community__scroller { height: 360px !important; }
+  .floor-map { padding: 3.2rem 1rem !important; }
+  .floor-map__container { padding: 1.1rem .9rem !important; }
+  .floor-map__slot { padding: .38rem .5rem !important; gap: .38rem !important; min-width: 0 !important; }
+  .floor-map__slot-name { font-size: .7rem !important; }
+  .floor-map__legend { gap: .8rem !important; }
+  .glimpse__cta { margin-top: 1.4rem !important; }
+}
+
+/* --- Hero: center everything on phones, override the right-align patch --- */
+@media (max-width: 520px) {
+  .hero__content,
+  .hero__content--left {
+    text-align: center !important;
+    align-items: center !important;
+    margin: auto !important;
+    margin-right: auto !important;
+    padding-left: 1.1rem !important;
+    padding-right: 1.1rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .hero__content .hero__actions,
+  .hero__content--left .hero__actions,
+  .hero__content .hero__live,
+  .hero__content--left .hero__live {
+    justify-content: center !important;
+  }
+  .hero__content .hero__sub,
+  .hero__content--left .hero__sub {
+    text-align: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .hero__title { font-size: clamp(2.6rem, 14vw, 4.2rem) !important; }
+  .hero__eyebrow { font-size: 1.1rem !important; }
+  .hero__sub { font-size: .97rem !important; }
+  .hero__actions { flex-direction: column; align-items: center; gap: .7rem; }
+  .hero__actions .btn { width: 100%; max-width: 300px; justify-content: center; }
+  .hero__live { font-size: .76rem !important; padding: .42rem .9rem !important; }
+}
+
+/* --- Nav: compact on mobile --- */
+@media (max-width: 768px) {
+  .nav__live { font-size: .64rem !important; padding: .26rem .65rem !important; gap: .36rem !important; }
+  .nav__live-dot { width: 6px !important; height: 6px !important; }
+}
+@media (max-width: 480px) {
+  .nav__live { display: none !important; }
+}
+
+/* --- Touch targets: minimum 44px height for all tappable elements --- */
+@media (max-width: 768px) {
+  .btn { min-height: 44px !important; }
+  .nav__burger { width: 44px; height: 44px; justify-content: center; }
+  .mobile-menu a { padding: 1rem .5rem !important; font-size: .9rem !important; }
+  .mobile-menu .btn { min-height: 48px !important; font-size: .85rem !important; }
+}
+
+/* --- Flip card: shorter on mobile --- */
+@media (max-width: 600px) {
+  .flip,
+  .flip__inner { height: 260px !important; min-height: 260px !important; }
+  .space__map-embed,
+  .space__map-embed iframe { min-height: 240px !important; }
+}
+
+/* --- Team grid: 2 cols on phones --- */
+@media (max-width: 480px) {
+  .team__grid { grid-template-columns: repeat(2, 1fr) !important; gap: .7rem !important; }
+  .team-card__img { aspect-ratio: 3/4 !important; }
+  .team-card__body { padding: .7rem .8rem .9rem !important; }
+  .team-card__name { font-size: .88rem !important; }
+  .team-card__role { font-size: .65rem !important; }
+  .team-card__note { font-size: .77rem !important; }
+}
+
+/* --- iesports badges: single col on phones --- */
+@media (max-width: 600px) {
+  .iesports__badges { grid-template-columns: 1fr !important; gap: .5rem !important; }
+  .iesports { padding: 1.4rem 1.2rem !important; }
+  .iesports__text h3 { font-size: 1.4rem !important; }
+}
+
+/* --- Event cards: comfortable padding on mobile --- */
+@media (max-width: 600px) {
+  .event-card { padding: 1.1rem 1rem !important; }
+  .happening { padding: 3.2rem 1rem !important; }
+}
+
+/* --- Footer: tighter on mobile --- */
+@media (max-width: 560px) {
+  .footer__bottom { flex-direction: column !important; text-align: center !important; gap: .3rem !important; }
+  .footer__top { gap: 1.3rem !important; }
+  .footer__brand-logo { gap: .4rem !important; }
+  .footer__logo-face { height: 56px !important; }
+  .footer__logo-type { height: 24px !important; }
+}
+
+/* --- Modal: full-screen friendly on mobile --- */
+@media (max-width: 520px) {
+  .modal__card {
+    margin: .6rem !important;
+    padding: 1.6rem 1.2rem 1.8rem !important;
+    border-radius: 18px !important;
+    max-height: 94vh !important;
+    overflow-y: auto !important;
+  }
+  .modal__title { font-size: 1.5rem !important; }
+  .modal__success .btn { width: 100% !important; justify-content: center !important; }
+  .field input { font-size: 16px !important; } /* prevents iOS zoom on focus */
+}
+
+/* --- Blog cards: single col on mobile, proper spacing --- */
+@media (max-width: 600px) {
+  .glimpse__grid { gap: .9rem !important; }
+  .blog-card__body { padding: 1rem !important; }
+  .blog-card__body h3 { font-size: 1rem !important; }
+}
+
+/* --- Brand journey: smaller stage on phones --- */
+@media (max-width: 480px) {
+  .brand-journey__stage { width: min(260px, 86vw) !important; }
+  .brand-journey__labels { gap: 1.6rem !important; font-size: .64rem !important; }
+  .brand-journey__caption { font-size: 1.1rem !important; }
+}
+
+/* --- Player cards: full width on mobile --- */
+@media (max-width: 600px) {
+  .player-card { padding: .75rem .9rem !important; }
+  .player-card__imgs { width: 58px !important; height: 58px !important; flex: 0 0 58px !important; }
+  .player-card__name { font-size: .9rem !important; }
+  .player-card__tag { font-size: 1rem !important; }
+}
+
+/* --- Community card: better mobile layout --- */
+@media (max-width: 520px) {
+  .team__community-card { margin-top: 1.8rem !important; }
+  .team-community__header { padding: 1.4rem 1.1rem !important; }
+  .team-community__title { font-size: 1.6rem !important; }
+  .team-community__sub { font-size: .88rem !important; }
+  .team-community__scroll-wrap { height: 220px !important; }
+}

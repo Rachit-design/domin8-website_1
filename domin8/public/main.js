@@ -4,8 +4,8 @@
 (function(){
   'use strict';
 
-  // ---- EDIT ME: your real Discord invite ----
-  var DISCORD_INVITE = 'https://discord.gg/your-invite';
+  var DISCORD_INVITE  = 'https://discord.gg/fhCtjEF9T';
+  var WHATSAPP_INVITE = 'https://chat.whatsapp.com/HBbUhT7cIO7J52DEqANBNH';
   document.querySelectorAll('[data-discord]').forEach(function(el){
     el.setAttribute('href', DISCORD_INVITE); el.setAttribute('target','_blank'); el.setAttribute('rel','noopener');
   });
@@ -273,10 +273,44 @@
   });
   buildPlayerColumn();
 
+  // ---- Hero slideshow ----
+  (function(){
+    var slides = document.querySelectorAll('#heroSlides .hero__slide');
+    var dots   = document.getElementById('heroDots');
+    if(!slides.length || !dots) return;
+    var cur = 0, timer;
+    // Build dot buttons
+    [].forEach.call(slides, function(_, i){
+      var b = document.createElement('button');
+      b.setAttribute('aria-label','Slide '+(i+1));
+      if(i===0) b.classList.add('active');
+      b.addEventListener('click', function(){ go(i); reset(); });
+      dots.appendChild(b);
+    });
+    function go(n){
+      slides[cur].classList.remove('active');
+      dots.children[cur].classList.remove('active');
+      cur = (n + slides.length) % slides.length;
+      slides[cur].classList.add('active');
+      dots.children[cur].classList.add('active');
+    }
+    function reset(){ clearInterval(timer); timer = setInterval(function(){ go(cur+1); }, 5500); }
+    // Skip slides whose image fails to load
+    [].forEach.call(slides, function(slide, i){
+      var im = slide.querySelector('img');
+      if(im) im.addEventListener('error', function(){
+        slide.style.display='none';
+        if(dots.children[i]) dots.children[i].style.display='none';
+      });
+    });
+    reset();
+  })();
+
   // ---- Blog ----
   var blogGrid=document.getElementById('blogGrid');
-  if(blogGrid && Array.isArray(window.BLOG_POSTS)){
-    blogGrid.innerHTML = window.BLOG_POSTS.map(function(post){
+  function renderBlogPosts(posts){
+    if(!blogGrid||!Array.isArray(posts)||!posts.length) return;
+    blogGrid.innerHTML = posts.map(function(post){
       var link = (post.link && post.link!=='#') ? '<a href="'+esc(post.link)+'" class="blog-card__link" target="_blank" rel="noopener">Read more →</a>' : '<a href="#" class="blog-card__link">Read more →</a>';
       return '<article class="blog-card reveal">'+
         '<div class="blog-card__thumb"><img src="'+img(post.image)+'" alt="'+esc(post.title)+'" loading="lazy"/><span class="blog-card__cat">'+esc(post.category||'News')+'</span></div>'+
@@ -284,6 +318,11 @@
         '</article>';
     }).join('');
     observeReveals(blogGrid.querySelectorAll('.reveal'));
+  }
+  if(blogGrid){
+    fetch('/api/blog').then(function(r){ return r.ok ? r.json() : Promise.reject(); })
+      .then(function(posts){ renderBlogPosts(posts.length ? posts : window.BLOG_POSTS); })
+      .catch(function(){ renderBlogPosts(window.BLOG_POSTS); });
   }
 
   // ---- Space flip ----

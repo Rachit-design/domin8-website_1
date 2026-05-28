@@ -34,7 +34,7 @@
     <a href="#glimpse">Get a Glimpse</a>
     <a href="#shop">Shop<span class="soon">soon</span></a>
   </nav>
-  <div class="nav__live" id="navLive" data-state="ok"><span class="nav__live-dot"></span><span id="navLiveText">Loading…</span></div>
+  <a class="nav__live" id="navLive" data-state="ok" href="#floor-map" aria-label="See live floor status"><span class="nav__live-dot"></span><span id="navLiveText">Loading…</span></a>
   <button class="btn btn--primary nav__cta" data-open-join>Join the Community</button>
   <button class="nav__burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
 </header>
@@ -49,9 +49,12 @@
 
 <main id="top">
 <section class="hero">
-  <div class="hero__slide-single">
-    <img src="/assets/hero-gamer-new.png" alt="Domin8 gamer" />
+  <div class="hero__slides" id="heroSlides">
+    <div class="hero__slide active"><img src="/assets/hero-gamer-new.png" alt="Domin8 gamer" /></div>
+    <div class="hero__slide"><img src="/assets/space-current-new.jpg" alt="Domin8 gaming floor" /></div>
+    <div class="hero__slide"><img src="/assets/hero-neon.jpg" alt="Domin8 — neon gaming setup" /></div>
   </div>
+  <div class="hero__dots" id="heroDots"></div>
   <div class="hero__veil"></div>
   <div class="hero__content hero__content--left">
     <span class="hero__eyebrow">this one's for the community</span>
@@ -61,7 +64,7 @@
       <button class="btn btn--primary" data-open-join>Join the Community</button>
       <a class="btn btn--ghost" href="#about">Who We Are</a>
     </div>
-    <div class="hero__live" id="heroLive" data-state="ok"><span class="dot"></span><span id="heroLiveText">Loading floor status…</span></div>
+    <a class="hero__live" id="heroLive" data-state="ok" href="#floor-map" title="Tap to see the live floor map"><span class="dot"></span><span id="heroLiveText">Loading floor status…</span></a>
   </div>
   <div class="scroll-cue"><span>scroll</span><span class="line"></span></div>
 </section>
@@ -278,7 +281,7 @@
       <p class="footer__tag">Indore's home of competitive gaming culture.</p>
     </div>
     <div class="footer__links"><h4>Explore</h4><a href="#space">The Space</a><a href="#about">Who We Are</a><a href="#happening">What's Happening</a><a href="#glimpse">Get a Glimpse</a></div>
-    <div class="footer__links"><h4>Connect</h4><a href="#" data-discord>Discord</a><a href="https://www.instagram.com/domin8.gaming?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">Instagram</a><a href="https://www.iesports.in/" target="_blank" rel="noopener">iesports</a><a href="mailto:wassup@domin8esports.com">wassup@domin8esports.com</a></div>
+    <div class="footer__links"><h4>Connect</h4><a href="#" data-discord>Discord</a><a href="https://chat.whatsapp.com/HBbUhT7cIO7J52DEqANBNH" target="_blank" rel="noopener">WhatsApp</a><a href="https://www.instagram.com/domin8.gaming?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">Instagram</a><a href="https://www.iesports.in/" target="_blank" rel="noopener">iesports</a><a href="mailto:wassup@domin8esports.com">wassup@domin8esports.com</a></div>
   </div>
   <div class="footer__bottom"><span>© <span id="year"></span> Domin8 Esports. All rights reserved.</span><span>Made by the community, for the community.</span></div>
 
@@ -303,6 +306,7 @@
       <h3>Welcome to the community!</h3>
       <p>You're in. Now come hang where it all happens.</p>
       <a class="btn btn--primary" href="#" id="discordBtn" target="_blank" rel="noopener">Join our Discord</a>
+      <a class="btn btn--ghost" href="https://chat.whatsapp.com/HBbUhT7cIO7J52DEqANBNH" target="_blank" rel="noopener" style="margin-top:.6rem">WhatsApp Group</a>
     </div>
   </div>
 </div>
