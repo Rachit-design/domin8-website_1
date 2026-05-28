@@ -290,7 +290,11 @@
     function go(n){
       slides[cur].classList.remove('active');
       dots.children[cur].classList.remove('active');
-      cur = (n + slides.length) % slides.length;
+      var next = ((n % slides.length) + slides.length) % slides.length;
+      var tries = 0;
+      while(slides[next].style.display === 'none' && tries < slides.length){ next = (next+1) % slides.length; tries++; }
+      if(tries >= slides.length) return;
+      cur = next;
       slides[cur].classList.add('active');
       dots.children[cur].classList.add('active');
     }
