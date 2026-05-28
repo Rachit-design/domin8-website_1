@@ -188,8 +188,12 @@
   var teamGrid=document.getElementById('teamGrid');
   if(teamGrid && Array.isArray(window.TEAM)){
     teamGrid.innerHTML = window.TEAM.filter(function(m){ return m.name !== 'The Regulars'; }).map(function(m){
+      var initials = m.name.split(' ').filter(Boolean).slice(0,2).map(function(w){ return w[0]||''; }).join('').toUpperCase();
+      var imgHtml = m.image
+        ? '<img src="'+img(m.image)+'" alt="'+esc(m.name)+'" loading="lazy"/>'
+        : '<div class="team-card__initials">'+initials+'</div>';
       return '<div class="team-card">'+
-        '<div class="team-card__img"><img src="'+img(m.image)+'" alt="'+esc(m.name)+'" loading="lazy"/></div>'+
+        '<div class="team-card__img">'+imgHtml+'</div>'+
         '<div class="team-card__body">'+
           '<div class="team-card__name">'+esc(m.name)+'</div>'+
           (m.tag?'<div class="team-card__tag">"'+esc(m.tag)+'"</div>':'')+
@@ -436,11 +440,27 @@
     var state=d.available<=2?'busy':'ok';
     if(live&&liveText){
       live.dataset.state=state;
-      liveText.innerHTML='<strong>'+d.inUse+'/'+d.total+'</strong> playing right now · <strong>'+d.available+'</strong> rigs free';
+      liveText.innerHTML='<strong>'+d.inUse+'/'+d.total+'</strong> playing right now · <strong>'+d.available+'</strong> free';
     }
+    // Nav live — prominent copy
     if(navLive&&navLiveText){
       navLive.dataset.state=state;
-      navLiveText.innerHTML='<strong>'+d.inUse+'</strong>/<strong>'+d.total+'</strong> rigs live';
+      navLiveText.textContent = d.available>0 ? d.available+(d.available===1?' RIG FREE':' RIGS FREE') : 'FLOOR FULL';
+    }
+    // Floor teaser on homepage
+    var teaserFree=document.getElementById('floorTeaserFree');
+    var teaserStatus=document.getElementById('floorTeaserStatus');
+    var minimap=document.getElementById('floorMinimap');
+    if(teaserFree) teaserFree.textContent=d.available;
+    if(teaserStatus) teaserStatus.textContent=d.available===0?'FLOOR FULL':(d.available<=3?'ALMOST FULL':'RIGS AVAILABLE');
+    if(minimap&&d.pcs){
+      var srtd=d.pcs.slice().sort(function(a,b){return a.pc_name.localeCompare(b.pc_name,undefined,{numeric:true});});
+      minimap.innerHTML=srtd.map(function(pc){
+        var busy=pc.pc_in_using===1;
+        var offline=pc.status==='Offline'||pc.status==='offline';
+        var cls=offline?'offline':(busy?'busy':'free');
+        return '<div class="floor-teaser__minidot floor-teaser__minidot--'+cls+'" title="'+esc(pc.pc_name)+'"></div>';
+      }).join('');
     }
     if(d.pcs){
       renderFloorMap(d.pcs);

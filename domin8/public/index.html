@@ -34,7 +34,7 @@
     <a href="#glimpse">Get a Glimpse</a>
     <a href="#shop">Shop<span class="soon">soon</span></a>
   </nav>
-  <a class="nav__live" id="navLive" data-state="ok" href="#floor-map" aria-label="See live floor status"><span class="nav__live-dot"></span><span id="navLiveText">Loading…</span></a>
+  <a class="nav__live" id="navLive" data-state="ok" href="/floor" aria-label="See live floor status"><span class="nav__live-dot"></span><span id="navLiveText">FLOOR LIVE</span><span class="nav__live-arrow">↗</span></a>
   <button class="btn btn--primary nav__cta" data-open-join>Join the Community</button>
   <button class="nav__burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
 </header>
@@ -43,16 +43,17 @@
   <a href="#about">Who We Are</a>
   <a href="#happening">What's Happening</a>
   <a href="#glimpse">Get a Glimpse</a>
-  <a href="#shop">Shop · coming soon</a>
+  <a href="/floor" class="mobile-menu__live-link"><span class="mobile-menu__live-dot"></span>Live Floor Map</a>
+  <a href="/coming-soon">Shop · coming soon</a>
   <button class="btn btn--primary" data-open-join>Join the Community</button>
 </div>
 
 <main id="top">
 <section class="hero">
   <div class="hero__slides" id="heroSlides">
-    <div class="hero__slide active"><img src="/assets/hero-gamer-new.png" alt="Domin8 gamer" /></div>
+    <div class="hero__slide active"><img src="/assets/hero-floor.png" alt="Domin8 gaming floor" /></div>
     <div class="hero__slide"><img src="/assets/hero-neon.jpg" alt="Domin8 — neon gaming setup" /></div>
-    <div class="hero__slide"><img src="/assets/hero-floor.png" alt="Domin8 gaming floor" /></div>
+    <div class="hero__slide"><img src="/assets/hero-gamer-new.png" alt="Domin8 gamer" /></div>
   </div>
   <div class="hero__dots" id="heroDots"></div>
   <div class="hero__veil"></div>
@@ -64,7 +65,7 @@
       <button class="btn btn--primary" data-open-join>Join the Community</button>
       <a class="btn btn--ghost" href="#about">Who We Are</a>
     </div>
-    <a class="hero__live" id="heroLive" data-state="ok" href="#floor-map" title="Tap to see the live floor map"><span class="dot"></span><span id="heroLiveText">Loading floor status…</span></a>
+    <a class="hero__live" id="heroLive" data-state="ok" href="/floor" title="Tap to see the live floor map"><span class="dot"></span><span id="heroLiveText">Loading floor status…</span></a>
   </div>
   <div class="scroll-cue"><span>scroll</span><span class="line"></span></div>
 </section>
@@ -121,24 +122,49 @@
   </div>
 </section>
 
-<!-- Live PC Floor Map -->
-<section class="section floor-map" id="floor-map">
+<!-- Live Floor Teaser — links to /floor dedicated page -->
+<section class="section floor-teaser" id="floor-map">
   <div class="section__head center">
     <span class="eyebrow">live floor</span>
     <h2 class="section__title">The Floor, Right Now</h2>
-    <p class="section__lede">Every rig, live. Gold means it's yours.</p>
+    <p class="section__lede">Every rig, live-updated. No guessing whether it's packed or empty before you show up.</p>
   </div>
-  <div class="floor-map__container glass" id="floorMap">
-    <div class="floor-map__legend">
-      <span class="floor-map__legend-item"><span class="floor-map__pc floor-map__pc--free"></span>Available</span>
-      <span class="floor-map__legend-item"><span class="floor-map__pc floor-map__pc--busy"></span>In Use</span>
-      <span class="floor-map__legend-item"><span class="floor-map__pc floor-map__pc--offline"></span>Offline</span>
+  <a class="floor-teaser__card glass reveal" href="/floor">
+    <div class="floor-teaser__left">
+      <div class="floor-teaser__stat">
+        <span class="floor-teaser__num" id="floorTeaserFree">—</span>
+        <span class="floor-teaser__label" id="floorTeaserStatus">RIGS FREE</span>
+      </div>
+      <div class="floor-teaser__minimap" id="floorMinimap">
+        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
+        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
+        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
+        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
+        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
+        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
+        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
+        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
+        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
+        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
+        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
+        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
+        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
+        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
+        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
+        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
+        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
+        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
+        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
+        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
+      </div>
     </div>
-    <div class="floor-map__grid" id="floorGrid">
-      <!-- PC slots injected by JS -->
+    <div class="floor-teaser__right">
+      <div class="floor-teaser__eyebrow">Live — updates every 20 seconds</div>
+      <h3 class="floor-teaser__heading">Open the live floor map</h3>
+      <p class="floor-teaser__desc">20 rigs. See exactly which ones are taken and which ones are yours right now.</p>
+      <span class="floor-teaser__cta btn btn--ghost">See Full Floor Map ↗</span>
     </div>
-    <p class="floor-map__update" id="floorUpdate">Updating…</p>
-  </div>
+  </a>
 </section>
 
 <section class="section about" id="about">
@@ -253,12 +279,12 @@
 </section>
 
 <section class="section shop" id="shop">
-  <div class="shop__card glass reveal">
+  <a class="shop__card glass reveal" href="/coming-soon">
     <span class="shop__tag">coming soon</span>
     <h2 class="shop__title">Something's cooking.</h2>
-    <p>Merch, gear, and a lot more than you'd expect. Not just stuff to wear — a whole drop. Stay tuned.</p>
-    <button class="btn btn--ghost" data-open-join>Get notified</button>
-  </div>
+    <p>Merch, gear, and a whole lot more. Not just stuff to wear — a drop that hits different. Tap to get the full picture.</p>
+    <span class="btn btn--ghost shop__tease-btn">See What's Coming →</span>
+  </a>
 </section>
 
 <section class="cta cta--closing">

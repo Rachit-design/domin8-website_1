@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Domin8 Esports — Live Floor</title>
+<meta name="description" content="See every rig live. Real-time PC availability at Domin8 Esports, Indore." />
+<link rel="icon" type="image/png" href="/assets/logo-face-cutout.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton+SC&family=Manrope:wght@400;500;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+<div class="atmosphere" aria-hidden="true"><span class="glow glow-1"></span><span class="glow glow-2"></span><span class="glow glow-3"></span></div>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="nav" id="nav">
+  <a class="nav__brand" href="/" aria-label="Domin8 home">
+    <span class="nav__logo-stack" aria-hidden="true">
+      <img src="/assets/logo-face-cutout.png" alt="" class="nav__logo nav__logo--color" />
+      <img src="/assets/logo-white-cutout.png" alt="" class="nav__logo nav__logo--white" />
+    </span>
+    <img src="/assets/typography-cutout.png" alt="DOMIN8" class="nav__wordmark-img" />
+  </a>
+  <nav class="nav__links" aria-label="Primary">
+    <a href="/#space">The Space</a>
+    <a href="/#about">Who We Are</a>
+    <a href="/#happening">What's Happening</a>
+    <a href="/#glimpse">Get a Glimpse</a>
+    <a href="/coming-soon">Shop<span class="soon">soon</span></a>
+  </nav>
+  <a class="nav__live" id="navLive" data-state="ok" href="/floor" aria-label="Live floor status" style="pointer-events:none;opacity:.7;">
+    <span class="nav__live-dot"></span>
+    <span id="navLiveText">LIVE FLOOR</span>
+  </a>
+  <button class="btn btn--primary nav__cta" id="navJoinBtn">Join the Community</button>
+  <button class="nav__burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+</header>
+<div class="mobile-menu" id="mobileMenu" hidden>
+  <a href="/#space">The Space</a>
+  <a href="/#about">Who We Are</a>
+  <a href="/#happening">What's Happening</a>
+  <a href="/#glimpse">Get a Glimpse</a>
+  <a href="/coming-soon">Shop · coming soon</a>
+  <button class="btn btn--primary" id="mobileJoinBtn">Join the Community</button>
+</div>
+
+<main>
+<div class="floor-page">
+
+  <!-- Hero counter -->
+  <div class="floor-page__hero">
+    <span class="eyebrow">⚡ live floor</span>
+    <h1>The Floor,<br><span style="color:var(--brand-gold)">Right Now</span></h1>
+    <div class="floor-page__counter">
+      <span class="floor-page__count-num" id="floorHeroInUse">—/20</span>
+      <span class="floor-page__count-sub">RIGS IN USE RIGHT NOW</span>
+    </div>
+    <div>
+      <span style="font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);">
+        <strong id="floorHeroFree" style="color:var(--brand-gold);font-family:var(--font-display);font-size:1.2rem;">—</strong>
+        &nbsp;rigs available
+      </span>
+      <span class="floor-page__status" id="floorHeroStatus"></span>
+    </div>
+    <a class="floor-page__back" href="/">← Back to home</a>
+  </div>
+
+  <!-- Full floor map -->
+  <div class="floor-map__container glass" id="floorMap">
+    <div class="floor-map__legend">
+      <span class="floor-map__legend-item"><span class="floor-map__pc floor-map__pc--free"></span>Available</span>
+      <span class="floor-map__legend-item"><span class="floor-map__pc floor-map__pc--busy"></span>In Use</span>
+      <span class="floor-map__legend-item"><span class="floor-map__pc floor-map__pc--offline"></span>Offline</span>
+    </div>
+    <div class="floor-map__grid" id="floorGrid">
+      <!-- PC slots injected by JS -->
+    </div>
+    <p class="floor-map__update" id="floorUpdate">Loading…</p>
+  </div>
+
+</div>
+</main>
+
+<footer class="footer">
+  <div class="footer__top">
+    <div class="footer__brand">
+      <div class="footer__brand-logo">
+        <img src="/assets/logo-face-cutout.png" alt="Domin8 Esports" class="footer__logo-face" />
+        <img src="/assets/typography-cutout.png" alt="DOMIN8" class="footer__logo-type" />
+      </div>
+      <p class="footer__tag">Indore's home of competitive gaming culture.</p>
+    </div>
+    <div class="footer__links"><h4>Explore</h4><a href="/#space">The Space</a><a href="/#about">Who We Are</a><a href="/#happening">What's Happening</a><a href="/#glimpse">Get a Glimpse</a></div>
+    <div class="footer__links"><h4>Connect</h4><a href="#" data-discord>Discord</a><a href="https://chat.whatsapp.com/HBbUhT7cIO7J52DEqANBNH" target="_blank" rel="noopener">WhatsApp</a><a href="https://www.instagram.com/domin8.gaming?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">Instagram</a><a href="mailto:wassup@domin8esports.com">wassup@domin8esports.com</a></div>
+  </div>
+  <div class="footer__bottom"><span>© <span id="year"></span> Domin8 Esports. All rights reserved.</span><span>Made by the community, for the community.</span></div>
+</footer>
+
+<!-- Join modal (same as main page) -->
+<div class="modal" id="joinModal" role="dialog" aria-modal="true" aria-labelledby="joinTitle">
+  <div class="modal__card">
+    <button class="modal__close" id="modalClose" aria-label="Close">×</button>
+    <div class="modal__form" id="joinForm">
+      <span class="modal__eyebrow">one of us now</span>
+      <h2 class="modal__title" id="joinTitle">Join the Community</h2>
+      <p class="modal__desc">Get event drops, tournament invites, and first dibs on what's coming. No spam — just the good stuff.</p>
+      <div class="field"><label for="jName">Name</label><input id="jName" type="text" placeholder="Your name" autocomplete="name" /></div>
+      <div class="field"><label for="jTag">Gamer Tag</label><input id="jTag" type="text" placeholder="What name do you use while playing?" /></div>
+      <div class="field"><label for="jEmail">Email</label><input id="jEmail" type="email" placeholder="you@email.com" autocomplete="email" /></div>
+      <div class="field"><label for="jPhone">Phone Number</label><input id="jPhone" type="tel" placeholder="+91 XXXXX XXXXX" autocomplete="tel" /></div>
+      <button class="btn btn--primary" id="joinSubmit">Count me in</button>
+      <p class="modal__feedback" id="joinFeedback" role="status" aria-live="polite"></p>
+    </div>
+    <div class="modal__success" id="joinSuccess">
+      <div class="check">✓</div>
+      <h3>Welcome to the community!</h3>
+      <p>You're in. Now come hang where it all happens.</p>
+      <a class="btn btn--primary" href="https://discord.gg/fhCtjEF9T" id="discordBtn" target="_blank" rel="noopener">Join our Discord</a>
+      <a class="btn btn--ghost" href="https://chat.whatsapp.com/HBbUhT7cIO7J52DEqANBNH" target="_blank" rel="noopener" style="margin-top:.6rem">WhatsApp Group</a>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  var DISCORD_INVITE = 'https://discord.gg/fhCtjEF9T';
+  document.querySelectorAll('[data-discord]').forEach(function(el){
+    el.setAttribute('href', DISCORD_INVITE); el.setAttribute('target','_blank'); el.setAttribute('rel','noopener');
+  });
+  var yearEl = document.getElementById('year'); if(yearEl) yearEl.textContent = new Date().getFullYear();
+
+  function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+
+  // Nav scroll + mobile menu
+  var nav = document.getElementById('nav');
+  window.addEventListener('scroll', function(){ if(nav) nav.classList.toggle('scrolled', window.scrollY>30); });
+  var burger = document.getElementById('burger'), menu = document.getElementById('mobileMenu');
+  if(burger && menu){
+    burger.addEventListener('click', function(){ var open = !menu.hidden; menu.hidden = open; burger.setAttribute('aria-expanded', String(!open)); });
+    menu.querySelectorAll('a,button').forEach(function(el){ el.addEventListener('click', function(){ menu.hidden=true; }); });
+  }
+
+  // Join modal
+  var modal = document.getElementById('joinModal');
+  function openModal(){ modal.classList.add('open'); document.body.style.overflow='hidden'; }
+  function closeModal(){ modal.classList.remove('open'); document.body.style.overflow=''; }
+  document.getElementById('navJoinBtn').addEventListener('click', openModal);
+  var mobileJoin = document.getElementById('mobileJoinBtn');
+  if(mobileJoin) mobileJoin.addEventListener('click', openModal);
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  if(modal) modal.addEventListener('click', function(e){ if(e.target===modal) closeModal(); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape'&&modal) closeModal(); });
+
+  var SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwZl68EyMcTnGZnEi4u7gXj9kVI-ouFIRrAcmrVtklvmB3UxtnXlaXtl2-wJA23FSpB/exec';
+  var submit = document.getElementById('joinSubmit'), feedback = document.getElementById('joinFeedback');
+  if(submit){
+    submit.addEventListener('click', async function(){
+      var name=document.getElementById('jName').value.trim(), tag=document.getElementById('jTag').value.trim(), email=document.getElementById('jEmail').value.trim(), phone=(document.getElementById('jPhone')||{}).value||'';
+      feedback.style.color='var(--magenta)';
+      if(!name||!email){feedback.textContent='Please add your name and email.';return;}
+      if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){feedback.textContent='That email looks off — check it?';return;}
+      feedback.textContent='Sending…'; feedback.style.color='var(--ink-soft)';
+      var payload = {name:name,tag:tag,email:email,phone:phone.trim(),timestamp:new Date().toISOString()};
+      try{ await fetch('/api/join',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}); }catch(e){}
+      try{ if(SHEETS_URL&&!SHEETS_URL.includes('YOUR_DEPLOYMENT_ID')) await fetch(SHEETS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}); }catch(e){}
+      document.getElementById('joinForm').classList.add('hide');
+      document.getElementById('joinSuccess').classList.add('show');
+    });
+  }
+
+  // ---- Floor map ----
+  function demoStatus(){
+    var h=new Date().getHours(),base;
+    if(h>=17&&h<=23)base=0.8;else if(h>=12&&h<17)base=0.55;else if(h>=7&&h<12)base=0.3;else base=0.15;
+    var frac=Math.min(0.95,Math.max(0.05,base+Math.sin(Date.now()/600000)*0.1));
+    var inUse=Math.round(20*frac), pcs=[];
+    for(var i=0;i<20;i++) pcs.push({pc_name:'PC'+(101+i),pc_in_using:i<inUse?1:0,status:i<inUse?'InUse':'Free'});
+    return{inUse:inUse,total:20,available:20-inUse,pcs:pcs};
+  }
+
+  function renderFloorMap(pcs){
+    var grid=document.getElementById('floorGrid');
+    var upd=document.getElementById('floorUpdate');
+    if(!grid||!pcs)return;
+    var sorted=pcs.slice().sort(function(a,b){return a.pc_name.localeCompare(b.pc_name,undefined,{numeric:true});});
+    var half=Math.ceil(sorted.length/2);
+    function makeSlot(pc){
+      var busy=pc.pc_in_using===1;
+      var offline=pc.status==='Offline'||pc.status==='offline';
+      var cls=offline?'offline':(busy?'busy':'free');
+      var label=busy?'In Use':(offline?'Offline':'Available');
+      return '<div class="floor-map__slot floor-map__slot--'+cls+'" title="'+esc(pc.pc_name)+' — '+label+'">'+
+        '<span class="floor-map__slot-dot"></span>'+
+        '<div class="floor-map__slot-info">'+
+          '<div class="floor-map__slot-name">'+esc(pc.pc_name)+'</div>'+
+          '<div class="floor-map__slot-status">'+label+'</div>'+
+        '</div></div>';
+    }
+    grid.innerHTML=
+      '<div class="floor-map__row">'+sorted.slice(0,half).map(makeSlot).join('')+'</div>'+
+      '<div class="floor-map__center-aisle"><span class="floor-map__aisle-label">Centre Aisle</span></div>'+
+      '<div class="floor-map__row floor-map__row--right">'+sorted.slice(half).map(makeSlot).join('')+'</div>';
+    if(upd) upd.textContent='Updated: '+new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+  }
+
+  function getStatusPhrase(available, total){
+    var ratio=available/total;
+    if(ratio>=0.7) return 'Plenty of space';
+    if(ratio>=0.4) return "Floor's filling up";
+    if(ratio>=0.15) return 'Almost packed';
+    if(ratio>0) return 'Last few left';
+    return "Floor's full";
+  }
+
+  function updatePage(d){
+    var heroInUse=document.getElementById('floorHeroInUse');
+    var heroFree=document.getElementById('floorHeroFree');
+    var heroStatus=document.getElementById('floorHeroStatus');
+    var navLive=document.getElementById('navLive');
+    var navLiveText=document.getElementById('navLiveText');
+    if(heroInUse) heroInUse.textContent=d.inUse+'/'+d.total;
+    if(heroFree) heroFree.textContent=d.available;
+    if(heroStatus) heroStatus.textContent=getStatusPhrase(d.available,d.total);
+    if(navLive&&navLiveText){
+      navLive.dataset.state=d.available<=2?'busy':'ok';
+      navLiveText.textContent=d.available>0?d.available+' RIGS FREE':'FLOOR FULL';
+    }
+    renderFloorMap(d.pcs);
+  }
+
+  async function pollStatus(){
+    try{
+      var res=await fetch('/api/pc-status',{headers:{Accept:'application/json'}});
+      if(!res.ok) throw 0;
+      updatePage(await res.json());
+    }catch(e){ updatePage(demoStatus()); }
+  }
+
+  pollStatus();
+  setInterval(pollStatus,20000);
+})();
+</script>
+</body>
+</html>

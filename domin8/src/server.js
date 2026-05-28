@@ -253,6 +253,10 @@ app.get('/api/admin/verify', (req, res) => {
 // -----------------------------------------------------------------------------
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
+// Dedicated sub-pages (before SPA fallback so they get the right HTML)
+app.get('/floor', (_req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'floor.html')));
+app.get('/coming-soon', (_req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'coming-soon.html')));
+
 // SPA-ish fallback: any unknown non-API route returns the homepage.
 app.get('*', (req, res, next) => {
   if (req.path.startsWith('/api/')) return next();
