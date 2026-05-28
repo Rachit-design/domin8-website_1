@@ -16,7 +16,6 @@
 <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
-<div id="scrollProgress" aria-hidden="true"></div>
 <div class="atmosphere" aria-hidden="true"><span class="glow glow-1"></span><span class="glow glow-2"></span><span class="glow glow-3"></span></div>
 <div class="grain" aria-hidden="true"></div>
 
@@ -67,7 +66,6 @@
     <div class="hero__slide"><img src="/assets/hero-neon.png" alt="Domin8 — neon gaming setup" /></div>
     <div class="hero__slide"><img src="/assets/hero-gamer-new.png" alt="Domin8 gamer" /></div>
   </div>
-  <div class="hero__dots" id="heroDots"></div>
   <div class="hero__veil"></div>
   <div class="hero__content hero__content--left">
     <span class="hero__eyebrow">this one's for the community</span>
@@ -82,7 +80,7 @@
   <div class="scroll-cue"><span>scroll</span><span class="line"></span></div>
 </section>
 
-<section class="section space" id="space">
+<section class="section space" id="space" data-panel>
   <div class="section__head center">
     <span class="eyebrow">the space</span>
     <h2 class="section__title">This is where it all happens</h2>
@@ -125,7 +123,7 @@
   </div>
 </section>
 
-<section class="stats" id="stats">
+<section class="stats" id="stats" data-panel>
   <div class="stats__grid">
     <div class="stat reveal"><div class="stat__num" data-target="8" data-suffix="+"></div><div class="stat__label">Years running</div></div>
     <div class="stat reveal" style="--d:.08s"><div class="stat__num" data-target="2500" data-suffix="+"></div><div class="stat__label">Community members</div></div>
@@ -135,7 +133,7 @@
 </section>
 
 <!-- Live Floor Teaser — links to /floor dedicated page -->
-<section class="section floor-teaser" id="floor-map">
+<section class="section floor-teaser" id="floor-map" data-panel>
   <div class="section__head center">
     <span class="eyebrow">live floor</span>
     <h2 class="section__title">The Floor, Right Now</h2>
@@ -179,39 +177,49 @@
   </a>
 </section>
 
-<section class="section about" id="about">
+<section class="section about" id="about" data-panel>
   <div class="section__head center">
     <span class="eyebrow">who we are</span>
     <h2 class="section__title">Built by the community.<br><span class="accent-green">For the community.</span></h2>
   </div>
-  <div class="about__body reveal">
-    <p>We're gamers first. Domin8 started with a simple idea — give Indore's players a real home, not just a place with PCs in the corner. So we built one. We throw the LAN nights, run the tournaments, and open the doors so people can feel what gaming's actually about: the squad next to you, the clutch everyone remembers, the friends you didn't know you'd make.</p>
-    <p>Eight years in, we're not just a cafe anymore — we're a community, a culture, and a tech hub that's only getting bigger.</p>
-  </div>
 
-  <!-- Old→New logo brand transition with animation -->
-  <div class="brand-journey reveal">
-    <div class="brand-journey__stage" aria-label="Domin8 rebrand: old logo dissolves into new logo, then reveals typography">
-      <img src="/assets/logo-old-cutout.png" alt="Original Domin8 logo" class="brand-journey__mark brand-journey__mark--old" id="brandOldImgClean" />
-      <img src="/assets/logo-face-cutout.png" alt="New Domin8 logo" class="brand-journey__mark brand-journey__mark--new" id="brandNewImgClean" />
-      <img src="/assets/typography-cutout.png" alt="DOMIN8" class="brand-journey__mark brand-journey__mark--type" id="brandTypeImgClean" />
-    </div>
-    <div class="brand-journey__labels">
-      <span id="labelOld" class="bj-label">Where it started</span>
-      <span id="labelNew" class="bj-label">Where we're going</span>
-    </div>
-    <div class="brand-journey__logos">
-      <div class="brand-journey__old" id="oldLogo">
-        <img src="/assets/logo-old.png" alt="Original Domin8 logo" id="brandOldImg" />
-        <span>Where it started</span>
-      </div>
-      <div class="brand-journey__arrow">→</div>
-      <div class="brand-journey__new" id="newLogo">
-        <img src="/assets/logo-face-transparent.png" alt="New Domin8 logo" id="brandNewImg" />
-        <span>Where we're going</span>
+  <div class="about__split">
+    <div class="about__split-text reveal">
+      <div class="about__body">
+        <p>We're gamers first. Domin8 started with a simple idea — give Indore's players a real home, not just a place with PCs in the corner. So we built one. We throw the LAN nights, run the tournaments, and open the doors so people can feel what gaming's actually about: the squad next to you, the clutch everyone remembers, the friends you didn't know you'd make.</p>
+        <p>Eight years in, we're not just a cafe anymore — we're a community, a culture, and a tech hub that's only getting bigger.</p>
       </div>
     </div>
-    <p class="brand-journey__caption">8 years. Same passion. Bigger vision.</p>
+    <div class="about__split-visual">
+      <!-- Old→New logo brand transition with animation -->
+      <div class="brand-journey">
+        <div class="brand-journey__context" id="brandContext" aria-live="polite">
+          <span class="brand-journey__context-year">Est. 2016</span>
+          <span class="brand-journey__context-text">The original mark</span>
+        </div>
+        <div class="brand-journey__stage" aria-label="Domin8 rebrand: old logo to new logo to full mark">
+          <img src="/assets/logo-old-cutout.png" alt="Original Domin8 logo" class="brand-journey__mark brand-journey__mark--old" id="brandOldImgClean" />
+          <img src="/assets/logo-face-cutout.png" alt="New Domin8 logo" class="brand-journey__mark brand-journey__mark--new" id="brandNewImgClean" />
+          <img src="/assets/typography-cutout.png" alt="DOMIN8" class="brand-journey__mark brand-journey__mark--type" id="brandTypeImgClean" />
+        </div>
+        <div class="brand-journey__labels">
+          <span id="labelOld" class="bj-label">Where it started</span>
+          <span id="labelNew" class="bj-label">Where we're going</span>
+        </div>
+        <div class="brand-journey__logos">
+          <div class="brand-journey__old" id="oldLogo">
+            <img src="/assets/logo-old.png" alt="Original Domin8 logo" id="brandOldImg" />
+            <span>Where it started</span>
+          </div>
+          <div class="brand-journey__arrow">→</div>
+          <div class="brand-journey__new" id="newLogo">
+            <img src="/assets/logo-face-transparent.png" alt="New Domin8 logo" id="brandNewImg" />
+            <span>Where we're going</span>
+          </div>
+        </div>
+        <p class="brand-journey__caption">8 years. Same passion. Bigger vision.</p>
+      </div>
+    </div>
   </div>
 
   <div class="team">
@@ -234,7 +242,7 @@
 </section>
 
 <!-- The Legends — separate section, to be updated next push -->
-<section class="section community" id="community">
+<section class="section community" id="community" data-panel>
   <div class="section__head center">
     <span class="eyebrow">the legends</span>
     <h2 class="section__title">The faces of Domin8</h2>
@@ -246,7 +254,7 @@
   <p class="community__note reveal">…and the roster keeps growing. New legends added all the time.</p>
 </section>
 
-<section class="section happening" id="happening">
+<section class="section happening" id="happening" data-panel>
   <div class="section__head center">
     <span class="eyebrow">what's happening</span>
     <h2 class="section__title">Always something going down</h2>
@@ -270,7 +278,7 @@
   </div>
 </section>
 
-<section class="cta cta--mid">
+<section class="cta cta--mid" data-panel>
   <div class="cta__inner reveal">
     <h2>Your spot's waiting.</h2>
     <p>Join the community that's building something bigger. Events, drops, tournaments, and first access to what's next.</p>
@@ -278,7 +286,7 @@
   </div>
 </section>
 
-<section class="section glimpse" id="glimpse">
+<section class="section glimpse" id="glimpse" data-panel>
   <div class="section__head center">
     <span class="eyebrow">get a glimpse</span>
     <h2 class="section__title">Stories, clips &amp; moments</h2>
@@ -290,7 +298,7 @@
   </div>
 </section>
 
-<section class="section shop" id="shop">
+<section class="section shop" id="shop" data-panel>
   <a class="shop__card glass reveal" href="/coming-soon">
     <span class="shop__tag">coming soon</span>
     <h2 class="shop__title">Something's cooking.</h2>

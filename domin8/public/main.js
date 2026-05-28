@@ -82,13 +82,24 @@
     var imgNew   = document.getElementById('brandNewImgClean');
     var imgType  = document.getElementById('brandTypeImgClean');
 
+    var brandCtx = document.getElementById('brandContext');
     var bTimers = [];
     function bClear(){ bTimers.forEach(clearTimeout); bTimers = []; }
     function bDelay(fn, ms){ bTimers.push(setTimeout(fn, ms)); }
 
     function setLabel(which){
       if(labelOld) labelOld.classList.toggle('bj-label--active', which === 'old');
-      if(labelNew) labelNew.classList.toggle('bj-label--active', which === 'new');
+      if(labelNew) labelNew.classList.toggle('bj-label--active', which === 'new' || which === 'type');
+      if(brandCtx){
+        var yearEl = brandCtx.querySelector('.brand-journey__context-year');
+        var textEl = brandCtx.querySelector('.brand-journey__context-text');
+        if(yearEl && textEl){
+          if(which==='old'){ yearEl.textContent='Est. 2016'; textEl.textContent='The original mark'; }
+          else if(which==='new'){ yearEl.textContent='Reborn 2024'; textEl.textContent='New chapter begins'; }
+          else if(which==='type'){ yearEl.textContent='DOMIN8'; textEl.textContent='The complete identity'; }
+          else { yearEl.textContent=''; textEl.textContent=''; }
+        }
+      }
     }
 
     // fade: el → opacity 0 or 1, dur in ms
@@ -149,7 +160,7 @@
     function loopStep(){
       // type fades in
       fade(imgType, 1, 900);
-      setLabel('new');
+      setLabel('type');
 
       // type fades out
       bDelay(function(){
@@ -277,39 +288,24 @@
   });
   buildPlayerColumn();
 
-  // ---- Hero slideshow ----
+  // ---- Hero slideshow (auto-advance, no dot indicators) ----
   (function(){
     var slides = document.querySelectorAll('#heroSlides .hero__slide');
-    var dots   = document.getElementById('heroDots');
-    if(!slides.length || !dots) return;
+    if(!slides.length) return;
     var cur = 0, timer;
-    // Build dot buttons
-    [].forEach.call(slides, function(_, i){
-      var b = document.createElement('button');
-      b.setAttribute('aria-label','Slide '+(i+1));
-      if(i===0) b.classList.add('active');
-      b.addEventListener('click', function(){ go(i); reset(); });
-      dots.appendChild(b);
-    });
     function go(n){
       slides[cur].classList.remove('active');
-      dots.children[cur].classList.remove('active');
       var next = ((n % slides.length) + slides.length) % slides.length;
       var tries = 0;
       while(slides[next].style.display === 'none' && tries < slides.length){ next = (next+1) % slides.length; tries++; }
       if(tries >= slides.length) return;
       cur = next;
       slides[cur].classList.add('active');
-      dots.children[cur].classList.add('active');
     }
     function reset(){ clearInterval(timer); timer = setInterval(function(){ go(cur+1); }, 5500); }
-    // Skip slides whose image fails to load
-    [].forEach.call(slides, function(slide, i){
+    [].forEach.call(slides, function(slide){
       var im = slide.querySelector('img');
-      if(im) im.addEventListener('error', function(){
-        slide.style.display='none';
-        if(dots.children[i]) dots.children[i].style.display='none';
-      });
+      if(im) im.addEventListener('error', function(){ slide.style.display='none'; });
     });
     reset();
   })();
@@ -477,17 +473,6 @@
   }
   if(live){ pollStatus(); setInterval(pollStatus,20000); }
 
-  // ── Scroll progress bar ──────────────────────────────────────────────────
-  var progressEl = document.getElementById('scrollProgress');
-  if(progressEl){
-    function updateProgress(){
-      var max = document.documentElement.scrollHeight - window.innerHeight;
-      progressEl.style.width = (max>0 ? (window.scrollY/max*100) : 0).toFixed(1)+'%';
-    }
-    window.addEventListener('scroll', updateProgress, {passive:true});
-    updateProgress();
-  }
-
   // ── Parallax engine (hero bg + content + atmosphere glows) ───────────────
   (function(){
     var slides   = document.getElementById('heroSlides');
@@ -526,6 +511,22 @@
 
     // Initial call so glows are positioned on load
     frame();
+  })();
+
+  // ── Depth panel entrance animation ──────────────────────────────────────
+  (function(){
+    var panels = document.querySelectorAll('[data-panel]');
+    if(!panels.length) return;
+    if(!('IntersectionObserver' in window)){
+      panels.forEach(function(el){ el.classList.add('panel-visible'); });
+      return;
+    }
+    var panelIO = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('panel-visible'); panelIO.unobserve(e.target); }
+      });
+    }, { threshold: 0.04 });
+    panels.forEach(function(el){ panelIO.observe(el); });
   })();
 
   // ── Page navigation dots (desktop sidebar) ───────────────────────────────
