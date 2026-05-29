@@ -2964,3 +2964,120 @@ body{
     min-width: 0 !important;
   }
 }
+
+/* ============================================================================
+   DOMIN8 LOGO v2 — Cobalt-Blue palette
+   Old electric-purple #681AFF  →  cobalt-blue #1E2FAD
+   Old accent-purple  #77319F   →  deep-cobalt  #2838C0
+   Pink/Gold unchanged.
+============================================================================ */
+
+/* ---- 1. CSS VARIABLE OVERRIDE ---- */
+:root {
+  --brand-electric:       #1E2FAD;
+  --brand-purple:         #2838C0;
+  --brand-electric-glow:  rgba(30,47,173,.35);
+  --brand-1-glow:         rgba(40,56,192,.42);
+  --glass-bg:             rgba(6,8,28,.68);
+  --glass-border:         rgba(40,56,192,.32);
+  --bg:   #020514;
+  --bg-2: #030818;
+}
+
+/* ---- 2. BODY & ATMOSPHERE ---- */
+body {
+  background:
+    radial-gradient(circle at 84% 4%,  rgba(30,47,173,.22),  transparent 30%),
+    radial-gradient(circle at 12% 46%, rgba(206,0,109,.16),  transparent 38%),
+    linear-gradient(180deg, #020514, #030818) !important;
+}
+.atmosphere {
+  background:
+    radial-gradient(900px 560px at 50% -12%, rgba(40,56,192,.24), transparent 62%),
+    radial-gradient(720px 520px at 8%  40%, rgba(206,0,109,.13), transparent 64%),
+    linear-gradient(180deg, #020514, #030818) !important;
+}
+
+/* ---- 3. ATMOSPHERE GLOWS ---- */
+.glow-1 { background: #1E2FAD !important; }
+.glow-3 { background: #2838C0 !important; }
+
+/* ---- 4. NAVBAR ---- */
+.nav,
+.nav.scrolled {
+  background: rgba(4,6,26,.54) !important;
+  border-bottom: 1px solid rgba(30,47,173,.25) !important;
+}
+.nav::before {
+  background:
+    radial-gradient(480px 100px at 8%  0%, rgba(30,47,173,.14), transparent 68%),
+    radial-gradient(520px 100px at 92% 0%, rgba(206,0,109,.10), transparent 70%) !important;
+}
+
+/* ---- 5. GLASS CARDS — blue-tinted border/bg ---- */
+.glass,
+.team-card,
+.blog-card,
+.player-card,
+.event-card,
+.floor-map__container,
+.modal__card {
+  background:    rgba(6,8,28,.68) !important;
+  border-color:  rgba(40,56,192,.32) !important;
+}
+
+/* ---- 6. BUTTONS ---- */
+.btn--primary,
+.blog-card__cat {
+  background: linear-gradient(135deg, #1E2FAD, #CE006D) !important;
+  box-shadow: 0 0 32px rgba(30,47,173,.25) !important;
+}
+.btn--primary:hover {
+  box-shadow: 0 0 44px rgba(206,0,109,.35) !important;
+}
+
+/* ---- 7. SECTION PANEL BORDERS ---- */
+[data-panel] {
+  border-color: rgba(40,56,192,.26) !important;
+}
+[data-panel].panel-visible:hover {
+  border-color: rgba(40,56,192,.48) !important;
+}
+
+/* ---- 8. STATS GRID & CTA MID ---- */
+.stats__grid,
+.cta--mid .cta__inner {
+  background: linear-gradient(135deg, rgba(30,47,173,.13), rgba(206,0,109,.08), rgba(247,202,36,.04)) !important;
+  border-color: rgba(40,56,192,.34) !important;
+}
+
+/* ---- 9. SECTION COLOUR AURAS ---- */
+.about::after {
+  background: radial-gradient(ellipse 80% 70% at 80% 40%, rgba(30,47,173,.13), transparent 70%) !important;
+}
+.cta--closing {
+  background: radial-gradient(800px 400px at 50% 50%, rgba(30,47,173,.12), transparent 70%) !important;
+}
+
+/* ---- 10. MODAL ---- */
+.modal__card {
+  background: linear-gradient(180deg, rgba(8,10,34,.97), rgba(5,7,22,.97)) !important;
+  box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 60px rgba(30,47,173,.08) !important;
+}
+.mobile-menu {
+  background: rgba(3,5,22,.96) !important;
+}
+
+/* ---- 11. LOGO GLOW — cobalt for the nav logo ---- */
+.nav__logo--color {
+  filter: drop-shadow(0 0 14px rgba(30,47,173,.5)) !important;
+}
+.nav__logo--white {
+  filter: drop-shadow(0 0 14px rgba(247,202,36,.3)) !important;
+}
+.nav__logo,
+.footer__logo-face,
+#brandNewImgClean,
+#brandOldImgClean {
+  filter: drop-shadow(0 0 16px rgba(30,47,173,.45)) !important;
+}
