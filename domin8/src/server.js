@@ -251,6 +251,53 @@ app.get('/api/admin/verify', (req, res) => {
 // (no extra route needed — express.static handles it)
 
 // -----------------------------------------------------------------------------
+// TEMP DEBUG — inspect raw gameLogs + memberRanking responses.
+// Visit /api/debug-games to see exact field names from iCafeCloud.
+// Remove (or leave — it requires credentials to return anything useful) once confirmed.
+// -----------------------------------------------------------------------------
+app.get('/api/debug-games', async (_req, res) => {
+  if (!process.env.ICAFE_TOKEN || !process.env.ICAFE_CAFE_ID) {
+    return res.json({ error: 'No credentials set — ICAFE_TOKEN or ICAFE_CAFE_ID missing' });
+  }
+  const cafeId = process.env.ICAFE_CAFE_ID;
+  const token  = process.env.ICAFE_TOKEN;
+
+  const now = new Date();
+  const ago = new Date(now - 7 * 24 * 60 * 60 * 1000);
+  const fmt = (d) => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+
+  const endpoints = {
+    gameLogs:        `https://api.icafecloud.com/api/v2/cafe/${cafeId}/gameLogs?start_date=${fmt(ago)}&end_date=${fmt(now)}&per_page=20`,
+    memberRanking:   `https://api.icafecloud.com/api/v2/cafe/${cafeId}/billingLogs/action/memberRanking?period=month&days=30&per_page=10`,
+  };
+
+  const results = {};
+  for (const [key, url] of Object.entries(endpoints)) {
+    try {
+      const r    = await fetch(url, { headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' }, signal: AbortSignal.timeout(8000) });
+      const text = await r.text();
+      let data;
+      try { data = JSON.parse(text); } catch { data = text.slice(0, 800); }
+      // Show shape + first 3 records so you can see field names
+      const arr = Array.isArray(data) ? data
+                : Array.isArray(data?.data) ? data.data
+                : Array.isArray(data?.data?.data) ? data.data.data
+                : null;
+      results[key] = {
+        httpStatus: r.status,
+        topLevelKeys: typeof data === 'object' && data ? Object.keys(data) : [],
+        arrayFound: !!arr,
+        totalRecords: arr ? arr.length : null,
+        firstThreeRecords: arr ? arr.slice(0, 3) : (typeof data === 'object' ? data : String(data).slice(0, 400)),
+      };
+    } catch (e) {
+      results[key] = { error: e.message };
+    }
+  }
+  res.json(results);
+});
+
+// -----------------------------------------------------------------------------
 // API: trending games — top 10 most-played this week from iCafeCloud gameLogs.
 // -----------------------------------------------------------------------------
 app.get('/api/trending-games', async (_req, res) => {
