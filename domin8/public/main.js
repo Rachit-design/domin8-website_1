@@ -513,6 +513,70 @@
     frame();
   })();
 
+  // ── Trending Games ───────────────────────────────────────────────────────
+  function renderTrending(games){
+    var list = document.getElementById('trendingList');
+    if(!list || !Array.isArray(games) || !games.length) return;
+    list.innerHTML = games.slice(0,10).map(function(g, i){
+      var rank = i + 1;
+      var medalCls = rank <= 3 ? ' trending__card--'+rank : '';
+      return '<div class="trending__card reveal'+medalCls+'" style="--d:'+(i*0.04)+'s">'+
+        '<div class="trending__rank">'+rank+'</div>'+
+        '<div class="trending__info">'+
+          '<div class="trending__name">'+esc(g.name)+'</div>'+
+          '<div class="trending__count">'+
+            '<strong>'+(g.playCount||0).toLocaleString()+'</strong> sessions this week'+
+          '</div>'+
+          (g.category?'<div class="trending__category">'+esc(g.category)+'</div>':'')+
+        '</div>'+
+      '</div>';
+    }).join('');
+    observeReveals(list.querySelectorAll('.reveal'));
+  }
+
+  function loadTrending(){
+    var sec = document.getElementById('trending');
+    fetch('/api/trending-games',{headers:{Accept:'application/json'}})
+      .then(function(r){ return r.ok ? r.json() : Promise.reject(); })
+      .then(function(d){ if(d.ok && d.games) renderTrending(d.games); })
+      .catch(function(){ if(sec) sec.style.display='none'; });
+  }
+
+  // ── Member Leaderboard ───────────────────────────────────────────────────
+  function renderLeaderboard(players){
+    var list = document.getElementById('leaderboardList');
+    if(!list || !Array.isArray(players) || !players.length) return;
+    list.innerHTML = players.slice(0,10).map(function(p){
+      var r = p.rank || 1;
+      var medalCls = r <= 3 ? ' leaderboard__row--'+r : '';
+      return '<div class="leaderboard__row reveal'+medalCls+'" style="--d:'+((r-1)*0.05)+'s">'+
+        '<div class="leaderboard__rank">'+r+'</div>'+
+        '<div class="leaderboard__name">'+esc(p.name)+'</div>'+
+        '<div class="leaderboard__hrs">'+
+          '<span class="leaderboard__hrs-num">'+
+            (typeof p.hoursPlayed==='number' ? p.hoursPlayed.toFixed(1) : p.hoursPlayed)+
+          '</span>'+
+          '<span class="leaderboard__hrs-lbl">hrs</span>'+
+        '</div>'+
+      '</div>';
+    }).join('');
+    observeReveals(list.querySelectorAll('.reveal'));
+  }
+
+  function loadLeaderboard(){
+    var sec = document.getElementById('leaderboard');
+    fetch('/api/leaderboard',{headers:{Accept:'application/json'}})
+      .then(function(r){ return r.ok ? r.json() : Promise.reject(); })
+      .then(function(d){ if(d.ok && d.players) renderLeaderboard(d.players); })
+      .catch(function(){ if(sec) sec.style.display='none'; });
+  }
+
+  // Initial load + 5-minute silent refresh
+  loadTrending();
+  loadLeaderboard();
+  setInterval(loadTrending,    300000);
+  setInterval(loadLeaderboard, 300000);
+
   // ── Depth panel entrance animation ──────────────────────────────────────
   (function(){
     var panels = document.querySelectorAll('[data-panel]');

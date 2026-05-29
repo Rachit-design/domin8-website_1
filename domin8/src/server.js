@@ -21,7 +21,9 @@ const express = require('express');
 const path    = require('path');
 const fs      = require('fs');
 const multer  = require('multer');
-const { getPcStatus, LIVE_MODE } = require('./icafecloud');
+const { getPcStatus, LIVE_MODE }  = require('./icafecloud');
+const { getTrendingGames }        = require('./icafe-games');
+const { getLeaderboard }          = require('./icafe-leaderboard');
 
 // ---- Blog data setup ----
 const BLOG_FILE = path.join(__dirname, 'blog-data.json');
@@ -247,6 +249,34 @@ app.get('/api/admin/verify', (req, res) => {
 
 // Admin panel served as static file at /admin.html
 // (no extra route needed — express.static handles it)
+
+// -----------------------------------------------------------------------------
+// API: trending games — top 10 most-played this week from iCafeCloud gameLogs.
+// -----------------------------------------------------------------------------
+app.get('/api/trending-games', async (_req, res) => {
+  try {
+    const { games, source } = await getTrendingGames();
+    res.set('Cache-Control', 'public, max-age=60');
+    res.json({ ok: true, games, source });
+  } catch (err) {
+    console.error('[api/trending-games] error:', err);
+    res.status(500).json({ ok: false, error: 'Could not retrieve trending games' });
+  }
+});
+
+// -----------------------------------------------------------------------------
+// API: member leaderboard — top 10 players by hours this month.
+// -----------------------------------------------------------------------------
+app.get('/api/leaderboard', async (_req, res) => {
+  try {
+    const { players, source } = await getLeaderboard();
+    res.set('Cache-Control', 'public, max-age=60');
+    res.json({ ok: true, players, source });
+  } catch (err) {
+    console.error('[api/leaderboard] error:', err);
+    res.status(500).json({ ok: false, error: 'Could not retrieve leaderboard' });
+  }
+});
 
 // -----------------------------------------------------------------------------
 // Static website. Served last so API routes take priority.

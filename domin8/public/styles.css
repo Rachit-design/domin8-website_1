@@ -2966,6 +2966,176 @@ body{
 }
 
 /* ============================================================================
+   LIVE PILL — shared "Updated live" indicator used in trending + leaderboard
+============================================================================ */
+.live-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  padding: .28rem .8rem;
+  border-radius: 99px;
+  background: rgba(247,202,36,.07);
+  border: 1px solid rgba(247,202,36,.22);
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.live-pill__dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--brand-gold);
+  box-shadow: 0 0 5px var(--brand-gold-glow);
+  animation: pulse 2s infinite;
+  flex-shrink: 0;
+}
+.trending__meta,
+.leaderboard__meta {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.8rem;
+}
+
+/* ============================================================================
+   TRENDING GAMES — numbered card grid
+============================================================================ */
+.trending__list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: .9rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.trending__card {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  padding: 1rem 1.3rem;
+  border-radius: 14px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  transition: transform .2s ease, border-color .25s, box-shadow .25s;
+  cursor: default;
+}
+.trending__card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(247,202,36,.3);
+  box-shadow: 0 12px 36px rgba(0,0,0,.28);
+}
+
+/* Medal accents — #1 gold / #2 silver / #3 bronze */
+.trending__card--1 { border-color: rgba(247,202,36,.45) !important; background: linear-gradient(90deg, rgba(247,202,36,.09), var(--glass-bg)) !important; }
+.trending__card--2 { border-color: rgba(192,192,192,.32) !important; background: linear-gradient(90deg, rgba(192,192,192,.06), var(--glass-bg)) !important; }
+.trending__card--3 { border-color: rgba(205,127,50,.32)  !important; background: linear-gradient(90deg, rgba(205,127,50,.07),  var(--glass-bg)) !important; }
+
+.trending__rank {
+  font-family: var(--font-display);
+  font-size: 1.85rem;
+  line-height: 1;
+  min-width: 2.4rem;
+  text-align: center;
+  color: var(--ink-faint);
+  opacity: .55;
+}
+.trending__card--1 .trending__rank { color: var(--brand-gold);  opacity: 1; text-shadow: 0 0 16px rgba(247,202,36,.55); }
+.trending__card--2 .trending__rank { color: #C0C0C0;            opacity: 1; }
+.trending__card--3 .trending__rank { color: #CD7F32;            opacity: 1; }
+
+.trending__info     { flex: 1; min-width: 0; }
+.trending__name     { font-weight: 700; font-size: 1rem; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.trending__count    { font-size: .78rem; color: var(--ink-faint); margin-top: .22rem; }
+.trending__count strong { color: var(--brand-gold); font-weight: 700; }
+.trending__category { font-size: .67rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint); margin-top: .18rem; opacity: .7; }
+
+@media (max-width: 680px) {
+  .trending__list { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .trending__rank { font-size: 1.4rem !important; min-width: 1.8rem !important; }
+  .trending__card { padding: .8rem 1rem !important; gap: .8rem !important; }
+}
+
+/* ============================================================================
+   MEMBER LEADERBOARD — vertical ranked list
+============================================================================ */
+.leaderboard__list {
+  max-width: 660px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+}
+
+.leaderboard__row {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  padding: 1rem 1.4rem;
+  border-radius: 14px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  transition: transform .2s ease, border-color .25s, box-shadow .25s;
+  cursor: default;
+}
+.leaderboard__row:hover {
+  transform: translateX(5px);
+  border-color: rgba(247,202,36,.25);
+  box-shadow: 0 8px 28px rgba(0,0,0,.22);
+}
+
+/* Medal rows — top 3 */
+.leaderboard__row--1 { border-color: rgba(247,202,36,.48) !important; background: linear-gradient(90deg, rgba(247,202,36,.12), var(--glass-bg)) !important; }
+.leaderboard__row--2 { border-color: rgba(192,192,192,.32) !important; background: linear-gradient(90deg, rgba(192,192,192,.06), var(--glass-bg)) !important; }
+.leaderboard__row--3 { border-color: rgba(205,127,50,.32)  !important; background: linear-gradient(90deg, rgba(205,127,50,.07), var(--glass-bg)) !important; }
+
+.leaderboard__rank {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  line-height: 1;
+  min-width: 2.2rem;
+  text-align: center;
+  color: var(--ink-faint);
+}
+.leaderboard__row--1 .leaderboard__rank { color: var(--brand-gold); text-shadow: 0 0 12px rgba(247,202,36,.45); }
+.leaderboard__row--2 .leaderboard__rank { color: #C0C0C0; }
+.leaderboard__row--3 .leaderboard__rank { color: #CD7F32; }
+
+.leaderboard__name {
+  flex: 1;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.leaderboard__hrs { text-align: right; flex-shrink: 0; }
+.leaderboard__hrs-num {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  line-height: 1;
+  color: var(--brand-gold);
+  display: block;
+}
+.leaderboard__hrs-lbl {
+  font-size: .65rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  display: block;
+  text-align: right;
+}
+
+@media (max-width: 520px) {
+  .leaderboard__row { padding: .8rem 1rem !important; gap: .75rem !important; }
+  .leaderboard__rank { font-size: 1rem !important; min-width: 1.6rem !important; }
+  .leaderboard__hrs-num { font-size: 1rem !important; }
+}
+
+/* ============================================================================
    DOMIN8 LOGO v2 — Cobalt-Blue palette
    Old electric-purple #681AFF  →  cobalt-blue #1E2FAD
    Old accent-purple  #77319F   →  deep-cobalt  #2838C0

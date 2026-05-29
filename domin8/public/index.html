@@ -29,12 +29,14 @@
 
 <!-- Fixed side navigation dots (desktop only) -->
 <nav class="page-dots" aria-label="Jump to section">
-  <a class="page-dot" href="#space"     data-section="space"     data-label="The Space"></a>
-  <a class="page-dot" href="#floor-map" data-section="floor-map" data-label="Live Floor"></a>
-  <a class="page-dot" href="#about"     data-section="about"     data-label="Who We Are"></a>
-  <a class="page-dot" href="#community" data-section="community" data-label="The Legends"></a>
-  <a class="page-dot" href="#happening" data-section="happening" data-label="What's Happening"></a>
-  <a class="page-dot" href="#glimpse"   data-section="glimpse"   data-label="Get a Glimpse"></a>
+  <a class="page-dot" href="#space"       data-section="space"       data-label="The Space"></a>
+  <a class="page-dot" href="#floor-map"  data-section="floor-map"  data-label="Live Floor"></a>
+  <a class="page-dot" href="#trending"   data-section="trending"   data-label="Trending"></a>
+  <a class="page-dot" href="#about"      data-section="about"      data-label="Who We Are"></a>
+  <a class="page-dot" href="#community"  data-section="community"  data-label="The Legends"></a>
+  <a class="page-dot" href="#leaderboard" data-section="leaderboard" data-label="Leaderboard"></a>
+  <a class="page-dot" href="#happening"  data-section="happening"  data-label="What's Happening"></a>
+  <a class="page-dot" href="#glimpse"    data-section="glimpse"    data-label="Get a Glimpse"></a>
   <a class="page-dot" href="#shop"      data-section="shop"      data-label="Shop"></a>
 </nav>
 
@@ -185,6 +187,21 @@
   </a>
 </section>
 
+<!-- ── Trending Games ──────────────────────────────────────────────────── -->
+<section class="section trending-games" id="trending" data-panel>
+  <div class="section__head center">
+    <span class="eyebrow">trending now</span>
+    <h2 class="section__title">What Indore's Playing</h2>
+    <p class="section__lede">Top games on the floor this week, pulled live from our systems.</p>
+  </div>
+  <div class="trending__meta reveal">
+    <span class="live-pill"><span class="live-pill__dot"></span>Updated live</span>
+  </div>
+  <div class="trending__list" id="trendingList">
+    <!-- injected by JS -->
+  </div>
+</section>
+
 <section class="section about" id="about" data-panel>
   <div class="section__head center">
     <span class="eyebrow">who we are</span>
@@ -260,6 +277,21 @@
     <div class="community__column" id="playerColumn"></div>
   </div>
   <p class="community__note reveal">…and the roster keeps growing. New legends added all the time.</p>
+</section>
+
+<!-- ── Member Leaderboard ───────────────────────────────────────────────── -->
+<section class="section leaderboard" id="leaderboard" data-panel>
+  <div class="section__head center">
+    <span class="eyebrow">hall of fame</span>
+    <h2 class="section__title">Top Gamers This Month</h2>
+    <p class="section__lede">Ranked by hours on the floor. Data pulled live from our systems.</p>
+  </div>
+  <div class="leaderboard__meta reveal">
+    <span class="live-pill"><span class="live-pill__dot"></span>Updated live</span>
+  </div>
+  <div class="leaderboard__list" id="leaderboardList">
+    <!-- injected by JS -->
+  </div>
 </section>
 
 <section class="section happening" id="happening" data-panel>
