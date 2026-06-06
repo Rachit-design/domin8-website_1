@@ -29,15 +29,11 @@
 
 <!-- Fixed side navigation dots (desktop only) -->
 <nav class="page-dots" aria-label="Jump to section">
-  <a class="page-dot" href="#space"       data-section="space"       data-label="The Space"></a>
-  <a class="page-dot" href="#floor-map"  data-section="floor-map"  data-label="Live Floor"></a>
-  <a class="page-dot" href="#trending"   data-section="trending"   data-label="Trending"></a>
-  <a class="page-dot" href="#about"      data-section="about"      data-label="Who We Are"></a>
-  <a class="page-dot" href="#community"  data-section="community"  data-label="The Legends"></a>
-  <a class="page-dot" href="#leaderboard" data-section="leaderboard" data-label="Leaderboard"></a>
-  <a class="page-dot" href="#happening"  data-section="happening"  data-label="What's Happening"></a>
-  <a class="page-dot" href="#glimpse"    data-section="glimpse"    data-label="Get a Glimpse"></a>
-  <a class="page-dot" href="#shop"      data-section="shop"      data-label="Shop"></a>
+  <a class="page-dot" href="#space"      data-section="space"      data-label="The Space"></a>
+  <a class="page-dot" href="#about"     data-section="about"      data-label="Who We Are"></a>
+  <a class="page-dot" href="#happening" data-section="happening"  data-label="What's Happening"></a>
+  <a class="page-dot" href="#glimpse"   data-section="glimpse"    data-label="Get a Glimpse"></a>
+  <a class="page-dot" href="#shop"      data-section="shop"       data-label="Shop"></a>
 </nav>
 
 <header class="nav" id="nav">
@@ -48,24 +44,26 @@
     </span>
     <img src="/assets/typography-cutout.png" alt="DOMIN8" class="nav__wordmark-img" />
   </a>
-  <nav class="nav__links" aria-label="Primary">
-    <a href="#space">The Space</a>
-    <a href="#about">Who We Are</a>
-    <a href="#happening">What's Happening</a>
-    <a href="#glimpse">Get a Glimpse</a>
-    <a href="#shop">Shop<span class="soon">soon</span></a>
-  </nav>
   <a class="nav__live" id="navLive" data-state="ok" href="/floor" aria-label="See live floor status"><span class="nav__live-dot"></span><span id="navLiveText">FLOOR LIVE</span><span class="nav__live-arrow">↗</span></a>
   <button class="btn btn--primary nav__cta" data-open-join>Join the Community</button>
-  <button class="nav__burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  <button class="mc-burger" id="burger" aria-label="Menu" aria-expanded="false">
+    <div class="mc-burger__cube">
+      <div class="mc-cube__face mc-cube__face--front"></div>
+      <div class="mc-cube__face mc-cube__face--back"></div>
+      <div class="mc-cube__face mc-cube__face--right"></div>
+      <div class="mc-cube__face mc-cube__face--left"></div>
+      <div class="mc-cube__face mc-cube__face--top"></div>
+      <div class="mc-cube__face mc-cube__face--bottom"></div>
+    </div>
+  </button>
 </header>
 <div class="mobile-menu" id="mobileMenu" hidden>
   <a href="#space">The Space</a>
   <a href="#about">Who We Are</a>
   <a href="#happening">What's Happening</a>
   <a href="#glimpse">Get a Glimpse</a>
-  <a href="/floor" class="mobile-menu__live-link"><span class="mobile-menu__live-dot"></span>Live Floor Map</a>
-  <a href="/coming-soon">Shop · coming soon</a>
+  <a href="#shop">Shop <span class="mobile-menu__soon">soon</span></a>
+  <a href="/floor" class="mobile-menu__live-link"><span class="mobile-menu__live-dot"></span>Live Floor Map ↗</a>
   <button class="btn btn--primary" data-open-join>Join the Community</button>
 </div>
 
@@ -73,8 +71,9 @@
 <section class="hero">
   <div class="hero__slides" id="heroSlides">
     <div class="hero__slide active"><img src="/assets/hero-floor.png" alt="Domin8 gaming floor" /></div>
-    <div class="hero__slide"><img src="/assets/hero-neon.png" alt="Domin8 — neon gaming setup" /></div>
-    <div class="hero__slide"><img src="/assets/hero-gamer-new.png" alt="Domin8 gamer" /></div>
+    <div class="hero__slide"><img src="/assets/DSC_0473.jpg" alt="Domin8 community" /></div>
+    <div class="hero__slide"><img src="/assets/DSC_0448.jpg" alt="Domin8 esports" /></div>
+    <div class="hero__slide"><img src="/assets/20231119_161150.jpg" alt="Domin8 floor vibes" /></div>
   </div>
   <div class="hero__veil"></div>
   <div class="hero__content hero__content--left">
@@ -142,65 +141,6 @@
   </div>
 </section>
 
-<!-- Live Floor Teaser — links to /floor dedicated page -->
-<section class="section floor-teaser" id="floor-map" data-panel>
-  <div class="section__head center">
-    <span class="eyebrow">live floor</span>
-    <h2 class="section__title">The Floor, Right Now</h2>
-    <p class="section__lede">Every rig, live-updated. No guessing whether it's packed or empty before you show up.</p>
-  </div>
-  <a class="floor-teaser__card glass reveal" href="/floor">
-    <div class="floor-teaser__left">
-      <div class="floor-teaser__stat">
-        <span class="floor-teaser__num" id="floorTeaserFree">—</span>
-        <span class="floor-teaser__label" id="floorTeaserStatus">RIGS FREE</span>
-      </div>
-      <div class="floor-teaser__minimap" id="floorMinimap">
-        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
-        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
-        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
-        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
-        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
-        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
-        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
-        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
-        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
-        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
-        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
-        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
-        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
-        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
-        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
-        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
-        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
-        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
-        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
-        <div class="floor-teaser__minidot floor-teaser__minidot--offline"></div>
-      </div>
-    </div>
-    <div class="floor-teaser__right">
-      <div class="floor-teaser__eyebrow">Live — updates every 20 seconds</div>
-      <h3 class="floor-teaser__heading">Open the live floor map</h3>
-      <p class="floor-teaser__desc">20 rigs. See exactly which ones are taken and which ones are yours right now.</p>
-      <span class="floor-teaser__cta btn btn--ghost">See Full Floor Map ↗</span>
-    </div>
-  </a>
-</section>
-
-<!-- ── Trending Games ──────────────────────────────────────────────────── -->
-<section class="section trending-games" id="trending" data-panel>
-  <div class="section__head center">
-    <span class="eyebrow">trending now</span>
-    <h2 class="section__title">What Indore's Playing</h2>
-    <p class="section__lede">Top games on the floor this week, pulled live from our systems.</p>
-  </div>
-  <div class="trending__meta reveal">
-    <span class="live-pill"><span class="live-pill__dot"></span>Updated live</span>
-  </div>
-  <div class="trending__list" id="trendingList">
-    <!-- injected by JS -->
-  </div>
-</section>
 
 <section class="section about" id="about" data-panel>
   <div class="section__head center">
@@ -224,8 +164,7 @@
         </div>
         <div class="brand-journey__stage" aria-label="Domin8 rebrand: old logo to new logo to full mark">
           <img src="/assets/logo-old-cutout.png" alt="Original Domin8 logo" class="brand-journey__mark brand-journey__mark--old" id="brandOldImgClean" />
-          <img src="/assets/logo-face-cutout.png" alt="New Domin8 logo" class="brand-journey__mark brand-journey__mark--new" id="brandNewImgClean" />
-          <img src="/assets/typography-cutout.png" alt="DOMIN8" class="brand-journey__mark brand-journey__mark--type" id="brandTypeImgClean" />
+          <img src="/assets/FInal logo SVG.svg" alt="New Domin8 logo" class="brand-journey__mark brand-journey__mark--new" id="brandNewImgClean" />
         </div>
         <div class="brand-journey__labels">
           <span id="labelOld" class="bj-label">Where it started</span>
@@ -266,33 +205,6 @@
   </div>
 </section>
 
-<!-- The Legends — separate section, to be updated next push -->
-<section class="section community" id="community" data-panel>
-  <div class="section__head center">
-    <span class="eyebrow">the legends</span>
-    <h2 class="section__title">The faces of Domin8</h2>
-    <p class="section__lede">Real players. Real stories. The people who make this place loud. Hover a card to see their story.</p>
-  </div>
-  <div class="community__scroller" id="playerScroller">
-    <div class="community__column" id="playerColumn"></div>
-  </div>
-  <p class="community__note reveal">…and the roster keeps growing. New legends added all the time.</p>
-</section>
-
-<!-- ── Member Leaderboard ───────────────────────────────────────────────── -->
-<section class="section leaderboard" id="leaderboard" data-panel>
-  <div class="section__head center">
-    <span class="eyebrow">hall of fame</span>
-    <h2 class="section__title">Top Gamers This Month</h2>
-    <p class="section__lede">Ranked by hours on the floor. Data pulled live from our systems.</p>
-  </div>
-  <div class="leaderboard__meta reveal">
-    <span class="live-pill"><span class="live-pill__dot"></span>Updated live</span>
-  </div>
-  <div class="leaderboard__list" id="leaderboardList">
-    <!-- injected by JS -->
-  </div>
-</section>
 
 <section class="section happening" id="happening" data-panel>
   <div class="section__head center">

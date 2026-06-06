@@ -21,8 +21,19 @@
   window.addEventListener('scroll',function(){ if(nav) nav.classList.toggle('scrolled', window.scrollY>30); });
   var burger=document.getElementById('burger'), menu=document.getElementById('mobileMenu');
   if(burger&&menu){
-    burger.addEventListener('click',function(){var open=menu.hidden===false;menu.hidden=open;burger.setAttribute('aria-expanded',String(!open));});
-    menu.querySelectorAll('a,button').forEach(function(el){el.addEventListener('click',function(){menu.hidden=true;});});
+    burger.addEventListener('click',function(){
+      var open=menu.hidden===false;
+      menu.hidden=open;
+      burger.setAttribute('aria-expanded',String(!open));
+      burger.classList.toggle('open',!open);
+    });
+    menu.querySelectorAll('a,button').forEach(function(el){
+      el.addEventListener('click',function(){
+        menu.hidden=true;
+        burger.classList.remove('open');
+        burger.setAttribute('aria-expanded','false');
+      });
+    });
   }
 
   // ---- Reveal on scroll ----
@@ -156,15 +167,15 @@
       }, 7000);
     }
 
-    // loopStep: type in → type out → new in → new out → repeat
+    // loopStep: old in → old out → new in → new out → repeat
     function loopStep(){
-      // type fades in
-      fade(imgType, 1, 900);
-      setLabel('type');
+      // old logo fades in
+      fade(imgOld, 1, 900);
+      setLabel('old');
 
-      // type fades out
+      // old logo fades out
       bDelay(function(){
-        fade(imgType, 0, 800);
+        fade(imgOld, 0, 800);
         setLabel('none');
       }, 3500);
 
@@ -200,11 +211,8 @@
   if(teamGrid && Array.isArray(window.TEAM)){
     teamGrid.innerHTML = window.TEAM.filter(function(m){ return m.name !== 'The Regulars'; }).map(function(m){
       var initials = m.name.split(' ').filter(Boolean).slice(0,2).map(function(w){ return w[0]||''; }).join('').toUpperCase();
-      var imgHtml = m.image
-        ? '<img src="'+img(m.image)+'" alt="'+esc(m.name)+'" loading="lazy"/>'
-        : '<div class="team-card__initials">'+initials+'</div>';
       return '<div class="team-card">'+
-        '<div class="team-card__img">'+imgHtml+'</div>'+
+        '<div class="team-card__initials-badge">'+initials+'</div>'+
         '<div class="team-card__body">'+
           '<div class="team-card__name">'+esc(m.name)+'</div>'+
           (m.tag?'<div class="team-card__tag">"'+esc(m.tag)+'"</div>':'')+
