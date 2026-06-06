@@ -99,43 +99,6 @@ app.get('/api/health', (_req, res) => {
   });
 });
 
-// TEMP DEBUG — remove after confirming live counter works
-app.get('/api/debug-icafe', async (_req, res) => {
-  if (!process.env.ICAFE_TOKEN || !process.env.ICAFE_CAFE_ID) {
-    return res.json({ error: 'No credentials set' });
-  }
-  const cafeId = process.env.ICAFE_CAFE_ID;
-  const token  = process.env.ICAFE_TOKEN;
-  const endpoints = [
-    `https://api.icafecloud.com/api/v2/cafe/${cafeId}/bootPcs?per_page=500`,
-    `https://api.icafecloud.com/api/v2/cafe/${cafeId}/boot-pcs-apis`,
-    `https://api.icafecloud.com/api/v2/cafe/${cafeId}/pcs`,
-  ];
-  const results = {};
-  for (const url of endpoints) {
-    const key = url.split(cafeId + '/')[1];
-    try {
-      const r = await fetch(url, {
-        headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' },
-        signal: AbortSignal.timeout(8000),
-      });
-      const text = await r.text();
-      let data;
-      try { data = JSON.parse(text); } catch(e) { data = text.slice(0, 800); }
-      if (data && data.data && Array.isArray(data.data)) {
-        results[key] = { status: r.status, shape: 'data.data[]', sample: data.data.slice(0,2), total: data.data.length };
-      } else if (Array.isArray(data)) {
-        results[key] = { status: r.status, shape: 'array', sample: data.slice(0,2), total: data.length };
-      } else {
-        results[key] = { status: r.status, raw: JSON.stringify(data).slice(0,600) };
-      }
-    } catch(e) {
-      results[key] = { error: e.message };
-    }
-  }
-  res.json(results);
-});
-
 
 // -----------------------------------------------------------------------------
 // API: contact form. For now it validates + logs. To make it actually send,
@@ -250,52 +213,6 @@ app.get('/api/admin/verify', (req, res) => {
 // Admin panel served as static file at /admin.html
 // (no extra route needed — express.static handles it)
 
-// -----------------------------------------------------------------------------
-// TEMP DEBUG — inspect raw gameLogs + memberRanking responses.
-// Visit /api/debug-games to see exact field names from iCafeCloud.
-// Remove (or leave — it requires credentials to return anything useful) once confirmed.
-// -----------------------------------------------------------------------------
-app.get('/api/debug-games', async (_req, res) => {
-  if (!process.env.ICAFE_TOKEN || !process.env.ICAFE_CAFE_ID) {
-    return res.json({ error: 'No credentials set — ICAFE_TOKEN or ICAFE_CAFE_ID missing' });
-  }
-  const cafeId = process.env.ICAFE_CAFE_ID;
-  const token  = process.env.ICAFE_TOKEN;
-
-  const now = new Date();
-  const ago = new Date(now - 7 * 24 * 60 * 60 * 1000);
-  const fmt = (d) => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-
-  const endpoints = {
-    gameLogs:        `https://api.icafecloud.com/api/v2/cafe/${cafeId}/gameLogs?start_date=${fmt(ago)}&end_date=${fmt(now)}&per_page=20`,
-    memberRanking:   `https://api.icafecloud.com/api/v2/cafe/${cafeId}/billingLogs/action/memberRanking?period=month&days=30&per_page=10`,
-  };
-
-  const results = {};
-  for (const [key, url] of Object.entries(endpoints)) {
-    try {
-      const r    = await fetch(url, { headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' }, signal: AbortSignal.timeout(8000) });
-      const text = await r.text();
-      let data;
-      try { data = JSON.parse(text); } catch { data = text.slice(0, 800); }
-      // Show shape + first 3 records so you can see field names
-      const arr = Array.isArray(data) ? data
-                : Array.isArray(data?.data) ? data.data
-                : Array.isArray(data?.data?.data) ? data.data.data
-                : null;
-      results[key] = {
-        httpStatus: r.status,
-        topLevelKeys: typeof data === 'object' && data ? Object.keys(data) : [],
-        arrayFound: !!arr,
-        totalRecords: arr ? arr.length : null,
-        firstThreeRecords: arr ? arr.slice(0, 3) : (typeof data === 'object' ? data : String(data).slice(0, 400)),
-      };
-    } catch (e) {
-      results[key] = { error: e.message };
-    }
-  }
-  res.json(results);
-});
 
 // -----------------------------------------------------------------------------
 // API: trending games — top 10 most-played this week from iCafeCloud gameLogs.
