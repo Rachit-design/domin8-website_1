@@ -25,6 +25,11 @@
       var open=menu.hidden===false;
       menu.hidden=open;
       burger.setAttribute('aria-expanded',String(!open));
+      // Glitch then settle into on/off state
+      burger.classList.remove('mon-glitch');
+      void burger.offsetWidth; // restart animation
+      burger.classList.add('mon-glitch');
+      setTimeout(function(){ burger.classList.remove('mon-glitch'); }, 550);
       burger.classList.toggle('open',!open);
     });
     menu.querySelectorAll('a,button').forEach(function(el){
