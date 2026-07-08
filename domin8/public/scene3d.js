@@ -368,76 +368,57 @@
 (function cursorTrail() {
   'use strict';
 
-  // Only on devices with a real mouse
   if (window.matchMedia('(pointer: coarse)').matches) return;
 
-  var COLORS  = ['#F7CA24', '#681AFF', '#EF438B', '#F7CA24', '#CE006D', '#ffffff'];
-  var SPEED_T = 9;   // px/frame threshold before trail appears
-  var MAX_P   = 32;  // particle pool size
+  // 4 ghost dots — each lags further behind the cursor than the last.
+  // They create a soft comet tail that only becomes visible at real speed.
+  var GHOSTS = [
+    { lerp: 0.28, size: 5, maxOpacity: 0.22 },
+    { lerp: 0.16, size: 4, maxOpacity: 0.14 },
+    { lerp: 0.09, size: 3, maxOpacity: 0.09 },
+    { lerp: 0.05, size: 2.5, maxOpacity: 0.05 },
+  ];
 
-  var style = document.createElement('style');
-  style.textContent = [
-    '.gc-spark{position:fixed;pointer-events:none;z-index:9998;border-radius:50%;',
-    'transform:translate(-50%,-50%);animation:sparkFade .38s ease forwards;}',
-    '@keyframes sparkFade{',
-    '0%{opacity:.9;transform:translate(-50%,-50%) scale(1);}',
-    '55%{opacity:.45;transform:translate(-50%,-50%) scale(.55);}',
-    '100%{opacity:0;transform:translate(-50%,-50%) scale(0);}}',
-  ].join('');
-  document.head.appendChild(style);
+  var mx = -500, my = -500; // real mouse position
+  var speed = 0;            // smoothed velocity
+  var lastX = -500, lastY = -500;
 
-  var pool     = [];
-  var colorIdx = 0;
-  var lastX    = -999;
-  var lastY    = -999;
-
-  function getParticle() {
-    for (var i = 0; i < pool.length; i++) {
-      if (!pool[i].busy) return pool[i];
-    }
-    if (pool.length < MAX_P) {
-      var d = document.createElement('div');
-      d.className = 'gc-spark';
-      document.body.appendChild(d);
-      var p = { el: d, busy: false };
-      pool.push(p);
-      return p;
-    }
-    return null;
-  }
-
-  function emit(x, y, speed) {
-    // Number of sparks scales with speed
-    var count = speed > 35 ? 4 : speed > 22 ? 3 : speed > 14 ? 2 : 1;
-    for (var i = 0; i < count; i++) {
-      var p = getParticle();
-      if (!p) return;
-      var sz    = 3 + Math.random() * 5;
-      var color = COLORS[colorIdx++ % COLORS.length];
-      var ox    = (Math.random() - .5) * speed * .28;
-      var oy    = (Math.random() - .5) * speed * .28;
-      p.busy = true;
-      // Reset animation then restart
-      p.el.style.cssText =
-        'left:' + (x + ox) + 'px;top:' + (y + oy) + 'px;' +
-        'width:' + sz + 'px;height:' + sz + 'px;' +
-        'background:' + color + ';' +
-        'box-shadow:0 0 ' + (sz * 2.2) + 'px ' + color + ';' +
-        'animation:none;';
-      void p.el.offsetWidth; // reflow
-      p.el.style.animation = 'sparkFade .38s ease forwards';
-      (function (particle) {
-        setTimeout(function () { particle.busy = false; }, 400);
-      })(p);
-    }
-  }
+  // Build ghost elements
+  GHOSTS.forEach(function (g) {
+    g.x = -500; g.y = -500;
+    g.el = document.createElement('div');
+    g.el.style.cssText =
+      'position:fixed;pointer-events:none;z-index:9997;border-radius:50%;' +
+      'width:' + g.size + 'px;height:' + g.size + 'px;' +
+      'background:rgba(255,255,255,1);' +
+      'transform:translate(-50%,-50%);' +
+      'will-change:left,top,opacity;';
+    document.body.appendChild(g.el);
+  });
 
   document.addEventListener('mousemove', function (e) {
-    var dx    = e.clientX - lastX;
-    var dy    = e.clientY - lastY;
-    var speed = Math.sqrt(dx * dx + dy * dy);
-    if (speed > SPEED_T) emit(e.clientX, e.clientY, speed);
-    lastX = e.clientX;
-    lastY = e.clientY;
+    var dx = e.clientX - lastX;
+    var dy = e.clientY - lastY;
+    speed = Math.sqrt(dx * dx + dy * dy);
+    mx = e.clientX; my = e.clientY;
+    lastX = mx; lastY = my;
   }, { passive: true });
+
+  (function tick() {
+    requestAnimationFrame(tick);
+
+    // Smooth speed toward 0 so the trail fades gracefully when cursor stops
+    speed *= 0.82;
+
+    // Opacity scale: 0 below threshold, ramps up with speed (max at ~30px/frame)
+    var t = Math.max(0, Math.min(1, (speed - 7) / 22));
+
+    GHOSTS.forEach(function (g) {
+      g.x += (mx - g.x) * g.lerp;
+      g.y += (my - g.y) * g.lerp;
+      g.el.style.left    = g.x + 'px';
+      g.el.style.top     = g.y + 'px';
+      g.el.style.opacity = (g.maxOpacity * t).toFixed(3);
+    });
+  })();
 })();
