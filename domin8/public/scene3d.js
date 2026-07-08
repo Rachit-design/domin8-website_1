@@ -4,88 +4,72 @@
    All vanilla JS, no build step required.
 ============================================================================ */
 
-/* ── 0. LOADING SCREEN ────────────────────────────────────────────────────── */
+/* ── 0. LOADING SCREEN — minimal, graphic-first ──────────────────────────── */
 (function bootScreen() {
   'use strict';
 
-  var MESSAGES = [
-    { t: 0,    cls: '',     text: '> DOMIN8.EXE — boot sequence initiated...' },
-    { t: 600,  cls: 'ok',   text: '> Connecting to floor: 20 rigs detected ✓' },
-    { t: 1150, cls: 'err',  text: '> [ERROR] Airtel signal unstable. Expected.' },
-    { t: 1650, cls: 'ok',   text: '> Rerouting via AB Road node... connected ✓' },
-    { t: 2150, cls: 'ok',   text: '> Loading crew manifest... 9 found ✓' },
-    { t: 2650, cls: 'warn', text: '> [WARNING] Drip levels critically high. Compensating.' },
-    { t: 3150, cls: 'ok',   text: '> Community drive: 280 reviews, 740 followers ✓' },
-    { t: 3650, cls: 'ok',   text: '> Saawan bhaiya\'s chai: brewing... done ✓' },
-    { t: 4150, cls: 'ok',   text: '> All systems nominal. You\'re in, gamer.' },
-  ];
-
   var css = [
-    '#boot-screen{position:fixed;inset:0;z-index:9999;background:#04020f;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;transition:transform .75s cubic-bezier(.76,0,.24,1);overflow:hidden;}',
-    '#boot-screen.boot-out{transform:translateY(-100%);}',
-    '.b-logo{position:absolute;top:22px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;opacity:.65;}',
-    '.b-logo img{width:34px;height:34px;object-fit:contain;}',
-    '.b-logo span{color:#F7CA24;font-family:monospace;font-size:.7rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;}',
-    '.b-term{width:min(560px,90vw);border:1px solid rgba(247,202,36,.2);border-radius:10px;background:rgba(0,0,0,.55);padding:18px 22px;min-height:200px;display:flex;flex-direction:column;}',
-    '.b-head{font-family:monospace;font-size:.6rem;color:rgba(255,255,255,.28);letter-spacing:.14em;text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,.07);padding-bottom:8px;margin-bottom:10px;}',
-    '.b-line{font-family:monospace;font-size:clamp(.7rem,1.6vw,.82rem);line-height:1.75;opacity:0;animation:bIn .22s ease forwards;}',
-    '.b-line.ok{color:#4ade80;}.b-line.err{color:#f87171;}.b-line.warn{color:#F7CA24;}',
-    '.b-line.norm{color:rgba(255,255,255,.72);}',
-    '@keyframes bIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}',
-    '.b-cursor{display:inline-block;width:7px;height:.85em;background:#F7CA24;vertical-align:middle;margin-left:4px;animation:bBlink .55s step-end infinite;}',
-    '@keyframes bBlink{50%{opacity:0}}',
-    '.b-welcome{margin-top:26px;font-family:"Bebas Neue","Impact",sans-serif;font-size:clamp(1.8rem,5.5vw,3rem);color:#F7CA24;letter-spacing:.2em;text-align:center;opacity:0;transform:scale(.9) translateY(8px);transition:opacity .55s ease,transform .55s ease;}',
-    '.b-welcome.show{opacity:1;transform:scale(1) translateY(0);}',
-    '.b-bar{position:absolute;bottom:0;left:0;right:0;height:2px;background:rgba(255,255,255,.05);}',
-    '.b-bar-fill{height:100%;width:0%;background:#F7CA24;transition:width .5s ease;box-shadow:0 0 10px rgba(247,202,36,.55);}',
-    '.b-skip{position:absolute;bottom:14px;right:18px;font-family:monospace;font-size:.58rem;color:rgba(255,255,255,.18);letter-spacing:.1em;text-transform:uppercase;}',
+    '#boot-screen{position:fixed;inset:0;z-index:9999;background:#04020f;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;transition:opacity .6s ease;}',
+    '#boot-screen.boot-out{opacity:0;pointer-events:none;}',
+    // Logo inside a spinning gold arc
+    '.b-wrap{position:relative;width:118px;height:118px;display:flex;align-items:center;justify-content:center;}',
+    '.b-wrap img{width:72px;height:72px;object-fit:contain;animation:bPulse 1.6s ease-in-out infinite;}',
+    '@keyframes bPulse{0%,100%{transform:scale(1);opacity:.92}50%{transform:scale(1.06);opacity:1}}',
+    '.b-ring{position:absolute;inset:0;border-radius:50%;border:2px solid transparent;border-top-color:#F7CA24;animation:bSpin 1.1s linear infinite;}',
+    '.b-ring2{position:absolute;inset:9px;border-radius:50%;border:1.5px solid transparent;border-bottom-color:rgba(247,202,36,.35);animation:bSpin 1.7s linear infinite reverse;}',
+    '@keyframes bSpin{to{transform:rotate(360deg)}}',
+    // One quiet line, looping through short phrases
+    '.b-tip{font-family:monospace;font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.4);min-height:1em;transition:opacity .3s ease;}',
+    '.b-tip.swap{opacity:0;}',
   ].join('');
 
   var styleEl = document.createElement('style');
   styleEl.textContent = css;
   document.head.appendChild(styleEl);
 
+  var TIPS = ['loading the floor', 'wiring you in', 'welcome home, gamer'];
+
   var el = document.createElement('div');
   el.id = 'boot-screen';
   el.innerHTML =
-    '<div class="b-logo"><img src="/assets/logo-face-cutout.png" alt=""/><span>Domin8 Esports</span></div>' +
-    '<div class="b-term"><div class="b-head">DOMIN8_TERMINAL v2026 &nbsp;—&nbsp; SYSTEM CHECK</div><div id="bLines"></div></div>' +
-    '<div class="b-welcome" id="bWelcome">WELCOME HOME, GAMER.</div>' +
-    '<div class="b-bar"><div class="b-bar-fill" id="bBar"></div></div>' +
-    '<div class="b-skip">click or press any key to skip</div>';
+    '<div class="b-wrap">' +
+      '<div class="b-ring"></div><div class="b-ring2"></div>' +
+      '<img src="/assets/logo-face-cutout.png" alt=""/>' +
+    '</div>' +
+    '<div class="b-tip" id="bTip">' + TIPS[0] + '</div>';
   document.body.insertBefore(el, document.body.firstChild);
 
-  var linesEl  = document.getElementById('bLines');
-  var welcomeEl = document.getElementById('bWelcome');
-  var barEl    = document.getElementById('bBar');
-  var timers   = [];
-  var done     = false;
+  var tipEl  = document.getElementById('bTip');
+  var tipIdx = 0;
+  var done   = false;
+
+  // Cycle phrases with a soft cross-fade
+  var tipTimer = setInterval(function () {
+    tipEl.classList.add('swap');
+    setTimeout(function () {
+      tipIdx = (tipIdx + 1) % TIPS.length;
+      tipEl.textContent = TIPS[tipIdx];
+      tipEl.classList.remove('swap');
+    }, 300);
+  }, 1100);
 
   function dismiss() {
     if (done) return;
     done = true;
-    timers.forEach(clearTimeout);
+    clearInterval(tipTimer);
     el.classList.add('boot-out');
-    setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 800);
+    setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 700);
   }
 
-  MESSAGES.forEach(function (msg, i) {
-    timers.push(setTimeout(function () {
-      var line = document.createElement('div');
-      line.className = 'b-line ' + (msg.cls || 'norm');
-      line.textContent = msg.text;
-      linesEl.appendChild(line);
-      linesEl.scrollTop = linesEl.scrollHeight;
-      barEl.style.width = Math.round(((i + 1) / MESSAGES.length) * 82) + '%';
-    }, msg.t));
+  // Dismiss when the page is actually ready (min 1.2s so it never flashes),
+  // hard cap at 3s — the loader should never make anyone wait.
+  var minShow = new Promise(function (r) { setTimeout(r, 1200); });
+  var loaded  = new Promise(function (r) {
+    if (document.readyState === 'complete') r();
+    else window.addEventListener('load', r, { once: true });
   });
-
-  timers.push(setTimeout(function () {
-    barEl.style.width = '100%';
-    welcomeEl.classList.add('show');
-  }, 4600));
-
-  timers.push(setTimeout(dismiss, 5400));
+  Promise.all([minShow, loaded]).then(dismiss);
+  setTimeout(dismiss, 3000);
 
   document.addEventListener('keydown',    dismiss, { once: true });
   document.addEventListener('click',      dismiss, { once: true });
