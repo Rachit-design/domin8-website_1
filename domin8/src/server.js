@@ -250,6 +250,9 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 // Dedicated sub-pages (before SPA fallback so they get the right HTML)
 app.get('/floor', (_req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'floor.html')));
 app.get('/coming-soon', (_req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'coming-soon.html')));
+// Blog is not live yet — show the coming-soon screen instead of falling
+// through to the homepage (which read as a broken link).
+app.get('/blog', (_req, res) => res.sendFile(path.join(__dirname, '..', 'public', 'coming-soon.html')));
 
 // SPA-ish fallback: any unknown non-API route returns the homepage.
 app.get('*', (req, res, next) => {

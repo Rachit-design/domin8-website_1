@@ -125,6 +125,21 @@
 (function(){
   'use strict';
 
+  // Served at both /coming-soon (shop) and /blog — swap copy for blog visitors
+  if (location.pathname.indexOf('/blog') === 0) {
+    document.title = 'Domin8 Esports — Blog Loading Soon';
+    var t = document.querySelector('.cs-page__title');
+    var s = document.querySelector('.cs-page__sub');
+    var pills = document.querySelector('.cs-page__pills');
+    if (t) t.innerHTML = 'The Blog is<br><span style="color:var(--brand-magenta)">Respawning.</span>';
+    if (s) s.textContent = 'Match recaps, player spotlights, and the best clips off the floor — the Domin8 blog is being built right now. Get notified when the first post drops.';
+    if (pills) pills.innerHTML =
+      '<span class="cs-page__pill">🏆 League Recaps</span>' +
+      '<span class="cs-page__pill">🎯 Player Spotlights</span>' +
+      '<span class="cs-page__pill">🎬 Clips of the Week</span>' +
+      '<span class="cs-page__pill">📸 Floor Stories</span>';
+  }
+
   var DISCORD_INVITE = 'https://discord.gg/fhCtjEF9T';
   document.querySelectorAll('[data-discord]').forEach(function(el){
     el.setAttribute('href', DISCORD_INVITE); el.setAttribute('target','_blank'); el.setAttribute('rel','noopener');
@@ -170,5 +185,6 @@
   }
 })();
 </script>
+<script src="/cursor.js" defer></script>
 </body>
 </html>
