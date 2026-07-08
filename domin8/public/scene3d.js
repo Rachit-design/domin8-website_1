@@ -71,7 +71,7 @@
     document.body.insertBefore(canvas, document.body.firstChild);
 
     var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: false });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    renderer.setPixelRatio(1); // always 1 — higher DPR doubles GPU work for minimal visual gain
     renderer.setSize(W, H);
     renderer.setClearColor(0x000000, 0);
 
@@ -87,8 +87,8 @@
     ];
 
     /* ── Build floating wireframe boxes ── */
-    var BOX_N = 36;
-    var COLS  = 9, ROWS = 4;
+    var BOX_N = 18;
+    var COLS  = 9, ROWS = 2;
     var boxes = [];
 
     for (var i = 0; i < BOX_N; i++) {
