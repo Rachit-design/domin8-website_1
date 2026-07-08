@@ -17,7 +17,7 @@
 <meta property="og:description" content="Indore's home of competitive gaming culture. Built by the community, for the community." />
 <meta property="og:type" content="website" />
 <meta property="og:image" content="/assets/hero-gamer-new.png" />
-<link rel="icon" type="image/png" href="/assets/FinalV2Wbg.png" />
+<link rel="icon" type="image/svg+xml" href="/assets/logo-favicon.svg" />
 <script src="https://cdn.jsdelivr.net/npm/three@0.162.0/build/three.min.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -47,27 +47,16 @@
   </a>
   <a class="nav__live" id="navLive" data-state="ok" href="/floor" aria-label="See live floor status"><span class="nav__live-dot"></span><span id="navLiveText">FLOOR LIVE</span><span class="nav__live-arrow">↗</span></a>
   <button class="btn btn--primary nav__cta" data-open-join>Join the Community</button>
-  <button class="mon-burger" id="burger" aria-label="Open menu" aria-expanded="false" title="Menu">
-    <svg class="mon-icon" viewBox="0 0 44 38" width="44" height="38" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <!-- Monitor bezel (outer frame) -->
-      <rect x="1.5" y="1.5" width="41" height="28" rx="3.5" stroke="currentColor" stroke-width="2"/>
-      <!-- Screen inset (double-bezel CRT feel) -->
-      <rect x="5" y="5" width="34" height="21" rx="1.5" stroke="currentColor" stroke-width="0.9" opacity="0.45"/>
-      <!-- Menu lines (hamburger) = screen content indicator -->
-      <line x1="11" y1="11.5" x2="33" y2="11.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-      <line x1="11" y1="15.5" x2="33" y2="15.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-      <line x1="11" y1="19.5" x2="33" y2="19.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-      <!-- Stand neck -->
-      <line x1="22" y1="29.5" x2="22" y2="33.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-      <!-- Stand base (slightly curved for modern look) -->
-      <path d="M13 34 Q22 36.5 31 34" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/>
-      <!-- Power LED dot -->
-      <circle cx="37.5" cy="27" r="1.8" fill="currentColor" opacity="0.65"/>
-      <!-- Corner accent lines (Domin8 brand geometry) -->
-      <path d="M5 5 L9 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.6"/>
-      <path d="M5 5 L5 9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.6"/>
-      <path d="M39 5 L35 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.6"/>
-      <path d="M39 5 L39 9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.6"/>
+  <button class="mon-burger" id="burger" aria-label="Open menu" aria-expanded="false">
+    <svg class="mon-icon" viewBox="0 0 38 30" width="38" height="30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <!-- Gold corner bracket: top-left — brand geometry signature -->
+      <path d="M1 1 L1 8 M1 1 L8 1" stroke="#F7CA24" stroke-width="2" stroke-linecap="square"/>
+      <!-- Three menu bars -->
+      <line x1="1" y1="5" x2="37" y2="5" stroke="currentColor" stroke-width="2.5" stroke-linecap="butt"/>
+      <line x1="1" y1="15" x2="29" y2="15" stroke="currentColor" stroke-width="2.5" stroke-linecap="butt"/>
+      <line x1="1" y1="25" x2="37" y2="25" stroke="currentColor" stroke-width="2.5" stroke-linecap="butt"/>
+      <!-- Gold corner bracket: bottom-right -->
+      <path d="M37 29 L37 22 M37 29 L30 29" stroke="#F7CA24" stroke-width="2" stroke-linecap="square"/>
     </svg>
   </button>
 </header>
@@ -178,7 +167,7 @@
         </div>
         <div class="brand-journey__stage" aria-label="Domin8 rebrand: old logo to new logo to full mark">
           <img src="/assets/logo-old-cutout.png" alt="Original Domin8 logo" class="brand-journey__mark brand-journey__mark--old" id="brandOldImgClean" />
-          <img src="/assets/Domin8Newlogo.png" alt="New Domin8 logo" class="brand-journey__mark brand-journey__mark--new" id="brandNewImgClean" />
+          <img src="/assets/FinalLogoColor.svg" alt="New Domin8 logo" class="brand-journey__mark brand-journey__mark--new" id="brandNewImgClean" />
         </div>
         <div class="brand-journey__labels">
           <span id="labelOld" class="bj-label">Where it started</span>

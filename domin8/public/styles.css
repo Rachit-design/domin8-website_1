@@ -1319,64 +1319,44 @@ body{
 .mon-burger {
   background: none;
   border: 0;
-  padding: 5px 4px;
+  padding: 6px 5px;
   flex-shrink: 0;
   margin-left: .6rem;
   display: flex !important;
   align-items: center;
   justify-content: center;
-  color: rgba(255,255,255,0.65);
-  border-radius: 8px;
-  transition: color 0.3s ease, background 0.3s ease;
-  position: relative;
-}
-/* OFF state — subtle but clearly clickable */
-.mon-burger::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 8px;
-  border: 1px solid rgba(255,255,255,0.12);
-  transition: border-color 0.3s;
+  color: rgba(255,255,255,0.7);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: color 0.25s ease, background 0.25s ease;
 }
 .mon-burger:hover {
-  color: rgba(255,255,255,0.95);
-  background: rgba(255,255,255,0.06);
+  color: #fff;
+  background: rgba(247,202,36,0.08);
 }
-.mon-burger:hover::before { border-color: rgba(255,255,255,0.28); }
-
-/* ON state — screen turns yellow/gold, everything glows */
+/* Open state — bars turn gold, whole icon glows */
 .mon-burger.open {
-  color: var(--brand-gold);
+  color: #F7CA24;
 }
-.mon-burger.open::before {
-  border-color: rgba(247,202,36,0.5);
-  box-shadow: 0 0 14px rgba(247,202,36,0.2), inset 0 0 10px rgba(247,202,36,0.04);
+.mon-burger.open .mon-icon {
+  filter: drop-shadow(0 0 6px rgba(247,202,36,0.55));
 }
 .mon-icon {
   display: block;
-  transition: filter 0.3s ease, transform 0.15s ease;
+  transition: filter 0.25s ease, transform 0.2s ease;
 }
 .mon-burger:hover .mon-icon {
-  filter: drop-shadow(0 0 5px rgba(255,255,255,0.3));
-  transform: scale(1.05);
+  transform: scale(1.06);
 }
-.mon-burger.open .mon-icon {
-  filter: drop-shadow(0 0 8px rgba(247,202,36,0.7));
-}
-
-/* Glitch animation — fires on click, then settles into on/off state */
-@keyframes monGlitch {
-  0%   { transform: translateX(0)   scaleX(1); }
-  8%   { transform: translateX(-3px) scaleX(0.97); filter: drop-shadow(-5px 0 2px rgba(206,0,109,0.9)) brightness(1.4); }
-  18%  { transform: translateX(3px)  scaleX(1.03); filter: drop-shadow(5px 0 2px rgba(104,26,255,0.9)) brightness(1.6); }
-  28%  { transform: translateX(-1px); filter: drop-shadow(0 0 12px rgba(247,202,36,0.8)) brightness(1.8); }
-  38%  { transform: translateX(2px); }
-  48%  { transform: translateX(0)   scaleX(1); filter: drop-shadow(0 0 10px rgba(247,202,36,0.9)); }
-  100% { transform: translateX(0)   scaleX(1); }
+/* Click pulse — brief gold flash */
+@keyframes menuPulse {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(0.93); filter: drop-shadow(0 0 10px rgba(247,202,36,0.9)); }
+  70%  { transform: scale(1.04); }
+  100% { transform: scale(1); }
 }
 .mon-burger.mon-glitch .mon-icon {
-  animation: monGlitch 0.55s cubic-bezier(0.25,0.46,0.45,0.94) forwards;
+  animation: menuPulse 0.35s ease forwards;
 }
 
 /* Mobile menu — now the full dropdown for all screen sizes */
@@ -3525,4 +3505,58 @@ main, footer.footer { position: relative; z-index: 2; }
 @media (max-width: 540px) {
   .nav__cta  { display: none !important; }
   .nav__live { font-size: .7rem; padding: .4rem .75rem; }
+}
+
+/* ============================================================================
+   GOLD-FIRST UX — #F7CA24 is the key brand colour.
+   These rules override the earlier emerald-green defaults throughout the site.
+============================================================================ */
+
+/* Primary CTA: gold background, deep navy text for contrast */
+.btn--primary,
+.btn--primary:link,
+.btn--primary:visited {
+  background: #F7CA24 !important;
+  background-image: none !important;
+  color: #0D0820 !important;
+  box-shadow: 0 6px 24px rgba(247,202,36,0.28) !important;
+  border-color: transparent !important;
+}
+.btn--primary:hover,
+.btn--primary:focus-visible {
+  background: #ffe04a !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 10px 32px rgba(247,202,36,0.42) !important;
+}
+.btn--primary:active {
+  transform: translateY(0) !important;
+  box-shadow: 0 4px 14px rgba(247,202,36,0.3) !important;
+}
+
+/* Ghost button: gold border + gold text on hover */
+.btn--ghost:hover,
+.btn--ghost:focus-visible {
+  border-color: #F7CA24 !important;
+  color: #F7CA24 !important;
+  background: rgba(247,202,36,0.06) !important;
+}
+
+/* Mobile menu links: gold on hover (already set above, reinforced) */
+.mobile-menu a:hover { color: #F7CA24; }
+
+/* Section accent / eyebrow text — use gold instead of emerald where applicable */
+.accent-green { color: #F7CA24 !important; }
+
+/* Nav "JOIN THE COMMUNITY" button gets a gold glow ring on hover */
+.nav__cta:hover {
+  box-shadow: 0 0 0 2px rgba(247,202,36,0.35), 0 10px 32px rgba(247,202,36,0.3) !important;
+}
+
+/* Live badge: keep the green "live" dot (it reads as online) but gold text */
+.nav__live[data-state="ok"] { border-color: rgba(247,202,36,0.35); }
+.nav__live[data-state="busy"] { border-color: rgba(247,202,36,0.6); }
+
+/* Section heading underline accent — gold */
+.section__title::after {
+  background: #F7CA24;
 }
