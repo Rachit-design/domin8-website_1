@@ -1,8 +1,97 @@
 /* ============================================================================
    scene3d.js — Domin8 Esports
-   Custom cursor + Three.js physics background + 3D card tilt
+   Loading screen + Custom cursor + Three.js background + 3D card tilt
    All vanilla JS, no build step required.
 ============================================================================ */
+
+/* ── 0. LOADING SCREEN ────────────────────────────────────────────────────── */
+(function bootScreen() {
+  'use strict';
+
+  var MESSAGES = [
+    { t: 0,    cls: '',     text: '> DOMIN8.EXE — boot sequence initiated...' },
+    { t: 600,  cls: 'ok',   text: '> Connecting to floor: 20 rigs detected ✓' },
+    { t: 1150, cls: 'err',  text: '> [ERROR] Airtel signal unstable. Expected.' },
+    { t: 1650, cls: 'ok',   text: '> Rerouting via AB Road node... connected ✓' },
+    { t: 2150, cls: 'ok',   text: '> Loading crew manifest... 9 found ✓' },
+    { t: 2650, cls: 'warn', text: '> [WARNING] Drip levels critically high. Compensating.' },
+    { t: 3150, cls: 'ok',   text: '> Community drive: 280 reviews, 740 followers ✓' },
+    { t: 3650, cls: 'ok',   text: '> Saawan bhaiya\'s chai: brewing... done ✓' },
+    { t: 4150, cls: 'ok',   text: '> All systems nominal. You\'re in, gamer.' },
+  ];
+
+  var css = [
+    '#boot-screen{position:fixed;inset:0;z-index:9999;background:#04020f;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;transition:transform .75s cubic-bezier(.76,0,.24,1);overflow:hidden;}',
+    '#boot-screen.boot-out{transform:translateY(-100%);}',
+    '.b-logo{position:absolute;top:22px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;opacity:.65;}',
+    '.b-logo img{width:34px;height:34px;object-fit:contain;}',
+    '.b-logo span{color:#F7CA24;font-family:monospace;font-size:.7rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;}',
+    '.b-term{width:min(560px,90vw);border:1px solid rgba(247,202,36,.2);border-radius:10px;background:rgba(0,0,0,.55);padding:18px 22px;min-height:200px;display:flex;flex-direction:column;}',
+    '.b-head{font-family:monospace;font-size:.6rem;color:rgba(255,255,255,.28);letter-spacing:.14em;text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,.07);padding-bottom:8px;margin-bottom:10px;}',
+    '.b-line{font-family:monospace;font-size:clamp(.7rem,1.6vw,.82rem);line-height:1.75;opacity:0;animation:bIn .22s ease forwards;}',
+    '.b-line.ok{color:#4ade80;}.b-line.err{color:#f87171;}.b-line.warn{color:#F7CA24;}',
+    '.b-line.norm{color:rgba(255,255,255,.72);}',
+    '@keyframes bIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}',
+    '.b-cursor{display:inline-block;width:7px;height:.85em;background:#F7CA24;vertical-align:middle;margin-left:4px;animation:bBlink .55s step-end infinite;}',
+    '@keyframes bBlink{50%{opacity:0}}',
+    '.b-welcome{margin-top:26px;font-family:"Bebas Neue","Impact",sans-serif;font-size:clamp(1.8rem,5.5vw,3rem);color:#F7CA24;letter-spacing:.2em;text-align:center;opacity:0;transform:scale(.9) translateY(8px);transition:opacity .55s ease,transform .55s ease;}',
+    '.b-welcome.show{opacity:1;transform:scale(1) translateY(0);}',
+    '.b-bar{position:absolute;bottom:0;left:0;right:0;height:2px;background:rgba(255,255,255,.05);}',
+    '.b-bar-fill{height:100%;width:0%;background:#F7CA24;transition:width .5s ease;box-shadow:0 0 10px rgba(247,202,36,.55);}',
+    '.b-skip{position:absolute;bottom:14px;right:18px;font-family:monospace;font-size:.58rem;color:rgba(255,255,255,.18);letter-spacing:.1em;text-transform:uppercase;}',
+  ].join('');
+
+  var styleEl = document.createElement('style');
+  styleEl.textContent = css;
+  document.head.appendChild(styleEl);
+
+  var el = document.createElement('div');
+  el.id = 'boot-screen';
+  el.innerHTML =
+    '<div class="b-logo"><img src="/assets/logo-face-cutout.png" alt=""/><span>Domin8 Esports</span></div>' +
+    '<div class="b-term"><div class="b-head">DOMIN8_TERMINAL v2026 &nbsp;—&nbsp; SYSTEM CHECK</div><div id="bLines"></div></div>' +
+    '<div class="b-welcome" id="bWelcome">WELCOME HOME, GAMER.</div>' +
+    '<div class="b-bar"><div class="b-bar-fill" id="bBar"></div></div>' +
+    '<div class="b-skip">click or press any key to skip</div>';
+  document.body.insertBefore(el, document.body.firstChild);
+
+  var linesEl  = document.getElementById('bLines');
+  var welcomeEl = document.getElementById('bWelcome');
+  var barEl    = document.getElementById('bBar');
+  var timers   = [];
+  var done     = false;
+
+  function dismiss() {
+    if (done) return;
+    done = true;
+    timers.forEach(clearTimeout);
+    el.classList.add('boot-out');
+    setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 800);
+  }
+
+  MESSAGES.forEach(function (msg, i) {
+    timers.push(setTimeout(function () {
+      var line = document.createElement('div');
+      line.className = 'b-line ' + (msg.cls || 'norm');
+      line.textContent = msg.text;
+      linesEl.appendChild(line);
+      linesEl.scrollTop = linesEl.scrollHeight;
+      barEl.style.width = Math.round(((i + 1) / MESSAGES.length) * 82) + '%';
+    }, msg.t));
+  });
+
+  timers.push(setTimeout(function () {
+    barEl.style.width = '100%';
+    welcomeEl.classList.add('show');
+  }, 4600));
+
+  timers.push(setTimeout(dismiss, 5400));
+
+  document.addEventListener('keydown',    dismiss, { once: true });
+  document.addEventListener('click',      dismiss, { once: true });
+  document.addEventListener('touchstart', dismiss, { once: true, passive: true });
+})();
+
 (function () {
   'use strict';
 
@@ -273,4 +362,82 @@
   initTilts();
   setTimeout(initTilts, 900);
 
+})();
+
+/* ── 4. VELOCITY CURSOR TRAIL ─────────────────────────────────────────────── */
+(function cursorTrail() {
+  'use strict';
+
+  // Only on devices with a real mouse
+  if (window.matchMedia('(pointer: coarse)').matches) return;
+
+  var COLORS  = ['#F7CA24', '#681AFF', '#EF438B', '#F7CA24', '#CE006D', '#ffffff'];
+  var SPEED_T = 9;   // px/frame threshold before trail appears
+  var MAX_P   = 32;  // particle pool size
+
+  var style = document.createElement('style');
+  style.textContent = [
+    '.gc-spark{position:fixed;pointer-events:none;z-index:9998;border-radius:50%;',
+    'transform:translate(-50%,-50%);animation:sparkFade .38s ease forwards;}',
+    '@keyframes sparkFade{',
+    '0%{opacity:.9;transform:translate(-50%,-50%) scale(1);}',
+    '55%{opacity:.45;transform:translate(-50%,-50%) scale(.55);}',
+    '100%{opacity:0;transform:translate(-50%,-50%) scale(0);}}',
+  ].join('');
+  document.head.appendChild(style);
+
+  var pool     = [];
+  var colorIdx = 0;
+  var lastX    = -999;
+  var lastY    = -999;
+
+  function getParticle() {
+    for (var i = 0; i < pool.length; i++) {
+      if (!pool[i].busy) return pool[i];
+    }
+    if (pool.length < MAX_P) {
+      var d = document.createElement('div');
+      d.className = 'gc-spark';
+      document.body.appendChild(d);
+      var p = { el: d, busy: false };
+      pool.push(p);
+      return p;
+    }
+    return null;
+  }
+
+  function emit(x, y, speed) {
+    // Number of sparks scales with speed
+    var count = speed > 35 ? 4 : speed > 22 ? 3 : speed > 14 ? 2 : 1;
+    for (var i = 0; i < count; i++) {
+      var p = getParticle();
+      if (!p) return;
+      var sz    = 3 + Math.random() * 5;
+      var color = COLORS[colorIdx++ % COLORS.length];
+      var ox    = (Math.random() - .5) * speed * .28;
+      var oy    = (Math.random() - .5) * speed * .28;
+      p.busy = true;
+      // Reset animation then restart
+      p.el.style.cssText =
+        'left:' + (x + ox) + 'px;top:' + (y + oy) + 'px;' +
+        'width:' + sz + 'px;height:' + sz + 'px;' +
+        'background:' + color + ';' +
+        'box-shadow:0 0 ' + (sz * 2.2) + 'px ' + color + ';' +
+        'animation:none;';
+      void p.el.offsetWidth; // reflow
+      p.el.style.animation = 'sparkFade .38s ease forwards';
+      (function (particle) {
+        setTimeout(function () { particle.busy = false; }, 400);
+      })(p);
+    }
+  }
+
+  document.addEventListener('mousemove', function (e) {
+    var dx    = e.clientX - lastX;
+    var dy    = e.clientY - lastY;
+    var speed = Math.sqrt(dx * dx + dy * dy);
+    if (speed > SPEED_T) emit(e.clientX, e.clientY, speed);
+    lastX = e.clientX;
+    lastY = e.clientY;
+  }, { passive: true });
 })();
