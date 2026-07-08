@@ -3560,3 +3560,73 @@ main, footer.footer { position: relative; z-index: 2; }
 .section__title::after {
   background: #F7CA24;
 }
+
+/* ============================================================================
+   TYPOGRAPHY POLISH — kerning, spacing, and readability pass.
+   Anton SC is ultra-condensed: it needs a touch more tracking and air
+   between lines to stay readable, especially at display sizes.
+============================================================================ */
+
+/* Enable proper kerning + ligatures everywhere */
+body {
+  text-rendering: optimizeLegibility;
+  font-kerning: normal;
+  font-feature-settings: "kern" 1, "liga" 1;
+}
+
+/* Display headings: slightly open tracking + breathing room between lines */
+.hero__title {
+  letter-spacing: .025em !important;
+  line-height: 1.02 !important;
+  word-spacing: .06em;
+}
+.section__title {
+  letter-spacing: .03em !important;
+  line-height: 1.1 !important;
+  word-spacing: .05em;
+  margin-bottom: .35em;
+}
+.cta h2,
+.iesports__text h3,
+.flip__back-content h3,
+.shop__title,
+.modal__title,
+.modal__success h3 {
+  letter-spacing: .03em !important;
+  line-height: 1.12 !important;
+}
+
+/* Body copy: comfortable measure and rhythm */
+.section__lede {
+  line-height: 1.75 !important;
+  letter-spacing: .005em;
+  max-width: 62ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+.hero__sub {
+  line-height: 1.65 !important;
+  letter-spacing: .005em;
+}
+
+/* Card copy: don't let it get airless */
+.event-card p,
+.blog-card p,
+.iesports__text p,
+.flip__back-content p {
+  line-height: 1.7;
+  letter-spacing: .004em;
+}
+
+/* Buttons & small caps UI text: open tracking reads better in uppercase */
+.btn { letter-spacing: .1em !important; }
+.eyebrow,
+.event-card__tag,
+.shop__tag,
+.blog-card__cat { letter-spacing: .12em; }
+
+/* Footer link rhythm */
+.footer__links a { line-height: 2; }
+
+/* Space below section heads so content never crowds the title */
+.section__head { margin-bottom: 2.4rem; }
