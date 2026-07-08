@@ -1317,46 +1317,46 @@ body{
 
 /* Monitor burger button */
 .mon-burger {
-  background: none;
-  border: 0;
-  padding: 6px 5px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.14);
+  padding: 10px 12px;
   flex-shrink: 0;
   margin-left: .6rem;
   display: flex !important;
   align-items: center;
   justify-content: center;
-  color: rgba(255,255,255,0.7);
-  border-radius: 6px;
+  color: rgba(255,255,255,0.75);
+  border-radius: 8px;
   cursor: pointer;
-  transition: color 0.25s ease, background 0.25s ease;
+  transition: color 0.2s, background 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 .mon-burger:hover {
-  color: #fff;
-  background: rgba(247,202,36,0.08);
+  color: #F7CA24;
+  background: rgba(247,202,36,0.1);
+  border-color: rgba(247,202,36,0.4);
+  box-shadow: 0 0 12px rgba(247,202,36,0.15);
 }
-/* Open state — bars turn gold, whole icon glows */
+/* Open state — gold fill, glow */
 .mon-burger.open {
   color: #F7CA24;
-}
-.mon-burger.open .mon-icon {
-  filter: drop-shadow(0 0 6px rgba(247,202,36,0.55));
+  background: rgba(247,202,36,0.12);
+  border-color: rgba(247,202,36,0.55);
+  box-shadow: 0 0 18px rgba(247,202,36,0.2);
 }
 .mon-icon {
   display: block;
-  transition: filter 0.25s ease, transform 0.2s ease;
+  transition: transform 0.2s ease;
 }
-.mon-burger:hover .mon-icon {
-  transform: scale(1.06);
-}
-/* Click pulse — brief gold flash */
+.mon-burger:hover .mon-icon { transform: scale(1.08); }
+/* Click pulse */
 @keyframes menuPulse {
   0%   { transform: scale(1); }
-  35%  { transform: scale(0.93); filter: drop-shadow(0 0 10px rgba(247,202,36,0.9)); }
-  70%  { transform: scale(1.04); }
+  40%  { transform: scale(0.88); }
+  75%  { transform: scale(1.05); }
   100% { transform: scale(1); }
 }
 .mon-burger.mon-glitch .mon-icon {
-  animation: menuPulse 0.35s ease forwards;
+  animation: menuPulse 0.3s ease forwards;
 }
 
 /* Mobile menu — now the full dropdown for all screen sizes */
